@@ -14,8 +14,9 @@ import com.madeTUP.AppSpa.Service.IClienteService;
 import com.madeTUP.AppSpa.Service.IServicioService;
 import com.madeTUP.AppSpa.Service.ISesionService;
 
-import java.time.LocalDate;
 
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -143,7 +144,9 @@ public ResponseEntity<String> agregarSesion(@RequestBody NewSesionDTO nuevaSesio
         Sesion sesion = new Sesion();
         sesion.setCliente(cliente);
         sesion.setServicio(servicio);
-        sesion.setFecha(LocalDateTime.parse(nuevaSesion.getFecha()));
+       ZonedDateTime zonedDateTime = ZonedDateTime.parse(nuevaSesion.getFecha());
+        LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
+        sesion.setFecha(localDateTime);
         sesion.setAsistencia("SOLICITADO"); // Puedes ajustarlo según la lógica del negocio
 
         // Guardamos la sesión
