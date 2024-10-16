@@ -1,0 +1,94 @@
+/* estilo.css */
+
+/* Estilo general del cuerpo */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5; /* Color de fondo */
+}
+
+/* Contenedor principal */
+.container {
+    display: flex;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+}
+
+/* Barra de menú lateral */
+.sidebar {
+    width: 250px; /* Ancho de la barra lateral */
+    background-color: #ffcccb; /* Color de fondo de la barra lateral */
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra */
+    transition: width 0.3s; /* Transición suave al abrir/cerrar el menú */
+}
+
+/* Enlaces en la barra lateral */
+.link-container a {
+    display: block;
+    color: #333; /* Color del texto */
+    text-decoration: none;
+    padding: 15px 0; /* Espaciado */
+    font-size: 18px; /* Tamaño de fuente mayor */
+}
+
+.link-container a:hover {
+    color: #fff; /* Color del texto al pasar el mouse */
+    background-color: #ff7f7f; /* Color de fondo al pasar el mouse */
+}
+
+/* Botón de salir */
+.logout-btn {
+    background-color: #ff7f7f; /* Color del botón */
+    color: white;
+    border: none;
+    padding: 15px; /* Mayor padding */
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 18px; /* Tamaño de fuente mayor */
+}
+
+/* Contenido principal */
+.main-content {
+    flex-grow: 1; /* Ocupa el resto del espacio disponible */
+    padding: 20px;
+    background-color: #ffffff; /* Color de fondo del contenido principal */
+}
+
+/* Estilo del formulario */
+form {
+    display: flex;
+    flex-direction: column; /* Coloca los elementos en columna */
+    max-width: 400px; /* Ancho máximo del formulario */
+    margin: 0 auto; /* Centrar formulario */
+}
+
+/* Estilo de etiquetas y campos del formulario */
+label {
+    font-size: 18px; /* Tamaño de fuente mayor para las etiquetas */
+    margin-top: 15px; /* Espaciado entre elementos */
+}
+
+input, select {
+    font-size: 16px; /* Tamaño de fuente mayor para los campos de entrada */
+    padding: 10px; /* Mayor padding para los campos */
+    border: 1px solid #ccc; /* Borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+}
+
+/* Estilo de los botones */
+.btn {
+    background-color: #ff7f7f; /* Color de fondo del botón */
+    color: white;
+    border: none;
+    padding: 15px; /* Mayor padding */
+    cursor: pointer;
+    margin-top: 20px; /* Espaciado entre botones */
+    font-size: 18px; /* Tamaño de fuente mayor */
+}
+
+/* Estilo de encabezados */
+h2 {
+    text-align: center; /* Centrar texto */
+    color: #ff69b4; /* Color del texto */
+    font-size: 24px; /* Tamaño de fuente mayor para el encabezado */
+}

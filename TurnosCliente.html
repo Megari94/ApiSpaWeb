@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Turnos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/estilo.css">
+    <script src="js/cliente.js" defer></script>
+</head>
+<body data-page="TurnosCliente">
+    <div class="container">
+        <!-- Barra de Menú Lateral -->
+        <div id="sidebar" class="sidebar">
+            <div class="link-container">
+                <a href="TurnosCliente.html"><i class="fas fa-calendar-alt"></i>Turnos</a>
+                <a href="SolTurnoCliente.html" id="pagosLink"><i class="fas fa-chart-pie"></i>Solicitar Turno</a>
+            </div>
+            <button class="logout-btn" id="logoutBtn">Salir</button>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="main-content">
+            <button id="menuButton" class="open-btn">☰ Menú</button>
+            <h2>Gestión de Turnos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Estado</th>
+                        <th>Costo</th>
+                        <th>Fecha</th>
+                        <th>Servicio</th>
+                    </tr>
+                </thead>
+                <tbody id="TableBody">
+                    <!-- Los datos se insertarán aquí dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

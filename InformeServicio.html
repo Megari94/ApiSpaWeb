@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe de Servicios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="css/estilo.css">
+    <script src="js/script.js" defer></script>
+    <style>
+   
+
+       
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Barra de Menú Lateral -->
+        <div id="sidebar" class="sidebar">
+            <div class="link-container">
+                <a href="#" id="IPLink"><i class="fas fa-wallet"></i>Pagos</a>
+                <a href="#" id="ISLink"><i class="fas fa-file-alt"></i>Servicios</a>
+                <a href="#" id="pagosLink"><i class="fas fa-chart-pie"></i>Turnos Solicitados</a>
+                <a href="#" id="facturaLink"><i class="fas fa-receipt"></i>Factura</a>
+            </div>
+            <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="main-content">
+            <button id="menuButton" class="open-btn" onclick="toggleMenu()">☰ Menú</button>
+        
+            <!-- Formulario para ingresar el rango de fechas -->
+            <div class="date-range-form">
+                <h3>Informe de Servicios Realizados</h3>
+                <label for="fechaInicio">Fecha de Inicio:</label>
+                <input type="date" id="startDate">
+                <label for="fechaFin">Fecha de Fin:</label>
+                <input type="date" id="endDate">
+                <div class="button-container">
+                    <button onclick="generarInforme()" id="generateInvoice">Generar Informe</button>
+                    <button onclick="descargarInforme()" id="downloadButton">Descargar Informe</button>
+                </div>
+            </div>
+            
+            <!-- Tabla para mostrar el informe -->
+            <div class="center-table">
+                <table id="resultTable">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Profesional</th>
+                            <th>Servicio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los resultados se insertarán aquí dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const serviciosRealizados = [
+            { fecha: '2024-10-01', profesional: 'Juan Pérez', servicio: 'Servicio A' },
+            { fecha: '2024-10-05', profesional: 'Ana Gómez', servicio: 'Servicio B' },
+            { fecha: '2024-10-10', profesional: 'Luis Rodríguez', servicio: 'Servicio C' },
+            { fecha: '2024-10-12', profesional: 'Juan Pérez', servicio: 'Servicio D' },
+            { fecha: '2024-10-15', profesional: 'Ana Gómez', servicio: 'Servicio E' },
+            // Puedes agregar más servicios aquí...
+        ];
+
+        let resultadosFiltrados = []; // Variable para almacenar los resultados filtrados
+
+        function generarInforme() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const resultTableBody = document.querySelector('#resultTable tbody');
+            
+            // Limpiar la tabla antes de mostrar nuevos resultados
+            resultTableBody.innerHTML = '';
+
+            // Filtrar los servicios según el rango de fechas
+            resultadosFiltrados = serviciosRealizados.filter(servicio => {
+                return servicio.fecha >= startDate && servicio.fecha <= endDate;
+            });
+
+            // Mostrar resultados en la tabla
+            resultadosFiltrados.forEach(servicio => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${servicio.fecha}</td>
+                    <td>${servicio.profesional}</td>
+                    <td>${servicio.servicio}</td>
+                `;
+                resultTableBody.appendChild(row);
+            });
+
+            if (resultadosFiltrados.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td colspan="3" class="no-results">No se encontraron servicios en este rango de fechas.</td>`;
+                resultTableBody.appendChild(row);
+            }
+        }
+
+        function descargarInforme() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Agregar título
+            doc.setFontSize(18);
+            doc.text("Informe de Servicios Realizados", 14, 20);
+            doc.setFontSize(12);
+
+            // Agregar el rango de fechas
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            doc.text(`Desde: ${startDate} Hasta: ${endDate}`, 14, 30);
+
+            // Agregar los resultados filtrados a la tabla del PDF
+            doc.text("Fecha - Profesional - Servicio", 14, 40);
+            resultadosFiltrados.forEach((servicio, index) => {
+                const y = 50 + (10 * index); // Posición Y para cada fila
+                doc.text(`${servicio.fecha} - ${servicio.profesional} - ${servicio.servicio}`, 14, y);
+            });
+
+            // Guardar el archivo PDF
+            doc.save("informe_servicios.pdf");
+        }
+    </script>
+</body>
+</html>

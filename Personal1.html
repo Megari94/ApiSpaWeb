@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="css/estilo.css">
+    <script src="js/script.js" defer></script>
+    <style>
+ 
+
+       
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Barra de Menú Lateral -->
+        <div id="sidebar" class="sidebar">
+            <div class="link-container">
+                <a href="#"><i class="fas fa-user-tie"></i>Personal</a>
+                <a href="#"><i class="fas fa-calendar-alt"></i>Turno</a>
+                <a href="#"><i class="fas fa-concierge-bell"></i>Servicio</a>
+                <a href="#" id="IPLink"><i class="fas fa-wallet"></i>Pagos</a>
+                <a href="#" id="ISLink"><i class="fas fa-file-alt"></i>Informe Servicios</a>
+                <a href="#" id="pagosLink"><i class="fas fa-chart-pie"></i>Turnos Solicitados</a>
+                <a href="#" id="facturaLink"><i class="fas fa-receipt"></i>Factura</a>
+            </div>
+            <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="main-content">
+            <button id="menuButton" class="open-btn" onclick="toggleMenu()">☰ Menú</button>
+            <h2>Gestión de Personal</h2>
+
+            <!-- Contenedor para el botón de agregar y el buscador -->
+            <div class="search-container">
+                <button class="add-button" onclick="agregarPersonal()">Agregar Personal</button>
+                <input type="text" id="searchInput" class="search-input" placeholder="Buscar personal..." oninput="filtrarPersonal()">
+            </div>
+
+            <!-- Tabla para mostrar el personal -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Contraseña</th>
+                        <th>Nombre de Usuario</th>
+                        <th>Apellido</th>
+                        <th>Correo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="personalTableBody">
+                    <!-- Los datos se insertarán aquí dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Ejemplo de datos de personal
+        const personalData = [
+            { id: 1, contrasena: 'password123', nombreUsuario: 'jdoe', apellido: 'Doe', correo: 'jdoe@example.com' },
+            { id: 2, contrasena: 'password456', nombreUsuario: 'asmith', apellido: 'Smith', correo: 'asmith@example.com' },
+            { id: 3, contrasena: 'password789', nombreUsuario: 'mjones', apellido: 'Jones', correo: 'mjones@example.com' },
+            { id: 4, contrasena: 'password321', nombreUsuario: 'mlee', apellido: 'Lee', correo: 'mlee@example.com' }
+        ];
+
+        // Función para cargar datos en la tabla
+        function cargarPersonal(data) {
+            const tableBody = document.getElementById('personalTableBody');
+            tableBody.innerHTML = ''; // Limpiar tabla antes de cargar
+
+            data.forEach(persona => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${persona.id}</td>
+                    <td>${persona.contrasena}</td>
+                    <td>${persona.nombreUsuario}</td>
+                    <td>${persona.apellido}</td>
+                    <td>${persona.correo}</td>
+                    <td class="action-buttons">
+                        <button onclick="editarPersonal(${persona.id})">Editar</button>
+                        <button onclick="darDeBaja(${persona.id})">Dar de Baja</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Función para filtrar el personal
+        function filtrarPersonal() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const filteredData = personalData.filter(persona => 
+                persona.nombreUsuario.toLowerCase().includes(searchInput) ||
+                persona.apellido.toLowerCase().includes(searchInput) ||
+                persona.correo.toLowerCase().includes(searchInput)
+            );
+            cargarPersonal(filteredData);
+        }
+
+        // Funciones de acción
+        function agregarPersonal() {
+            // Lógica para agregar nuevo personal
+            alert('Función para agregar personal');
+        }
+
+        function editarPersonal(id) {
+            // Lógica para editar la información de personal
+            alert(`Editando personal con ID: ${id}`);
+        }
+
+        function darDeBaja(id) {
+            // Lógica para dar de baja a personal
+            alert(`Dando de baja al personal con ID: ${id}`);
+        }
+
+        // Cargar los datos al inicio
+        cargarPersonal(personalData);
+    </script>
+</body>
+</html>

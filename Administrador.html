@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="css/estilo.css">
+    <script src="js/script.js" defer></script>
+    <style>
+      
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Barra de Menú Lateral -->
+        <div id="sidebar" class="sidebar">
+           
+            <div class="link-container">
+                <a href="#"><i class="fas fa-user-tie"></i>Personal</a> <!-- Ícono de usuario para personal -->
+                <a href="#"><i class="fas fa-calendar-alt"></i>Turno</a> <!-- Ícono de calendario para turnos -->
+                <a href="#"><i class="fas fa-concierge-bell"></i>Servicio</a> <!-- Ícono de campana para servicio -->
+            
+                <a href="#" id="IPLink"><i class="fas fa-wallet"></i>Pagos</a> <!-- Ícono de billetera para pagos -->
+                <a href="#" id="ISLink"><i class="fas fa-file-alt"></i>Informe Servicios</a> <!-- Ícono de archivo para informe de servicios -->
+                <a href="#" id="pagosLink"><i class="fas fa-chart-pie"></i>Turnos Solicitados</a> <!-- Ícono de gráfico para turnos solicitados -->
+                <a href="#" id="facturaLink"><i class="fas fa-receipt"></i>Factura</a> <!-- Ícono de recibo para factura -->
+            </div>
+            <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="main-content">
+            <button id="menuButton" class="open-btn" onclick="toggleMenu()">☰ Menú</button>
+            <div class="welcome-box" id="welcomeBox">
+                <h1>Bienvenido</h1>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+       
+    </script>
+</body>
+</html>

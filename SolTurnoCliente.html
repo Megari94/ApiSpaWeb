@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitar Turno</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/estilo.css">
+
+    <script src="js/cliente.js" defer></script> <!-- Este archivo gestionará la solicitud de turno -->
+</head>
+<body data-page="SolTurnoCliente">
+    <div class="container">
+        <!-- Barra de Menú Lateral -->
+        <div id="sidebar" class="sidebar">
+            <div class="link-container">
+                <a href="TurnosCliente.html"><i class="fas fa-calendar-alt"></i>Turnos</a>
+                <a href="SolTurnoCliente.html" id="pagosLink"><i class="fas fa-chart-pie"></i>Solicitar Turno</a>
+            </div>
+            <button class="logout-btn" id="logoutBtn">Salir</button>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="main-content">
+            <button id="menuButton" class="open-btn">☰ Menú</button>
+            <h2>Solicitar Turno</h2>
+            <form id="appointmentForm">
+                <label for="appointmentDate">Fecha:</label>
+                <input type="datetime-local" id="appointmentDate" name="appointmentDate" required>
+
+                <label for="appointmentService">Servicio:</label>
+                <select id="appointmentService" name="appointmentService" required>
+                    <option value="">Selecciona un servicio</option>
+                    <!-- Las opciones se llenarán dinámicamente -->
+                </select>
+
+                <label for="appointmentEstado">Estado:
+                    <span style="display: inline-block; width: 10px; height: 10px; background-color: green; border-radius: 50%; vertical-align: middle;"></span>
+                    <span style="vertical-align: middle; margin-left: 5px;">En proceso</span>
+                </label>
+
+                <button type="submit" class="btn btn-primary">Guardar Turno</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

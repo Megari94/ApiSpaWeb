@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="css/estilo.css">
+    <script src="js/script.js" defer></script>
+    <style>
+        
+        
+       
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Barra de Menú Lateral -->
+        <div id="sidebar" class="sidebar">
+            <div class="link-container">
+                <a href="#" id="IPLink"><i class="fas fa-wallet"></i>Pagos</a>
+                <a href="#" id="ISLink"><i class="fas fa-file-alt"></i>Servicios</a>
+                <a href="#" id="pagosLink"><i class="fas fa-chart-pie"></i>Turnos Solicitados</a>
+                <a href="#" id="facturaLink"><i class="fas fa-receipt"></i>Factura</a>
+            </div>
+            <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="main-content">
+            <button id="menuButton" class="open-btn" onclick="toggleMenu()">☰ Menú</button>
+
+            <!-- Tabla centrada -->
+            <div class="center-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Nombre Cliente</th>
+                            <th>Servicio</th>
+                            <th>Monto del Servicio</th>
+                            <th>Solicitud</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="fila-juan">
+                            <td>13/10/2024</td>
+                            <td>Juan Pérez</td>
+                            <td>Servicio A</td>
+                            <td>$100</td>
+                            <td>
+                                <div class="button-group">
+                                    <button class="btn-aceptar" onclick="aceptarSolicitud('fila-juan', 'Juan Pérez', 'Servicio A', 100)">Aceptar</button>
+                                    <button class="btn-rechazar" onclick="rechazarSolicitud('fila-juan')">Rechazar</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr id="fila-ana">
+                            <td>14/10/2024</td>
+                            <td>Ana Gómez</td>
+                            <td>Servicio B</td>
+                            <td>$200</td>
+                            <td>
+                                <div class="button-group">
+                                    <button class="btn-aceptar" onclick="aceptarSolicitud('fila-ana', 'Ana Gómez', 'Servicio B', 200)">Aceptar</button>
+                                    <button class="btn-rechazar" onclick="rechazarSolicitud('fila-ana')">Rechazar</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Agregar más filas según sea necesario -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+       
+    </script>
+</body>
+</html>
