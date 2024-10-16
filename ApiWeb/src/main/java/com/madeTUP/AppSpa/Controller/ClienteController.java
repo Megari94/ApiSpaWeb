@@ -179,5 +179,23 @@ public ResponseEntity<List<ClienteDTO>> getClientesD() {
     
     return new ResponseEntity<>(clienteDTOs, HttpStatus.OK);
 }
+   @CrossOrigin(origins = "*")
+@GetMapping("/clientes/traerClientesAdmin")
+public ResponseEntity<List<ClientePerfilDTO>> getClientesAdmin() {
+    List<Cliente> clientes = servis.getClientes();
+    List<ClientePerfilDTO> clienteDTOs = new ArrayList<>();
+    
+    for (Cliente cliente : clientes) {
+        ClientePerfilDTO clienteDTO = new ClientePerfilDTO();
+        // Establecer los atributos del DTO desde el objeto Cliente
+        clienteDTO.setId(cliente.getId());
+        clienteDTO.setNombre(cliente.getNombre());
+        clienteDTO.setApellido(cliente.getApellido());
+        clienteDTOs.add(clienteDTO);
+    }
+    
+    return new ResponseEntity<>(clienteDTOs, HttpStatus.OK);
+}
+
 
 }
