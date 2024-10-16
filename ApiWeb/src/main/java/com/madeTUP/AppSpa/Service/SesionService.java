@@ -11,6 +11,7 @@ import com.madeTUP.AppSpa.Model.Servicio;
 import com.madeTUP.AppSpa.Model.Sesion;
 import com.madeTUP.AppSpa.Repository.ISesionRepository;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -64,7 +65,7 @@ public class SesionService implements ISesionService {
     }
 
     @Override
-    public void editSesion(Long id, Servicio servicio, Cliente cliente, LocalDate fecha, Double costo, String  asistencia) {
+    public void editSesion(Long id, Servicio servicio, Cliente cliente, LocalDateTime fecha, Double costo, String  asistencia) {
         Sesion sesion = this.findSesion(id);
         sesion.setServicio(servicio);
         sesion.setCliente(cliente);
@@ -82,7 +83,7 @@ public class SesionService implements ISesionService {
 
 
     @Override
-    public List<SesionPersonalDTO> getSesionFecha(LocalDate localDate) {
+    public List<SesionPersonalDTO> getSesionFecha(LocalDateTime localDate) {
         // Suponiendo que tienes un método en el repositorio para encontrar sesiones por fecha
         List<Sesion> sesiones = this.getServicio();
 

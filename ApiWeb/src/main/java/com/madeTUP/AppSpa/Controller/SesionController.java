@@ -14,6 +14,7 @@ import com.madeTUP.AppSpa.Service.IClienteService;
 import com.madeTUP.AppSpa.Service.IServicioService;
 import com.madeTUP.AppSpa.Service.ISesionService;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -56,9 +57,9 @@ public class SesionController {
 
     @GetMapping ("/Sesion/MostrarFecha")
     public List<SesionPersonalDTO> getSesionesPorFecha(@RequestParam("fecha") String fecha) {
-        LocalDate localDate = LocalDate.parse(fecha);
+        LocalDateTime localDateTime = LocalDateTime.parse(fecha);
         // Aquí se consulta la base de datos por las sesiones de la fecha dada
-        List<SesionPersonalDTO> sesiones = servis.getSesionFecha(localDate);
+        List<SesionPersonalDTO> sesiones = servis.getSesionFecha(localDateTime);
         return sesiones;
     }
      @GetMapping("/Sesion/traer")
@@ -78,7 +79,7 @@ public class SesionController {
         sesion.setCliente(c);
         Servicio s=servis1.findServicio(se.getId_Servicio());
         sesion.setServicio(s);
-        LocalDate fecha=LocalDate.parse(se.getFecha());
+        LocalDateTime fecha=LocalDateTime.parse(se.getFecha());
         sesion.setFecha(fecha);
         sesion.setAsistencia(se.getAsistencia());
        sesion.setCosto(se.getCosto());
@@ -99,7 +100,7 @@ public class SesionController {
      public Sesion editSesion(@PathVariable Long id_sesion,
              @RequestParam(required=false,name="servicio")Servicio servicio,
             @RequestParam(required=false, name="cliente")Cliente cliente,
-            @RequestParam(required=false,name="fecha")LocalDate fecha,
+            @RequestParam(required=false,name="fecha")LocalDateTime fecha,
            @RequestParam(required=false,name="costo")Double costo,
             @RequestParam(required=false,name="asistencia") String asistencia){
          
@@ -139,7 +140,7 @@ public ResponseEntity<String> agregarSesion(@RequestBody NewSesionDTO nuevaSesio
         Sesion sesion = new Sesion();
         sesion.setCliente(cliente);
         sesion.setServicio(servicio);
-        sesion.setFecha(LocalDate.parse(nuevaSesion.getFecha()));
+        sesion.setFecha(LocalDateTime.parse(nuevaSesion.getFecha()));
         sesion.setAsistencia("SOLICITADO"); // Puedes ajustarlo según la lógica del negocio
 
         // Guardamos la sesión

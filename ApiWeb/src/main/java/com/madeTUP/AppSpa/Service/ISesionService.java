@@ -10,6 +10,7 @@ import com.madeTUP.AppSpa.Model.Cliente;
 import com.madeTUP.AppSpa.Model.Servicio;
 import com.madeTUP.AppSpa.Model.Sesion;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -21,10 +22,10 @@ public interface ISesionService {
     public void saveSesion (Sesion sesion);
     public void deleteSesion (Long id);
     public Sesion findSesion (Long id);
-    public void editSesion (Long id,Servicio servicio,Cliente cliente,LocalDate fecha,Double costo,String asistencia);
+    public void editSesion (Long id,Servicio servicio,Cliente cliente,LocalDateTime fecha,Double costo,String asistencia);
     public void editSesionII (Sesion sesion);
     public boolean cancelarAsistencia(Long id);
     public List<SesionDTO> getSesionCliente(Long id_Cliente);
 
-    public List<SesionPersonalDTO> getSesionFecha(LocalDate localDate);
+    public List<SesionPersonalDTO> getSesionFecha(LocalDateTime localDate);
 }

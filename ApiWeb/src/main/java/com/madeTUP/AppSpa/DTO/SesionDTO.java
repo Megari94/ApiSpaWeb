@@ -4,7 +4,7 @@
  */
 package com.madeTUP.AppSpa.DTO;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,14 +15,14 @@ import lombok.Setter;
 @Getter @Setter
 public class SesionDTO { 
     private String servicio;
-    private LocalDate fecha; 
+    private LocalDateTime fecha; 
     private Double costo;
     private String asistencia;
 
     public SesionDTO() {
     }
 
-    public SesionDTO(String servicio, LocalDate fecha, Double costo, String asistencia) {
+    public SesionDTO(String servicio, LocalDateTime fecha, Double costo, String asistencia) {
         this.servicio = servicio;
         this.fecha = fecha;
         this.costo = costo;

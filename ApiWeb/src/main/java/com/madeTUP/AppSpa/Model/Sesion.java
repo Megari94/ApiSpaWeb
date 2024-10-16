@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,14 +36,14 @@ public class Sesion {
     @ManyToOne
 @JoinColumn(name="cliente_id")
     private Cliente cliente;
-    private LocalDate fecha; 
+    private LocalDateTime fecha; 
     private Double costo;
     private String asistencia;
 
     public Sesion() {
     }
 
-    public Sesion(Long id, Servicio servicio, Cliente cliente, LocalDate fecha, Double costo, String asistencia) {
+    public Sesion(Long id, Servicio servicio, Cliente cliente, LocalDateTime fecha, Double costo, String asistencia) {
         this.id = id;
         
       this.servicio = servicio;
@@ -77,11 +78,11 @@ public class Sesion {
         this.servicio= id_Servicio;
     }
 
-    public LocalDate getFecha() {
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
 
