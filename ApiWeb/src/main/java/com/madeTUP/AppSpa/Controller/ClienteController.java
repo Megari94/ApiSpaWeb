@@ -179,8 +179,9 @@ public ResponseEntity<List<ClienteDTO>> getClientesD() {
     
     return new ResponseEntity<>(clienteDTOs, HttpStatus.OK);
 }
+
  @CrossOrigin(origins = "*")
-@GetMapping("/clientes/traerClientesAdmin")
+
 public ResponseEntity<List<ClientePerfilDTO>> getClientesAdmin() {
     List<Cliente> clientes = servis.getClientes();
     List<ClientePerfilDTO> clienteDTOs = new ArrayList<>();
@@ -196,4 +197,5 @@ public ResponseEntity<List<ClientePerfilDTO>> getClientesAdmin() {
     
     return new ResponseEntity<>(clienteDTOs, HttpStatus.OK);
 }
+
 }
