@@ -51,14 +51,7 @@ public class ClientePerfilDTO {
         this.apellido = apellido;
     }
 
-    public List<SesionDTO> getListaSesiones() {
-        return lista_Sesiones;
-    }
-
-    public void setListaSesiones(List<SesionDTO> lista_Sesiones) {
-        this.lista_Sesiones = lista_Sesiones;
-    }
-
+  
 
 
 }
