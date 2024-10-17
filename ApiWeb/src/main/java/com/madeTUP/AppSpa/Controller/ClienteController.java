@@ -208,7 +208,8 @@ public ResponseEntity<List<ClientePerfilDTO>> getClientesAdmin() {
         clienteDTO.setApellido(cliente.getApellido());
 
         // Dejar la lista de sesiones como null
-        clienteDTO.setListaSesiones(null);
+        clienteDTO.setListaSesiones(new ArrayList<>());
+
         
         clienteDTOs.add(clienteDTO);
     }
