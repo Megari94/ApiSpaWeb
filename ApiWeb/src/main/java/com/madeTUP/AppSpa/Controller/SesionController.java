@@ -158,7 +158,10 @@ public ResponseEntity<String> agregarSesion(@RequestBody NewSesionDTO nuevaSesio
         return new ResponseEntity<>("Error al crear la sesión: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
-
+@GetMapping("/Sesion/traerAdmin")
+    public List<SesionAdminDTO> getSesionAdmin(){
+        return servis.sesionesAdmin();
+    }
 }
  
     
