@@ -196,7 +196,7 @@ public ResponseEntity<List<ClientePerfilDTO>> getClientesAdmin() {
         List<SesionDTO> sesionDTOs = new ArrayList<>();
         for (Sesion sesion : cliente.getLista_Sesiones()) {
             SesionDTO sesionDTO = new SesionDTO();
-            sesionDTO.setServicio(sesion.getServicio().getNombre());  // Extraer el nombre del servicio
+            sesionDTO.setServicio(sesion.getServicio().getNombreServicio());  // Extraer el nombre del servicio
             sesionDTO.setFecha(sesion.getFecha());
             sesionDTO.setCosto(sesion.getCosto());
             sesionDTO.setAsistencia(sesion.getAsistencia());
