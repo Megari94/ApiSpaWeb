@@ -4,6 +4,7 @@
  */
 package com.madeTUP.AppSpa.Service;
 
+import com.madeTUP.AppSpa.DTO.SesionAdminDTO;
 import com.madeTUP.AppSpa.DTO.SesionDTO;
 import com.madeTUP.AppSpa.DTO.SesionPersonalDTO;
 import com.madeTUP.AppSpa.Model.Cliente;
@@ -119,6 +120,23 @@ public class SesionService implements ISesionService {
             }
         
         return s;
+    }
+
+    @Override
+    public List<SesionAdminDTO> sesionesAdmin() {
+        List<SesionAdminDTO> sesionesAd=new ArrayList<>();
+        List<Sesion> sesiones=this.getServicio();
+        for(Sesion sesion: sesiones){
+        SesionAdminDTO s=new SesionAdminDTO();
+       s.setId(sesion.getId());
+       s.setAsistencia(sesion.getAsistencia());
+       s.setCosto(sesion.getCosto());
+       s.setFecha(sesion.getFecha());
+       s.setNombre_completo(sesion.getCliente().getNombre()+" "+sesion.getCliente().getApellido());
+       s.setNombre_servicio(sesion.getServicio().getNombreServicio());
+       sesionesAd.add(s);
+    }
+        return sesionesAd;
     }
 }
 
