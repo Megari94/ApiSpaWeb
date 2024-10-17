@@ -10,6 +10,7 @@ import com.madeTUP.AppSpa.DTO.SesionPersonalDTO;
 import com.madeTUP.AppSpa.Model.Cliente;
 import com.madeTUP.AppSpa.Model.Servicio;
 import com.madeTUP.AppSpa.Model.Sesion;
+import com.madeTUP.AppSpa.DTO.SesionAdminDTO;
 import com.madeTUP.AppSpa.Service.IClienteService;
 import com.madeTUP.AppSpa.Service.IServicioService;
 import com.madeTUP.AppSpa.Service.ISesionService;
