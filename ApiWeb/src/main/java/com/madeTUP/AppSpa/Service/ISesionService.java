@@ -26,6 +26,6 @@ public interface ISesionService {
     public void editSesionII (Sesion sesion);
     public boolean cancelarAsistencia(Long id);
     public List<SesionDTO> getSesionCliente(Long id_Cliente);
-
+public List<SesionAdminDTO> sesionesAdmin();
     public List<SesionPersonalDTO> getSesionFecha(LocalDateTime localDate);
 }
