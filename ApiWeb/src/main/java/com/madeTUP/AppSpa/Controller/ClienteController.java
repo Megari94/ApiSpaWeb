@@ -180,23 +180,35 @@ public ResponseEntity<List<ClienteDTO>> getClientesD() {
     return new ResponseEntity<>(clienteDTOs, HttpStatus.OK);
 }
 
- @CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 @GetMapping("/clientes/traerClientesAdmin")
 public ResponseEntity<List<ClientePerfilDTO>> getClientesAdmin() {
-    List<Cliente> clientes = servis.getClientes();
+    List<Cliente> clientes = servis.getClientes(); 
     List<ClientePerfilDTO> clienteDTOs = new ArrayList<>();
     
     for (Cliente cliente : clientes) {
         ClientePerfilDTO clienteDTO = new ClientePerfilDTO();
-        // Establecer los atributos del DTO desde el objeto Cliente
         clienteDTO.setId(cliente.getId());
         clienteDTO.setNombre(cliente.getNombre());
         clienteDTO.setApellido(cliente.getApellido());
-        clienteDTO.setLista_Sesiones(cliente.getLista_Sesiones);
+
+        // Convertir la lista de Sesion a SesionDTO
+        List<SesionDTO> sesionDTOs = new ArrayList<>();
+        for (Sesion sesion : cliente.getLista_Sesiones()) {
+            SesionDTO sesionDTO = new SesionDTO();
+            sesionDTO.setServicio(sesion.getServicio().getNombre());  // Extraer el nombre del servicio
+            sesionDTO.setFecha(sesion.getFecha());
+            sesionDTO.setCosto(sesion.getCosto());
+            sesionDTO.setAsistencia(sesion.getAsistencia());
+            sesionDTOs.add(sesionDTO);
+        }
+
+        clienteDTO.setLista_Sesiones(sesionDTOs);  // Asignar la lista convertida
         clienteDTOs.add(clienteDTO);
     }
     
     return new ResponseEntity<>(clienteDTOs, HttpStatus.OK);
 }
+
 
 }
