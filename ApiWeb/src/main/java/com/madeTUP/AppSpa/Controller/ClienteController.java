@@ -181,22 +181,41 @@ public ResponseEntity<List<ClienteDTO>> getClientesD() {
 }
 
 @CrossOrigin(origins = "*")
+@GetMapping("/cliente/perfil")
+public ResponseEntity<ClientePerfilDTO> getPerfilCliente(@RequestParam Long clienteId) {
+    Cliente cliente1 = servis.findCliente(clienteId);
+    ClientePerfilDTO perfilDTO = new ClientePerfilDTO();
+    perfilDTO.setId(clienteId);
+    perfilDTO.setNombre(cliente1.getNombre());
+    perfilDTO.setApellido(cliente1.getApellido());
+
+    // No se asigna ninguna lista de sesiones, se deja como null
+    perfilDTO.setListaSesiones(null);
+
+    return ResponseEntity.ok(perfilDTO);
+}
+
+@CrossOrigin(origins = "*")
 @GetMapping("/clientes/traerClientesAdmin")
 public ResponseEntity<List<ClientePerfilDTO>> getClientesAdmin() {
-    List<Cliente> clientes = servis.getClientes(); 
+    List<Cliente> clientes = servis.getClientes();
     List<ClientePerfilDTO> clienteDTOs = new ArrayList<>();
-    
+
     for (Cliente cliente : clientes) {
         ClientePerfilDTO clienteDTO = new ClientePerfilDTO();
         clienteDTO.setId(cliente.getId());
         clienteDTO.setNombre(cliente.getNombre());
         clienteDTO.setApellido(cliente.getApellido());
-        clienteDTO.setLista_Sesiones(null);  // Asignar la lista convertida
+
+        // Dejar la lista de sesiones como null
+        clienteDTO.setListaSesiones(null);
+        
         clienteDTOs.add(clienteDTO);
     }
-    
+
     return new ResponseEntity<>(clienteDTOs, HttpStatus.OK);
 }
+
 
 
 }
