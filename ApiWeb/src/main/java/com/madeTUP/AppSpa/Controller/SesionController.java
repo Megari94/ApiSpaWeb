@@ -163,6 +163,31 @@ public ResponseEntity<String> agregarSesion(@RequestBody NewSesionDTO nuevaSesio
     public List<SesionAdminDTO> getSesionAdmin(){
         return servis.sesionesAdmin();
     }
+    @PutMapping("/Sesion/aceptar/{id_sesion}")
+public ResponseEntity<String> aceptarSesion(@PathVariable Long id) {
+    Sesion sesion = servis.findSesion(id);
+    if (sesion != null) {
+        sesion.setAsistencia("CONFIRMADO"); // Actualiza la asistencia a "confirmado"
+        servis.saveSesion(sesion); // Guarda los cambios
+        return ResponseEntity.ok("Asistencia confirmada");
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sesión no encontrada");
+    }
+}
+
+// Método para denegar la sesión
+@PutMapping("/Sesion/rechazar/{id_sesion}")
+public ResponseEntity<String> rechazarSesion(@PathVariable Long id) {
+    Sesion sesion = servis.findSesion(id);
+    if (sesion != null) {
+        sesion.setAsistencia("RECHAZADO"); // Actualiza la asistencia a "rechazado"
+        servis.saveSesion(sesion); // Guarda los cambios
+        return ResponseEntity.ok("Asistencia rechazada");
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sesión no encontrada");
+    }
+}
+
 }
  
     
