@@ -191,19 +191,7 @@ public ResponseEntity<List<ClientePerfilDTO>> getClientesAdmin() {
         clienteDTO.setId(cliente.getId());
         clienteDTO.setNombre(cliente.getNombre());
         clienteDTO.setApellido(cliente.getApellido());
-
-        // Convertir la lista de Sesion a SesionDTO
-        List<SesionDTO> sesionDTOs = new ArrayList<>();
-        for (Sesion sesion : cliente.getListaSesiones()) {
-            SesionDTO sesionDTO = new SesionDTO();
-            sesionDTO.setServicio(sesion.getServicio().getNombreServicio());  // Extraer el nombre del servicio
-            sesionDTO.setFecha(sesion.getFecha());
-            sesionDTO.setCosto(sesion.getCosto());
-            sesionDTO.setAsistencia(sesion.getAsistencia());
-            sesionDTOs.add(sesionDTO);
-        }
-
-        clienteDTO.setLista_Sesiones(sesionDTOs);  // Asignar la lista convertida
+        clienteDTO.setLista_Sesiones(null);  // Asignar la lista convertida
         clienteDTOs.add(clienteDTO);
     }
     
