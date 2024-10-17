@@ -162,7 +162,7 @@ public ResponseEntity<Map<String, Object>> loginCliente(@RequestBody ClienteLogi
            SesionDTO s= new SesionDTO(sesion.getServicio().getNombreServicio(),sesion.getFecha(),sesion.getCosto(),sesion.getAsistencia());
            listaSesionDTO.add(s);
         }
-        perfilDTO.setListaSesiones(listaSesionDTO);
+        perfilDTO.setLista_Sesiones(listaSesionDTO);
         return ResponseEntity.ok(perfilDTO);
     }
     
