@@ -192,6 +192,7 @@ public ResponseEntity<List<ClientePerfilDTO>> getClientesAdmin() {
         clienteDTO.setId(cliente.getId());
         clienteDTO.setNombre(cliente.getNombre());
         clienteDTO.setApellido(cliente.getApellido());
+        clienteDTO.setLista_Sesiones(cliente.getLista_Sesiones);
         clienteDTOs.add(clienteDTO);
     }
     
