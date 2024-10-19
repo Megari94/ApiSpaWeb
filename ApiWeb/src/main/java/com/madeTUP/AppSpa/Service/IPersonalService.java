@@ -4,6 +4,7 @@
  */
 package com.madeTUP.AppSpa.Service;
 
+import com.madeTUP.AppSpa.DTO.SesionPersonalDTO;
 import com.madeTUP.AppSpa.Model.Personal;
 import com.madeTUP.AppSpa.Model.Servicio;
 import java.util.List;
@@ -19,4 +20,5 @@ public interface IPersonalService {
     public Personal findPersonal (Long id);
     public void editPersonal (Long id, String nombre, String apellido, String correo, String nombre_usuario, String contrasenia, List<Servicio> listaServicio, String tipoUsuario);
     public void editPersonalII (Personal personal);
+    public List<SesionPersonalDTO> listaSesiones(Long idPersonal);
 }
