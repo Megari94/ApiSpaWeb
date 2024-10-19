@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="css/estilo.css">
+    <script src="js/script.js" defer></script>
+    <script src="js/scriptAdmin.js" defer></script>
+    <script src="js/sesiones.js" defer></script>
+
+    <style>
+       
+    </style>    
+</head>
+<body>
+    <div class="container">
+        <!-- Barra de Menú Lateral -->
+        <div id="sidebar" class="sidebar">
+            <div class="link-container">
+                <a href="#" id="PersonalLink"><i class="fas fa-user-tie"></i>Personal</a>
+                <a href="#" id="TurnoLink"><i class="fas fa-calendar-alt"></i>Turno</a>
+                <a href="#" id="ServicioLink"><i class="fas fa-concierge-bell"></i>Servicio</a>
+                <a href="#" id="IPAdminLink"><i class="fas fa-wallet"></i>Informe de Pagos</a>
+                <a href="#" id="ISAdminLink"><i class="fas fa-file-alt"></i>Informe de Servicios</a>
+                <a href="#" id="turnoAdminLink"><i class="fas fa-chart-pie"></i>Turnos Solicitados</a>
+                <a href="#" id="facturaAdminLink"><i class="fas fa-receipt"></i>Factura</a>
+            </div>
+            <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="main-content">
+            <button id="menuButton" class="open-btn" onclick="toggleMenu()">☰ Menú</button>
+            <h2>Solicitud de Turnos</h2>
+
+            <!-- Contenedor del buscador -->
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Buscar turnos..." oninput="filtrarTurnos()">
+            </div>
+
+            <!-- Tabla centrada -->
+            <div class="center-table">
+                <table id="turnosTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Asistencia</th>
+                            <th>Costo</th>
+                            <th>Fecha</th>
+                            <th>Nombre Cliente</th>
+                            <th>Nombre Servicio</th>
+                            <th>Solicitud</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Las filas se llenarán dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Filtrar la tabla
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            const searchValue = this.value.toLowerCase();
+            const tableRows = document.querySelectorAll('#turnosTable tbody tr');
+
+            tableRows.forEach(row => {
+                const rowText = row.textContent.toLowerCase();
+                if (rowText.includes(searchValue)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
