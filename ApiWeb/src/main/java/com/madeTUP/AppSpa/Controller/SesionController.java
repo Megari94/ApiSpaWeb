@@ -5,19 +5,18 @@
 package com.madeTUP.AppSpa.Controller;
 
 import com.madeTUP.AppSpa.DTO.NewSesionDTO;
+import com.madeTUP.AppSpa.DTO.SesionAdminDTO;
 import com.madeTUP.AppSpa.DTO.SesionDTO;
 import com.madeTUP.AppSpa.DTO.SesionPersonalDTO;
 import com.madeTUP.AppSpa.Model.Cliente;
 import com.madeTUP.AppSpa.Model.Servicio;
 import com.madeTUP.AppSpa.Model.Sesion;
-import com.madeTUP.AppSpa.DTO.SesionAdminDTO;
 import com.madeTUP.AppSpa.Service.IClienteService;
 import com.madeTUP.AppSpa.Service.IServicioService;
 import com.madeTUP.AppSpa.Service.ISesionService;
+import jakarta.persistence.EntityNotFoundException;
 
 
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -102,21 +101,17 @@ public class SesionController {
        return "Sesion eliminado";
     }
      @PutMapping("/Sesion/editar/{id_sesion}")
-public ResponseEntity<?> editSesion(@PathVariable Long id_sesion,
-        @RequestParam(required=false,name="servicio")Servicio servicio,
-        @RequestParam(required=false, name="cliente")Cliente cliente,
-        @RequestParam(required=false,name="fecha")LocalDateTime fecha,
-        @RequestParam(required=false,name="costo")Double costo,
-        @RequestParam(required=false,name="asistencia") String asistencia) {
-    try {
-        servis.editSesion(id_sesion, servicio, cliente, fecha, costo, asistencia);
-        Sesion c = this.findSesion(id_sesion);
-        return ResponseEntity.ok(c);
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al editar la sesión: " + e.getMessage());
-    }
+     public Sesion editSesion(@PathVariable Long id_sesion,
+             @RequestParam(required=false,name="servicio")Servicio servicio,
+            @RequestParam(required=false, name="cliente")Cliente cliente,
+            @RequestParam(required=false,name="fecha")LocalDateTime fecha,
+           @RequestParam(required=false,name="costo")Double costo,
+            @RequestParam(required=false,name="asistencia") String asistencia){
+         
+               servis.editSesion(id_sesion, servicio, cliente, fecha, costo, asistencia);
+               Sesion c=this.findSesion(id_sesion);
+               return c;
 }
-
      @PutMapping("/Sesion/editarII")
      public Sesion editSesionII(@RequestBody Sesion c)
      {
@@ -149,9 +144,7 @@ public ResponseEntity<String> agregarSesion(@RequestBody NewSesionDTO nuevaSesio
         Sesion sesion = new Sesion();
         sesion.setCliente(cliente);
         sesion.setServicio(servicio);
-       ZonedDateTime zonedDateTime = ZonedDateTime.parse(nuevaSesion.getFecha());
-        LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
-        sesion.setFecha(localDateTime);
+        sesion.setFecha(LocalDateTime.parse(nuevaSesion.getFecha()));
         sesion.setAsistencia("SOLICITADO"); // Puedes ajustarlo según la lógica del negocio
 
         // Guardamos la sesión
@@ -163,11 +156,13 @@ public ResponseEntity<String> agregarSesion(@RequestBody NewSesionDTO nuevaSesio
         return new ResponseEntity<>("Error al crear la sesión: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
-@GetMapping("/Sesion/traerAdmin")
+    @GetMapping("/Sesion/traerAdmin")
     public List<SesionAdminDTO> getSesionAdmin(){
         return servis.sesionesAdmin();
     }
-    @PutMapping("/Sesion/aceptar/{id_sesion}")
+    // Método para aceptar la sesión
+    
+@PutMapping("/Sesion/aceptar/{id_sesion}")
 public ResponseEntity<String> aceptarSesion(@PathVariable Long id) {
     Sesion sesion = servis.findSesion(id);
     if (sesion != null) {
@@ -179,7 +174,6 @@ public ResponseEntity<String> aceptarSesion(@PathVariable Long id) {
     }
 }
 
-// Método para denegar la sesión
 @PutMapping("/Sesion/rechazar/{id_sesion}")
 public ResponseEntity<String> rechazarSesion(@PathVariable Long id_sesion) {
     try {
@@ -192,6 +186,7 @@ public ResponseEntity<String> rechazarSesion(@PathVariable Long id_sesion) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al rechazar la asistencia: " + e.getMessage());
     }
 }
+
 
 
 }
