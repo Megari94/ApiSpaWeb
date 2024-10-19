@@ -113,7 +113,7 @@ public ResponseEntity<PersonalPerfilDTO> getPerfilPersonal(@RequestParam Long Pe
 
     for (Sesion sesion : listaSesiones) {
         for (Servicio servi : personal1.getListaServicio()) {
-            if (sesion.getServicio().getId().equals(servi.getId())) { // Usar equals en lugar de ==
+            if (sesion.getId_Servicio().getId().equals(servi.getId())) { // Usar equals en lugar de ==
                 SesionPersonalDTO s = new SesionPersonalDTO(
                     sesion.getId(),
                     sesion.getCliente().getId(),
