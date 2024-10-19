@@ -102,14 +102,25 @@ function manejarSolicitudTurno(token, idCliente) {
     document.getElementById('appointmentForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // Obtenemos la fecha seleccionada por el usuario
-        const fechaInput = document.getElementById('appointmentDate').value;
+        // Obtenemos la fecha y hora seleccionadas por el usuario
+        const fechaInput = document.getElementById('appointmentDate').value; // Debe ser en formato YYYY-MM-DD
+        const horaInput = document.getElementById('appointmentTime').value; // Debe ser en formato HH:mm
 
-        // Convertimos la fecha al formato local con la zona horaria correcta
-        const fechaLocal = new Date(fechaInput);
+        // Combinar fecha y hora en un solo string
+        const fechaHoraInput = `${fechaInput}T${horaInput}`;
 
-        // Convertir la fecha a UTC para enviarla sin el problema de las 3 horas
-        const fechaUTC = new Date(fechaLocal.getTime() - (fechaLocal.getTimezoneOffset() * 60000)).toISOString();
+        // Crear objeto Date para asegurarse de que la fecha y hora sean válidas
+        const fechaLocal = new Date(fechaHoraInput); // Esto crea la fecha local
+
+        // Obtener el año, mes, día, hora y minuto
+        const year = fechaLocal.getFullYear();
+        const month = String(fechaLocal.getMonth() + 1).padStart(2, '0'); // Los meses son base 0
+        const day = String(fechaLocal.getDate()).padStart(2, '0');
+        const hour = String(fechaLocal.getHours()).padStart(2, '0');
+        const minute = String(fechaLocal.getMinutes()).padStart(2, '0');
+
+        // Formato de fecha LocalDateTime sin 'Z'
+        const formattedDate = `${year}-${month}-${day}T${hour}:${minute}`; // Aquí estamos formateando correctamente
 
         const servicioId = document.getElementById('appointmentService').value;
 
@@ -122,7 +133,7 @@ function manejarSolicitudTurno(token, idCliente) {
             body: JSON.stringify({
                 id_Cliente: idCliente,
                 id_Servicio: servicioId,
-                fecha: fechaUTC,  // Envía la fecha en formato UTC
+                fecha: formattedDate,  // Enviamos la fecha y hora en formato LocalDateTime
                 costo: 0.0,
                 asistencia: "SOLICITADO"
             })
@@ -138,6 +149,7 @@ function manejarSolicitudTurno(token, idCliente) {
         .catch(error => console.error('Error al solicitar turno:', error));
     });
 }
+
 
 function toggleMenu() {
     const sidebar = document.getElementById('sidebar');
