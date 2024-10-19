@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IPersonalRepository extends JpaRepository<Personal, Long> {
-@Query("SELECT new com.tu.package.SesionPersonalDTO(s.id, c.id, CONCAT(c.nombre, ' ', c.apellido), ser.nombreServicio, s.fecha, s.costo, s.asistencia) " +
+@Query("SELECT new com.madeTUP.AppSpa.DTO.SesionPersonalDTO(s.id, c.id, CONCAT(c.nombre, ' ', c.apellido), ser.nombreServicio, s.fecha, s.costo, s.asistencia) " +
            "FROM Sesion s " +
            "JOIN s.cliente c " +
            "JOIN s.servicio ser " +
