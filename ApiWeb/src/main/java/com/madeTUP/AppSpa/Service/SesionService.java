@@ -11,10 +11,10 @@ import com.madeTUP.AppSpa.Model.Cliente;
 import com.madeTUP.AppSpa.Model.Servicio;
 import com.madeTUP.AppSpa.Model.Sesion;
 import com.madeTUP.AppSpa.Repository.ISesionRepository;
+import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import com.madeTUP.AppSpa.DTO.SesionAdminDTO;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,15 +67,22 @@ public class SesionService implements ISesionService {
     }
 
     @Override
-    public void editSesion(Long id, Servicio servicio, Cliente cliente, LocalDateTime fecha, Double costo, String  asistencia) {
-        Sesion sesion = this.findSesion(id);
-        sesion.setServicio(servicio);
-        sesion.setCliente(cliente);
-        sesion.setFecha(fecha);
-        sesion.setCosto(costo);
-        sesion.setAsistencia(asistencia);
-        this.saveSesion(sesion);
-    }
+public void editSesion(Long id_sesion, Servicio servicio, Cliente cliente, LocalDateTime fecha, Double costo, String asistencia) {
+    // Busca la sesión que deseas editar
+    Sesion sesion = sesionrepo.findById(id_sesion)
+            .orElseThrow(() -> new EntityNotFoundException("Sesión no encontrada con id: " + id_sesion));
+
+    // Solo actualiza los campos que no sean null
+    if (servicio != null) sesion.setServicio(servicio);
+    if (cliente != null) sesion.setCliente(cliente);
+    if (fecha != null) sesion.setFecha(fecha);
+    if (costo != null) sesion.setCosto(costo);
+    if (asistencia != null) sesion.setAsistencia(asistencia);
+
+    // Guarda los cambios en la base de datos
+    sesionrepo.save(sesion);
+}
+
 
     @Override
     public void editSesionII(Sesion sesion) {
