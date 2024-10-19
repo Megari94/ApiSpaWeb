@@ -14,12 +14,12 @@ app.use(express.static(__dirname)); // Para servir archivos HTML, CSS, JS direct
 
 // Ruta principal para el archivo index.html
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'login.html')); // Cambia a tu archivo principal
+    res.sendFile(path.join(__dirname, 'Login.html')); // Cambia a tu archivo principal
 });
 
 // Otras rutas para tus archivos HTML si es necesario
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'login.html'));
+    res.sendFile(path.join(__dirname, 'Login.html'));
 });
 
 // Iniciar el servidor
