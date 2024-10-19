@@ -4,9 +4,12 @@
  */
 package com.madeTUP.AppSpa.Service;
 
+import com.madeTUP.AppSpa.DTO.SesionPersonalDTO;
 import com.madeTUP.AppSpa.Model.Personal;
 import com.madeTUP.AppSpa.Model.Servicio;
+import com.madeTUP.AppSpa.Model.Sesion;
 import com.madeTUP.AppSpa.Repository.IPersonalRepository;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +20,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PersonalService implements IPersonalService {
+    
     @Autowired 
     private IPersonalRepository personalrepo;
+    @Autowired
+    private ISesionService servisSesion;
+    
     @Override
     public List<Personal> getPersonal() {
        return personalrepo.findAll();
@@ -63,5 +70,10 @@ public class PersonalService implements IPersonalService {
     }
 
    
-    
+    @Override
+    public List<SesionPersonalDTO> listaSesiones(Long idPersonal){
+        List<SesionPersonalDTO> listaSesionesDos = new ArrayList<>();
+        personalrepo.findSesionesByPersonalId(idPersonal);
+               return listaSesionesDos;
+    }   
 }
