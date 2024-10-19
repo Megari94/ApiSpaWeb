@@ -103,11 +103,7 @@ function manejarSolicitudTurno(token, idCliente) {
         event.preventDefault();
 
         // Obtenemos la fecha y hora seleccionadas por el usuario
-        const fechaInput = document.getElementById('appointmentDate').value; // Debe ser en formato YYYY-MM-DD
-        const horaInput = document.getElementById('appointmentTime').value; // Debe ser en formato HH:mm
-
-        // Combinar fecha y hora en un solo string
-        const fechaHoraInput = `${fechaInput}T${horaInput}`;
+        const fechaHoraInput = document.getElementById('appointmentDateTime').value; // Cambiado aquí
 
         // Crear objeto Date para asegurarse de que la fecha y hora sean válidas
         const fechaLocal = new Date(fechaHoraInput); // Esto crea la fecha local
@@ -149,7 +145,6 @@ function manejarSolicitudTurno(token, idCliente) {
         .catch(error => console.error('Error al solicitar turno:', error));
     });
 }
-
 
 function toggleMenu() {
     const sidebar = document.getElementById('sidebar');
