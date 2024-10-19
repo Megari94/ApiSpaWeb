@@ -102,17 +102,21 @@ public class SesionController {
        return "Sesion eliminado";
     }
      @PutMapping("/Sesion/editar/{id_sesion}")
-     public Sesion editSesion(@PathVariable Long id_sesion,
-             @RequestParam(required=false,name="servicio")Servicio servicio,
-            @RequestParam(required=false, name="cliente")Cliente cliente,
-            @RequestParam(required=false,name="fecha")LocalDateTime fecha,
-           @RequestParam(required=false,name="costo")Double costo,
-            @RequestParam(required=false,name="asistencia") String asistencia){
-         
-               servis.editSesion(id_sesion, servicio, cliente, fecha, costo, asistencia);
-               Sesion c=this.findSesion(id_sesion);
-               return c;
+public ResponseEntity<?> editSesion(@PathVariable Long id_sesion,
+        @RequestParam(required=false,name="servicio")Servicio servicio,
+        @RequestParam(required=false, name="cliente")Cliente cliente,
+        @RequestParam(required=false,name="fecha")LocalDateTime fecha,
+        @RequestParam(required=false,name="costo")Double costo,
+        @RequestParam(required=false,name="asistencia") String asistencia) {
+    try {
+        servis.editSesion(id_sesion, servicio, cliente, fecha, costo, asistencia);
+        Sesion c = this.findSesion(id_sesion);
+        return ResponseEntity.ok(c);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al editar la sesión: " + e.getMessage());
+    }
 }
+
      @PutMapping("/Sesion/editarII")
      public Sesion editSesionII(@RequestBody Sesion c)
      {
