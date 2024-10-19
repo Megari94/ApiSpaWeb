@@ -92,50 +92,15 @@ public Personal editPersonal(@PathVariable Long id_personal,
         return ResponseEntity.ok(response);
     }
         
-@GetMapping("/personal/turnos")
-public ResponseEntity<PersonalPerfilDTO> getPerfilPersonal(@RequestParam Long PersonalId) {
-    // Buscar al personal por su ID
-    Personal personal1 = servis.findPersonal(PersonalId);
-    
-    if (personal1 == null) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Manejar caso de no encontrar al personal
-    }
-
-    // Crear el DTO para el perfil del personal
-    PersonalPerfilDTO perfilDTO = new PersonalPerfilDTO();
-    perfilDTO.setId(PersonalId);
-    perfilDTO.setNombre_usuario(personal1.getNombre_usuario());
-
-    List<SesionPersonalDTO> listaSesionesDos = new ArrayList<>();
-
-    // Obtener las sesiones que coincidan con los servicios que presta el personal
-    List<Sesion> listaSesiones = servisSesion.getServicio(); // O consulta optimizada
-
-    for (Sesion sesion : listaSesiones) {
-        for (Servicio servi : personal1.getListaServicio()) {
-            if (sesion.getId_Servicio().getId().equals(servi.getId())) { // Usar equals en lugar de ==
-                SesionPersonalDTO s = new SesionPersonalDTO(
-                    sesion.getId(),
-                    sesion.getCliente().getId(),
-                    sesion.getCliente().getNombre(),
-                    sesion.getServicio().getNombreServicio(),
-                    sesion.getFecha(),
-                    sesion.getCosto(),
-                    sesion.getAsistencia()
-                );
-                listaSesionesDos.add(s);
-                break; // Salir del bucle interno cuando se encuentra el servicio
-            }
+ @GetMapping("/personal/turnos/{personalId}")
+    public ResponseEntity<List<SesionPersonalDTO>> obtenerSesionesPorPersonal(@PathVariable Long personalId) {
+        List<SesionPersonalDTO> sesiones = servis.listaSesiones(personalId);
+        if (sesiones.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.ok(sesiones);
     }
 
-    // Añadir las sesiones al perfil del personal
-    perfilDTO.setListaPer_Ses(listaSesionesDos);
-
-    return ResponseEntity.ok(perfilDTO);
-}
-
 
 
 }
- 
