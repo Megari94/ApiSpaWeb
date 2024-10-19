@@ -71,9 +71,10 @@ public class PersonalService implements IPersonalService {
 
    
     @Override
-    public List<SesionPersonalDTO> listaSesiones(Long idPersonal){
-        List<SesionPersonalDTO> listaSesionesDos = new ArrayList<>();
-        personalrepo.findSesionesByPersonalId(idPersonal);
-               return listaSesionesDos;
-    }   
+public List<SesionPersonalDTO> listaSesiones(Long idPersonal) {
+    // Llama al repositorio y almacena el resultado en la lista
+    List<SesionPersonalDTO> listaSesionesDos = personalrepo.findSesionesByPersonalId(idPersonal);
+    return listaSesionesDos; // Devuelve la lista de sesiones obtenida
+}
+
 }
