@@ -30,12 +30,16 @@ public ResponseEntity<?> login(@RequestBody ClienteLoginDTO loginRequest) {
     if (!usuarioService.verifyPassword(usuario, loginRequest.getPassword())) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña incorrecta");
     }
+    // Generar el token
+    String token = jwtUtil.generateToken(usuario.getUsername()); // Usar el nombre de usuario o el ID
+   
     Map<String, Object> response = new HashMap<>();
     response.put("success", true);
     response.put("message", "Inicio de sesión exitoso.");
     response.put("rol", usuario.getTipoUsuario()); // Devolver el rol del usuario
-     response.put("Id", usuario.getId());
-            response.put("nombre_usuario", usuario.getNombre_usuario());
+    response.put("Id", usuario.getId());
+    response.put("nombre_usuario", usuario.getNombre_usuario());
+    response.put("token", token);
     return ResponseEntity.ok(response);
 }
 
