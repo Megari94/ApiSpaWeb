@@ -4,39 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Servicios</title>
-    <link rel="stylesheet" href="/css/styles.css"> <!-- Enlaza tu CSS -->
-    <script src="servicios.js" defer></script> <!-- Enlaza tu JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="css/estilo.css">
+    <script src="servicios.js" defer></script>
+    <script src="js/scriptAdmin.js" defer></script>
+    <style>
+               
+    </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>Administrador</h2>
-        <ul>
-            <li><a href="Personal.html">Personal</a></li>
-            <li><a href="Turnos.html">Turnos</a></li>
-            <li><a href="Pagos.html">Pagos</a></li>
-            <li><a href="Clientes.html">Clientes</a></li>
-            <li><a href="Ingresos.html">Ingresos</a></li>
-            <li><a href="Servicios.html">Servicios</a></li>
-            <li><a href="Login.html">Salir</a></li>
-        </ul>
+    <div class="container">
+        <!-- Barra de Menú Lateral -->
+        <div id="sidebar" class="sidebar">
+            <div class="link-container">
+                <a href="#" id="PersonalLink"><i class="fas fa-user-tie"></i>Personal</a>
+                <a href="#" id="TurnoLink"><i class="fas fa-calendar-alt"></i>Turno</a>
+                <a href="#" id="ServicioLink"><i class="fas fa-concierge-bell"></i>Servicio</a>
+                <a href="#"  id="IPAdminLink"><i class="fas fa-wallet"></i>Informe de Pagos</a>
+                <a href="#" id="ISAdminLink"><i class="fas fa-file-alt"></i>Informe de Servicios</a>
+                <a href="#" id="turnoAdminLink"><i class="fas fa-chart-pie"></i>Turnos Solicitados</a>
+                <a href="#" id="facturaAdminLink"><i class="fas fa-receipt"></i>Factura</a>
+            </div>
+            <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="main-content">
+            <button id="menuButton" class="open-btn" onclick="toggleMenu()">☰ Menú</button>
+            <h2>Gestión de Servicios</h2>
+
+            <!-- Contenedor para el botón de agregar y el buscador -->
+            <div class="search-container">
+                <button class="add-button" onclick="abrirModalAgregar()">Agregar Servicio</button>
+                <input type="text" id="searchInput" class="search-input" placeholder="Buscar servicios..." oninput="filtrarEtapas()">
+            </div>
+
+            <!-- Tabla para mostrar el personal -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Etapa</th>
+                        <th>Personal a Cargo</th> 
+                        <th>Acción</th>                        
+                    </tr>
+                </thead>
+                <tbody id="personalTableBody">
+                    <!-- Los datos se insertarán aquí dinámicamente -->
+                </tbody>
+            </table>
+
+            <!-- Modal para Agregar Servicio -->
+            <div id="modalAgregar" class="modal">
+                <div class="modal-content">
+                    <h3>Agregar Servicio</h3>
+                    <form id="formAgregar">
+                        <label for="nombreServicio">Nombre del Servicio</label>
+                        <input type="text" id="nombreServicio" required>
+
+                        <label for="personalCargo">Personal a Cargo</label>
+                        <input type="text" id="personalCargo" required>
+
+                        <button type="button" onclick="guardarServicio()">Guardar</button>
+                        <button type="button" onclick="cerrarModal('modalAgregar')">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal para Editar Etapa -->
+            <div id="modalEditar" class="modal">
+                <div class="modal-content">
+                    <h3>Editar Etapa</h3>
+                    <form id="formEditar">
+                        <label for="nombreEditar">Nombre</label>
+                        <input type="text" id="nombreEditar" required>
+
+                        <label for="etapaEditar">Etapa</label>
+                        <input type="text" id="etapaEditar" required>
+
+                        <label for="personalCargoEditar">Personal a Cargo</label>
+                        <input type="text" id="personalCargoEditar" required>
+
+                        <button type="button" onclick="guardarEdicion()">Guardar</button>
+                        <button type="button" onclick="cerrarModal('modalEditar')">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal para Dar de Baja -->
+            <div id="modalBaja" class="modal">
+                <div class="modal-content">
+                    <h3>Confirmar Baja</h3>
+                    <p id="bajaMensaje">¿Estás seguro de que deseas dar de baja este servicio?</p>
+                    <button type="button" id="confirmarBajaBtn">Sí, dar de baja</button>
+                    <button type="button" onclick="cerrarModal('modalBaja')">Cancelar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="content">
-        <h1>Servicios</h1>
-        <table id="serviciosTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre del Servicio</th>
-                    <th>Número de Etapas</th>
-                    <th>ID de Personal</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Las filas se llenarán dinámicamente -->
-            </tbody>
-        </table>
-    </div>
+    <script>
+        // Ejemplo de datos de etapas del proyecto
+        
+    </script>
 </body>
 </html>
