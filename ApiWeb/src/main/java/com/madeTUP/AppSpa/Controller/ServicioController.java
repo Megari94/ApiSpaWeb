@@ -4,6 +4,7 @@
  */
 package com.madeTUP.AppSpa.Controller;
 
+import com.madeTUP.AppSpa.DTO.ServicioAdminDTO;
 import com.madeTUP.AppSpa.DTO.ServicioDTO;
 import com.madeTUP.AppSpa.Model.Servicio;
 import com.madeTUP.AppSpa.Service.IServicioService;
@@ -23,26 +24,15 @@ import org.springframework.web.bind.annotation.*;
 public class ServicioController {
     @Autowired 
     private IServicioService servis;
-
+    
     @GetMapping("/traerServicioAdmin")
     public ResponseEntity<List<ServicioAdminDTO>> obtenerServiciosAdmin() {
-        // Obtener todos los servicios
-        List<Servicio> servicios = servis.getAllServicios();
-        
         // Mapear a ServicioAdminDTO
-        List<ServicioAdminDTO> serviciosAdminDTO = servicios.stream().map(servicio -> {
-            String personalNombre = servicio.getPersonal() != null ? servicio.getPersonal().getNombre() : null;
-            return new ServicioAdminDTO(
-                servicio.getId(),
-                servicio.getNombreServicio(),
-                servicio.getNroEtapas(),
-                personalNombre
-            );
-        }).collect(Collectors.toList());
-        
+        List<ServicioAdminDTO> serviciosAdminDTO = servis.getAllServiciosAdmin();
         return ResponseEntity.ok(serviciosAdminDTO);
     }
 
+    
 
     @GetMapping("/traerServicio")
     public ResponseEntity<List<ServicioDTO>> obtenerServicios() {
@@ -84,5 +74,6 @@ public class ServicioController {
          servis.editServicioII(c);
          return servis.findServicio(c.getId());
      }
+     
 }
  
