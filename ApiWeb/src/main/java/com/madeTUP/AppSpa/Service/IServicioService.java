@@ -20,5 +20,6 @@ public interface IServicioService {
 //     public void editServicio (Long id,String nombre_servicio,Long nroEtapas);
     public void editServicioII (Servicio servicio);
     public List<ServicioDTO> getAllServicios();
+    public List<ServicioAdminDTO> getAllServiciosAdmin();
 }
  
