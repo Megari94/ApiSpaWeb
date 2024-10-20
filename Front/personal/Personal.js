@@ -5,24 +5,20 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('Token:', token); // Verificar el valor
     console.log('ID de Personal:', idPersonal); // Verificar el valor
 
-    // Verifica si el personal está autenticado y tiene un ID válido
+    // Verifica si el personal está autenticado
     if (!token) {
         // Redirige a la página de login si no hay un token
         window.location.href = '../Login.html';
-    } else if (!idPersonal) {
-        // Si no hay un ID de personal válido, muestra un mensaje de error
-        alert('ID de personal no encontrado. Por favor, inicia sesión de nuevo.');
-        window.location.href = '../Login.html';
-    } else {
-        // Verifica en qué página estás usando el dataset de la página
-        const page = document.body.dataset.page;
+    }
 
-        if (page === 'TurnosPersonal') {
-            cargarTurnos(Number(idPersonal));  // Convierte idPersonal a número antes de pasar
-        } else if (page === 'RegistrarTurno') {
-            cargarServicios(token);
-            manejarSolicitudTurno(token, idPersonal);
-        }
+    // Verifica en qué página estás usando el dataset de la página
+    const page = document.body.dataset.page;
+
+    if (page === 'TurnosPersonal') {
+        cargarTurnos(Number(idPersonal));  // Convierte idPersonal a número antes de pasar
+    } else if (page === 'RegistrarTurno') {
+        cargarServicios(token);
+        manejarSolicitudTurno(token, idPersonal);
     }
 
     // Cerrar sesión
@@ -88,13 +84,7 @@ function cargarTurnos(idPersonal) {
         if (!response.ok) {
             throw new Error('Error en la respuesta del servidor');
         }
-        // Verificar si la respuesta tiene contenido antes de convertir a JSON
-        return response.text().then(text => {
-            if (text === "") {
-                throw new Error("La respuesta está vacía");
-            }
-            return JSON.parse(text);
-        });
+        return response.json();
     })
     .then(data => {
         const tableBody = document.getElementById('TableBody');
