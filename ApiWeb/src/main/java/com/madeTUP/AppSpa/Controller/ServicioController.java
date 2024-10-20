@@ -27,7 +27,7 @@ public class ServicioController {
     @GetMapping("/traerServicioAdmin")
     public ResponseEntity<List<ServicioAdminDTO>> obtenerServiciosAdmin() {
         // Obtener todos los servicios
-        List<Servicio> servicios = servis.getAllServicios(); // Asegúrate de que este método exista en tu servicio
+        List<Servicio> servicios = servis.getAllServicios();
         
         // Mapear a ServicioAdminDTO
         List<ServicioAdminDTO> serviciosAdminDTO = servicios.stream().map(servicio -> {
