@@ -5,22 +5,24 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('Token:', token); // Verificar el valor
     console.log('ID de Personal:', idPersonal); // Verificar el valor
 
-    // Verifica si el personal está autenticado y el ID de personal es válido
-    if (!token || !idPersonal) {
-        // Si no hay un token o ID de personal, muestra un mensaje y redirige al login
+    // Verifica si el personal está autenticado y tiene un ID válido
+    if (!token) {
+        // Redirige a la página de login si no hay un token
+        window.location.href = '../Login.html';
+    } else if (!idPersonal) {
+        // Si no hay un ID de personal válido, muestra un mensaje de error
         alert('ID de personal no encontrado. Por favor, inicia sesión de nuevo.');
         window.location.href = '../Login.html';
-        return;
-    }
+    } else {
+        // Verifica en qué página estás usando el dataset de la página
+        const page = document.body.dataset.page;
 
-    // Verifica en qué página estás usando el dataset de la página
-    const page = document.body.dataset.page;
-
-    if (page === 'TurnosPersonal') {
-        cargarTurnos(Number(idPersonal));  // Convierte idPersonal a número antes de pasar
-    } else if (page === 'RegistrarTurno') {
-        cargarServicios(token);
-        manejarSolicitudTurno(token, idPersonal);
+        if (page === 'TurnosPersonal') {
+            cargarTurnos(Number(idPersonal));  // Convierte idPersonal a número antes de pasar
+        } else if (page === 'RegistrarTurno') {
+            cargarServicios(token);
+            manejarSolicitudTurno(token, idPersonal);
+        }
     }
 
     // Cerrar sesión
