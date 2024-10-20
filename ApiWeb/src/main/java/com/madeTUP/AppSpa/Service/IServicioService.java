@@ -4,6 +4,7 @@
  */
 package com.madeTUP.AppSpa.Service;
 
+import com.madeTUP.AppSpa.DTO.ServicioAdminDTO;
 import com.madeTUP.AppSpa.DTO.ServicioDTO;
 import com.madeTUP.AppSpa.Model.Servicio;
 import java.util.List;
