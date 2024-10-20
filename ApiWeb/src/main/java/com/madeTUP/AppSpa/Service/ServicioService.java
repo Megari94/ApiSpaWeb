@@ -63,5 +63,12 @@ public class ServicioService implements IServicioService{
             .map(servicio -> new ServicioDTO(servicio.getId(), servicio.getNombreServicio()))
             .collect(Collectors.toList());
     }
+    @Override
+    public List<ServicioDTO> getAllServicios() {
+        List<Servicio> servicios = serviciorepo.findAll();
+        return servicios.stream()
+                .map(servicio -> new ServicioDTO(servicio.getId(), servicio.getNombreServicio()))
+                .collect(Collectors.toList());
+    }
 
 }
