@@ -17,6 +17,7 @@ public class ServicioAdminDTO {
     private String nombreServicio;
     private Long nroEtapas;
     private String personalNombre;
+    private String personalApellido; 
 
     public ServicioAdminDTO() {
     }
