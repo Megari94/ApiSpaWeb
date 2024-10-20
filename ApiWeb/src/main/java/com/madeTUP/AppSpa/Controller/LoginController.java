@@ -38,7 +38,8 @@ public ResponseEntity<?> login(@RequestBody ClienteLoginDTO loginRequest) {
     response.put("rol", usuario.getTipoUsuario()); // Devolver el rol del usuario
     response.put("Id", usuario.getId());
     response.put("nombre_usuario", usuario.getNombre_usuario());
-    response.put("token", token);
+     String token = "token-appspa-2024"; 
+     response.put("token", token); 
     return ResponseEntity.ok(response);
 }
 
