@@ -30,8 +30,7 @@ public ResponseEntity<?> login(@RequestBody ClienteLoginDTO loginRequest) {
     if (!usuarioService.verifyPassword(usuario, loginRequest.getPassword())) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña incorrecta");
     }
-    // Generar el token
-    String token = jwtUtil.generateToken(usuario.getUsername()); // Usar el nombre de usuario o el ID
+    
    
     Map<String, Object> response = new HashMap<>();
     response.put("success", true);
