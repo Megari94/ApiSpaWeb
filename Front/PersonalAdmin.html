@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="css/estilo.css">
+    <script src="js/script.js" defer></script>
+    <script src="js/scriptAdmin.js" defer></script>
+    <style>
+         /* Estilos del modal */
+         .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: #ffffff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #ffe3ec;
+            width: 40%;
+            border-radius: 8px;
+        }
+        .modal input {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .modal button {
+            background-color: #ff72a1;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .modal button:hover {
+            background-color: #ff72a1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Barra de Menú Lateral -->
+        <div id="sidebar" class="sidebar">
+            <div class="link-container">
+                <a href="#" id="PersonalLink"><i class="fas fa-user-tie"></i>Personal</a>
+                <a href="#" id="TurnoLink"><i class="fas fa-calendar-alt"></i>Turno</a>
+                <a href="#" id="ServicioLink"><i class="fas fa-concierge-bell"></i>Servicio</a>
+                <a href="#"  id="IPAdminLink"><i class="fas fa-wallet"></i>Informe de Pagos</a>
+                <a href="#" id="ISAdminLink"><i class="fas fa-file-alt"></i>Informe de Servicios</a>
+                <a href="#" id="turnoAdminLink"><i class="fas fa-chart-pie"></i>Turnos Solicitados</a>
+                <a href="#" id="facturaAdminLink"><i class="fas fa-receipt"></i>Factura</a>
+            </div>
+            <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="main-content">
+            <button id="menuButton" class="open-btn" onclick="toggleMenu()">☰ Menú</button>
+            <h2>Gestión de Personal</h2>
+
+            <!-- Contenedor para el botón de agregar y el buscador -->
+            <div class="search-container">
+                <button class="add-button" onclick="agregarPersonal()">Agregar Personal</button>
+                <input type="text" id="searchInput" class="search-input" placeholder="Buscar personal..." oninput="filtrarPersonal()">
+            </div>
+
+            <!-- Tabla para mostrar el personal -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Contraseña</th>
+                        <th>Nombre de Usuario</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Correo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="personalTableBody">
+                    <!-- Los datos se insertarán aquí dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para Agregar Personal -->
+    <div id="modalAgregarPersonal" class="modal" onclick="cerrarModalAlHacerClickFuera(event, 'modalAgregarPersonal')">
+        <div class="modal-content">
+            <h3>Agregar Personal</h3>
+            <form id="formAgregarPersonal">
+                <label for="nombreUsuario">Nombre de Usuario:</label>
+                <input type="text" id="nombreUsuario" name="nombreUsuario" required>
+
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+
+                <label for="apellido">Apellido:</label>
+                <input type="text" id="apellido" name="apellido" required>
+
+                <label for="correo">Correo Electrónico:</label>
+                <input type="email" id="correo" name="correo" required>
+
+                <label for="contrasena">Contraseña:</label>
+                <input type="password" id="contrasena" name="contrasena" required>
+
+                <button type="button" onclick="guardarPersonal()">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Personal -->
+    <div id="modalEditarPersonal" class="modal" onclick="cerrarModalAlHacerClickFuera(event, 'modalEditarPersonal')">
+        <div class="modal-content">
+            <h3>Editar Personal</h3>
+            <form id="formEditarPersonal">
+                <label for="nombreUsuarioEditar">Nombre de Usuario:</label>
+                <input type="text" id="nombreUsuarioEditar" required>
+
+                <label for="nombreEditar">Nombre:</label>
+                <input type="text" id="nombreEditar" required>
+
+                <label for="apellidoEditar">Apellido:</label>
+                <input type="text" id="apellidoEditar" required>
+
+                <label for="correoEditar">Correo Electrónico:</label>
+                <input type="email" id="correoEditar" required>
+
+                <label for="contrasenaEditar">Contraseña:</label>
+                <input type="password" id="contrasenaEditar" required>
+
+                <button type="button" onclick="guardarEdicionPersonal()">Guardar</button>
+                <button type="button" onclick="cerrarModal('modalEditarPersonal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+   // URL de la API
+const apiUrl = 'https://spaadministrativo-production-4488.up.railway.app'; // Cambia esto a la URL de tu API
+
+// Función para cargar personal desde la API
+async function cargarPersonal() {
+    try {
+        const response = await fetch(apiUrl); // Realizamos una petición GET a la API
+        const data = await response.json();   // Convertimos la respuesta a JSON
+        mostrarPersonal(data);                // Llamamos a la función que muestra los datos en la tabla
+    } catch (error) {
+        console.error('Error al cargar el personal:', error);
+    }
+}
+
+// Función para mostrar el personal en la tabla
+function mostrarPersonal(data) {
+    const tableBody = document.getElementById('personalTableBody');
+    tableBody.innerHTML = ''; // Limpiar tabla antes de cargar
+
+    data.forEach(persona => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${persona.id}</td>
+            <td>${persona.contrasena}</td>
+            <td>${persona.nombreUsuario}</td>
+            <td>${persona.apellido}</td>
+            <td>${persona.correo}</td>
+            <td class="action-buttons">
+                <button onclick="abrirModalEditarPersonal(${persona.id})">Editar</button>
+                <button onclick="darDeBaja(${persona.id})">Dar de Baja</button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+// Función para agregar personal usando la API
+async function guardarPersonal() {
+    const nombreUsuario = document.getElementById('nombreUsuario').value;
+    const nombre = document.getElementById('nombre').value;
+    const apellido = document.getElementById('apellido').value;
+    const correo = document.getElementById('correo').value;
+    const contrasena = document.getElementById('contrasena').value;
+
+    if (nombreUsuario && nombre && apellido && correo && contrasena) {
+        const nuevoPersonal = {
+            nombreUsuario,
+            nombre,
+            apellido,
+            correo,
+            contrasena
+        };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(nuevoPersonal),
+            });
+
+            if (response.ok) {
+                // Volver a cargar la tabla después de agregar el personal
+                cargarPersonal();
+                cerrarModal('modalAgregarPersonal');
+            } else {
+                console.error('Error al guardar el personal');
+            }
+        } catch (error) {
+            console.error('Error al guardar el personal:', error);
+        }
+    }
+}
+
+// Función para editar personal usando la API
+async function guardarEdicionPersonal() {
+    const nombreUsuario = document.getElementById('nombreUsuarioEditar').value;
+    const nombre = document.getElementById('nombreEditar').value;
+    const apellido = document.getElementById('apellidoEditar').value;
+    const correo = document.getElementById('correoEditar').value;
+    const contrasena = document.getElementById('contrasenaEditar').value;
+
+    const personaIndex = personalIdSeleccionado; // ID del personal seleccionado
+
+    if (nombreUsuario && nombre && apellido && correo && contrasena) {
+        const personalActualizado = {
+            nombreUsuario,
+            nombre,
+            apellido,
+            correo,
+            contrasena
+        };
+
+        try {
+            const response = await fetch(`${apiUrl}/${personaIndex}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(personalActualizado),
+            });
+
+            if (response.ok) {
+                cargarPersonal();  // Recargar la tabla con los datos actualizados
+                cerrarModal('modalEditarPersonal');
+            } else {
+                console.error('Error al editar el personal');
+            }
+        } catch (error) {
+            console.error('Error al editar el personal:', error);
+        }
+    }
+}
+
+// Función para eliminar personal usando la API
+async function darDeBaja(id) {
+    const confirmar = confirm('¿Estás seguro de que deseas dar de baja a esta persona?');
+
+    if (confirmar) {
+        try {
+            const response = await fetch(`${apiUrl}/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                cargarPersonal();  // Recargar la tabla después de eliminar el personal
+            } else {
+                console.error('Error al eliminar el personal');
+            }
+        } catch (error) {
+            console.error('Error al eliminar el personal:', error);
+        }
+    }
+}
+
+// Cargar la tabla cuando la página se carga por primera vez
+window.onload = function() {
+    cargarPersonal();
+};
+
+    </script>
+</body>
+</html>
