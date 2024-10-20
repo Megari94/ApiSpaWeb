@@ -24,6 +24,26 @@ public class ServicioController {
     @Autowired 
     private IServicioService servis;
 
+    @GetMapping("/traerServicioAdmin")
+    public ResponseEntity<List<ServicioAdminDTO>> obtenerServiciosAdmin() {
+        // Obtener todos los servicios
+        List<Servicio> servicios = servis.getAllServicios(); // Asegúrate de que este método exista en tu servicio
+        
+        // Mapear a ServicioAdminDTO
+        List<ServicioAdminDTO> serviciosAdminDTO = servicios.stream().map(servicio -> {
+            String personalNombre = servicio.getPersonal() != null ? servicio.getPersonal().getNombre() : null;
+            return new ServicioAdminDTO(
+                servicio.getId(),
+                servicio.getNombreServicio(),
+                servicio.getNroEtapas(),
+                personalNombre
+            );
+        }).collect(Collectors.toList());
+        
+        return ResponseEntity.ok(serviciosAdminDTO);
+    }
+
+
     @GetMapping("/traerServicio")
     public ResponseEntity<List<ServicioDTO>> obtenerServicios() {
         // Lógica para obtener servicios
