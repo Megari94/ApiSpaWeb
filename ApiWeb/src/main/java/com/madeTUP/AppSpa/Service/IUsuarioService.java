@@ -4,7 +4,9 @@
  */
 package com.madeTUP.AppSpa.Service;
 
+import com.madeTUP.AppSpa.DTO.UsuarioAdminDTO;
 import com.madeTUP.AppSpa.Model.Usuario;
+import java.util.List;
 
 /**
  *
@@ -13,4 +15,5 @@ import com.madeTUP.AppSpa.Model.Usuario;
 public interface IUsuarioService  {
      public Usuario findByUsernameOrEmail(String username);
      public boolean verifyPassword(Usuario usuario, String password);
+     public List<UsuarioAdminDTO> traerUsuarios();
 }
