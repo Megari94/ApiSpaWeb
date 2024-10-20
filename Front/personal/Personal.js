@@ -84,7 +84,13 @@ function cargarTurnos(idPersonal) {
         if (!response.ok) {
             throw new Error('Error en la respuesta del servidor');
         }
-        return response.json();
+        // Verificar si la respuesta tiene contenido antes de convertir a JSON
+        return response.text().then(text => {
+            if (text === "") {
+                throw new Error("La respuesta está vacía");
+            }
+            return JSON.parse(text);
+        });
     })
     .then(data => {
         const tableBody = document.getElementById('TableBody');
