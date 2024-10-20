@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Función para cerrar sesión
     document.getElementById('logoutBtn').addEventListener('click', function() {
         localStorage.clear();
-        window.location.href = 'login.html';
+        window.location.href = 'Login.html';
     });
 
     // Función para alternar el menú lateral
