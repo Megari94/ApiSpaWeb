@@ -171,10 +171,12 @@ function mostrarPersonal(data) {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${persona.id}</td>
-            <td>${persona.contrasena}</td>
-            <td>${persona.nombreUsuario}</td>
+            <td>${persona.contrasenia}</td>
+            <td>${persona.nombre_usuario}</td> <!-- Cambiado a nombre_usuario -->
+            <td>${persona.nombre}</td>
             <td>${persona.apellido}</td>
             <td>${persona.correo}</td>
+            <td>${persona.tipoUsuario}</td> <!-- Añadido para mostrar tipoUsuario -->
             <td class="action-buttons">
                 <button onclick="abrirModalEditarPersonal(${persona.id})">Editar</button>
                 <button onclick="darDeBaja(${persona.id})">Dar de Baja</button>
@@ -183,7 +185,6 @@ function mostrarPersonal(data) {
         tableBody.appendChild(row);
     });
 }
-
 // Función para agregar personal usando la API
 async function guardarPersonal() {
     const nombreUsuario = document.getElementById('nombreUsuario').value;
