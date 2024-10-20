@@ -12,74 +12,7 @@ function redirectToLogin() {
     window.location.href = 'login.html';
 }
 
-function removeService(button) {
-    const serviceRow = button.parentElement;
-    serviceRow.remove();
-    updateTotal();
-}
 
-function addService() {
-    const servicesContainer = document.getElementById('servicesContainer');
-    const serviceRow = document.createElement('div');
-    serviceRow.className = 'service-row';
-    serviceRow.innerHTML = `
-        <input type="text" placeholder="ID Servicio">
-        <input type="text" placeholder="Nombre ">
-        <input type="number" placeholder="Costo" oninput="updateTotal()">
-        <button onclick="removeService(this)">Eliminar</button>
-    `;
-    servicesContainer.appendChild(serviceRow);
-    updateTotal();
-}
-
-function updateTotal() {
-    const totalAmountInput = document.getElementById('totalAmount');
-    const serviceRows = document.querySelectorAll('.service-row');
-    let total = 0;
-
-    serviceRows.forEach(row => {
-        const costInput = row.querySelector('input[type="number"]');
-        const cost = parseFloat(costInput.value) || 0;
-        total += cost;
-    });
-
-    totalAmountInput.value = total.toFixed(2);
-}
-
-function generateInvoice() {
-    const invoiceDate = document.getElementById('invoiceDate').value;
-    const clientName = document.getElementById('clientName').value;
-    const totalAmount = document.getElementById('totalAmount').value;
-
-    if (!invoiceDate || !clientName || totalAmount === '0.00') {
-        alert("Por favor complete todos los campos.");
-        return;
-    }
-
-    const doc = new jsPDF();
-    doc.text("Factura", 20, 20);
-    doc.text(`Fecha: ${invoiceDate}`, 20, 30);
-    doc.text(`Cliente: ${clientName}`, 20, 40);
-
-    let yOffset = 50;
-    const serviceRows = document.querySelectorAll('.service-row');
-    serviceRows.forEach(row => {
-        const serviceId = row.querySelector('input[placeholder="ID Servicio"]').value;
-        const serviceName = row.querySelector('input[placeholder="Nombre "]').value;
-        const serviceCost = row.querySelector('input[placeholder="Costo"]').value;
-        doc.text(`Servicio: ${serviceId} - ${serviceName} - $${serviceCost}`, 20, yOffset);
-        yOffset += 10;
-    });
-
-    doc.text(`Total: $${totalAmount}`, 20, yOffset + 10);
-    doc.save('factura.pdf');
-
-    // Limpiar formulario después de generar la factura
-    document.getElementById('invoiceDate').value = '';
-    document.getElementById('clientName').value = '';
-    document.getElementById('totalAmount').value = '0.00';
-    document.getElementById('servicesContainer').innerHTML = '';
-}
 document.getElementById("facturaLink").addEventListener("click", function(event) {
     event.preventDefault();  // Evita la acción predeterminada del enlace
     window.location.href = "factura.html";  // Redirige a la nueva página
@@ -97,6 +30,9 @@ document.getElementById("facturaLink").addEventListener("click", function(event)
     event.preventDefault();  // Evita la acción predeterminada del enlace
     window.location.href = "InformeServicio.html";  // Redirige a la nueva página
   });
+
+  
+
   
   function generarFactura(nombreCliente, servicio, monto) {
     // Obtener la fecha actual
@@ -128,7 +64,7 @@ function aceptarSolicitud(filaId, nombreCliente, servicio, monto) {
 }
 
 function rechazarSolicitud(filaId) {
-    actualizarEstado(filaId, 'Rechazado');
+    actualizarEstado(filaId, 'Denegado');
 }
 
 function actualizarEstado(filaId, estado) {
@@ -138,7 +74,8 @@ function actualizarEstado(filaId, estado) {
     // Cambia el contenido de la celda según el estado
     if (estado === 'Aceptado') {
         celdaSolicitud.innerHTML = `<span class="estado-aceptado">${estado}</span>`;
-    } else if (estado === 'Rechazado') {
+    } else if (estado === 'Denegado') {
         celdaSolicitud.innerHTML = `<span class="estado-rechazado">${estado}</span>`;
     }
 }
+
