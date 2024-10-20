@@ -1,3 +1,4 @@
+// login.js
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Evita que el formulario se envíe de forma tradicional
 
@@ -30,32 +31,29 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     .then(data => {
         // Verifica si el inicio de sesión fue exitoso
         if (data.success) {
-            // Guarda el token y el nombre de usuario en el localStorage
+            // Guarda el token, nombre de usuario y rol en el localStorage
             localStorage.setItem('token', data.token); // Guarda el token
+            localStorage.setItem('idPersonal', data.Id);
             localStorage.setItem('nombreUsuario', data.nombre_usuario); // Guarda el nombre de usuario
+            localStorage.setItem('rol', data.rol); // Guarda el rol del usuario
 
-            // Verifica si el usuario es un cliente
-            if (document.getElementById('roleCliente').checked) {
-                localStorage.setItem('idCliente', data.clienteId); // Guarda el ID del cliente
-                window.location.href = 'ClienteVista.html'; // Redirige a cliente.html
-            } else {
-                // Guarda el rol solo si no es un cliente
-                localStorage.setItem('rol', data.rol); // Guarda el rol del usuario
-
-                // Redirige a la página correspondiente según el rol
-                switch (data.rol) {
-                    case 'ADMINISTRADOR':
-                        window.location.href = 'Administrador.html';
-                        break;
-                    case 'SECRETARIA':
-                        window.location.href = 'Secretaria.html';
-                        break;
-                    case 'PERSONAL':
-                        window.location.href = 'personal/Personal.html';
-                        break;
-                    default:
-                        throw new Error('Rol no reconocido');
-                }
+            // Verifica que los valores se hayan almacenado correctamente
+            console.log('Token almacenado:', data.token);
+            console.log('ID de Personal almacenado:', data.Id);
+            
+            // Redirige a la página correspondiente según el rol
+            switch (data.rol) {
+                case 'ADMINISTRADOR':
+                    window.location.href = 'Administrador.html';
+                    break;
+                case 'SECRETARIA':
+                    window.location.href = 'Secretaria.html';
+                    break;
+                case 'PERSONAL':
+                    window.location.href = '/personal/Personal.html';
+                    break;
+                default:
+                    throw new Error('Rol no reconocido');
             }
         } else {
             // Muestra un mensaje de error si la autenticación no fue exitosa
