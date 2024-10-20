@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turnos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="..\css\estilo.css">
+    <script src="Personal.js" defer></script>
+</head>
+<body data-page="TurnosPersonal">
+    <div class="container">
+        <!-- Barra de Menú Lateral -->
+        <div id="sidebar" class="sidebar">
+            <div class="link-container">
+                <a href="#" id="TurnoLink"><i class="fas fa-calendar-alt"></i>Turno</a>
+            </div>
+            <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="main-content">
+            <button id="menuButton" class="open-btn" onclick="toggleMenu()">☰ Menú</button>
+            <h2>Gestión de Turnos</h2>
+
+            <!-- Contenedor para el botón de agregar y el buscador -->
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Buscar por cliente, servicio o fecha..." oninput="filtrarTurnos()">
+            </div>
+
+            <!-- Tabla para mostrar los turnos -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Asistencia</th>
+                        <th>Costo</th>
+                        <th>Fecha</th>
+                        <th>Nombre Cliente</th>
+                        <th>Nombre Servicio</th>
+                    </tr>
+                </thead>
+                <tbody id="TableBody">
+                    <!-- Aquí se llenarán los turnos dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
