@@ -51,7 +51,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
                         window.location.href = 'Secretaria.html';
                         break;
                     case 'PERSONAL':
-                        window.location.href = 'Personal.html';
+                        window.location.href = 'personal/Personal.html';
                         break;
                     default:
                         throw new Error('Rol no reconocido');
