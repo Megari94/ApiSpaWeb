@@ -186,6 +186,13 @@ function mostrarPersonal(data) {
         tableBody.appendChild(row);
     });
 }
+function agregarPersonal() {
+    document.getElementById('modalAgregarPersonal').style.display = 'block';
+}
+
+function cerrarModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
 // Función para agregar personal usando la API
 async function guardarPersonal() {
     const nombreUsuario = document.getElementById('nombreUsuario').value;
@@ -222,6 +229,21 @@ async function guardarPersonal() {
         } catch (error) {
             console.error('Error al guardar el personal:', error);
         }
+    }
+}
+
+// Abrir modal para editar personal
+function abrirModalEditarPersonal(id) {
+    const persona = personalData.find(p => p.id === id);
+
+    if (persona) {
+        personalIdSeleccionado = id;
+        document.getElementById('nombreUsuarioEditar').value = persona.nombreUsuario;
+        document.getElementById('apellidoEditar').value = persona.apellido;
+        document.getElementById('correoEditar').value = persona.correo;
+        document.getElementById('contrasenaEditar').value = persona.contrasena;
+
+        document.getElementById('modalEditarPersonal').style.display = 'block';
     }
 }
 
@@ -290,6 +312,11 @@ async function darDeBaja(id) {
 window.onload = function() {
     cargarPersonal();
 };
+function cerrarModalAlHacerClickFuera(event, modalId) {
+    if (event.target.id === modalId) {
+        cerrarModal(modalId);
+    }
+}
 
     </script>
 </body>
