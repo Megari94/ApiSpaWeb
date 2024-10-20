@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Verifica si el usuario está autenticado
     if (!token) {
-        window.location.href = 'login.html';
+        window.location.href = 'Login.html';
     }
 
     // Verifica en qué página estás
