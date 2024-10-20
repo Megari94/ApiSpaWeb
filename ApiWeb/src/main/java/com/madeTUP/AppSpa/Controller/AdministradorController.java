@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdministradorController {
     @Autowired 
     private IAdministradorService servis;
+     @Autowired 
     private IUsuarioService servisUsu;
     
      @GetMapping("/Administrador/traer")
