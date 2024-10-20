@@ -419,10 +419,11 @@ h3 {
 /* Estilo para el input del buscador */
 .search-input {
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #ff66b2;
     border-radius: 4px;
     width: 300px; /* Ajusta el ancho según sea necesario */
     transition: border-color 0.3s;
+    margin-bottom: 15px; /* Agrega espacio en la parte inferior */
 }
 
 .search-input:focus {
