@@ -10,9 +10,10 @@ package com.madeTUP.AppSpa.Controller;
  */
 
 import com.madeTUP.AppSpa.DTO.ClienteLoginDTO;
+import com.madeTUP.AppSpa.DTO.UsuarioAdminDTO;
 import com.madeTUP.AppSpa.Model.Administrador;
-import com.madeTUP.AppSpa.Service.AdministradorService;
 import com.madeTUP.AppSpa.Service.IAdministradorService;
+import com.madeTUP.AppSpa.Service.IUsuarioService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdministradorController {
     @Autowired 
     private IAdministradorService servis;
+    private IUsuarioService servisUsu;
     
      @GetMapping("/Administrador/traer")
     public List<Administrador> getAdministrador(){
@@ -81,5 +83,10 @@ public Administrador editAdministrador(@PathVariable Long id_administrador,
         response.put("success", true);
         response.put("message", "Bienvenido, " + pers.getUsername() + ". Inicio de sesión exitoso.");
         return ResponseEntity.ok(response);
+    }
+    
+    @GetMapping("Administrador/traerPersonal")
+    public List<UsuarioAdminDTO> traerUsuarios(){
+        return servisUsu.traerUsuarios();
     }
 }
