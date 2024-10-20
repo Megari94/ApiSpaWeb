@@ -64,10 +64,10 @@ public class ServicioService implements IServicioService{
             .collect(Collectors.toList());
     }
     @Override
-    public List<ServicioDTO> getAllServicios() {
+    public List<ServicioAdminDTO> getAllServiciosAdmin() {
         List<Servicio> servicios = serviciorepo.findAll();
         return servicios.stream()
-                .map(servicio -> new ServicioDTO(servicio.getId(), servicio.getNombreServicio()))
+                .map(servicio -> new ServicioDTO(servicio.getId(), servicio.getNombreServicio(), servicio.getNroEtapas(), servicio.getPersonalNombre()
                 .collect(Collectors.toList());
     }
 
