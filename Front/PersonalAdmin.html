@@ -154,7 +154,7 @@ const apiUrl = 'https://spaadministrativo-production-4488.up.railway.app'; // Ca
 // Función para cargar personal desde la API
 async function cargarPersonal() {
     try {
-        const response = await fetch(apiUrl); // Realizamos una petición GET a la API
+        const response = await fetch(`${apiUrl}/Administrador/traerPersonal`); // Realizamos una petición GET a la API
         const data = await response.json();   // Convertimos la respuesta a JSON
         mostrarPersonal(data);                // Llamamos a la función que muestra los datos en la tabla
     } catch (error) {
@@ -243,7 +243,7 @@ async function guardarEdicionPersonal() {
         };
 
         try {
-            const response = await fetch(`${apiUrl}/${personaIndex}`, {
+            const response = await fetch(`${apiUrl}/Personal/editar/${personaIndex}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -269,7 +269,7 @@ async function darDeBaja(id) {
 
     if (confirmar) {
         try {
-            const response = await fetch(`${apiUrl}/${id}`, {
+            const response = await fetch(`${apiUrl}/Personal/eliminar/${id}`, {
                 method: 'DELETE',
             });
 
