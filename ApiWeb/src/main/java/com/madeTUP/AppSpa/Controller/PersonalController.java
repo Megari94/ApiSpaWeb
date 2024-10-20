@@ -85,7 +85,7 @@ public Personal editPersonal(@PathVariable Long id_personal,
      }
 @PostMapping("Personal/login")
     public ResponseEntity<Map<String, Object>> loginPersonal(@RequestBody ClienteLoginDTO pers) {
-        String token = "token-appspa-24";
+        
         Map<String, Object> response = new HashMap<>();
         response.put("success", true);
         response.put("message", "Bienvenido, " + pers.getUsername() + ". Inicio de sesión exitoso.");
