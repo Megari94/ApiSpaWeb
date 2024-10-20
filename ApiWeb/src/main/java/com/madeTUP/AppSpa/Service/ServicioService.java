@@ -4,6 +4,7 @@
  */
 package com.madeTUP.AppSpa.Service;
 
+import com.madeTUP.AppSpa.DTO.ServicioAdminDTO;
 import com.madeTUP.AppSpa.DTO.ServicioDTO;
 import com.madeTUP.AppSpa.Model.Servicio;
 import com.madeTUP.AppSpa.Repository.IServicioRepository;
@@ -63,12 +64,12 @@ public class ServicioService implements IServicioService{
             .map(servicio -> new ServicioDTO(servicio.getId(), servicio.getNombreServicio()))
             .collect(Collectors.toList());
     }
-    @Override
-    public List<ServicioAdminDTO> getAllServiciosAdmin() {
-        List<Servicio> servicios = serviciorepo.findAll();
-        return servicios.stream()
-                .map(servicio -> new ServicioDTO(servicio.getId(), servicio.getNombreServicio(), servicio.getNroEtapas(), servicio.getPersonalNombre()
-                .collect(Collectors.toList());
-    }
+
+   @Override
+public List<ServicioAdminDTO> getAllServiciosAdmin() {
+    List<ServicioAdminDTO> lista=serviciorepo.findAllServiciosWithPersonal();
+    return lista;
+}
+
 
 }
