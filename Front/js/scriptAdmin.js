@@ -26,6 +26,10 @@ document.getElementById("PersonalLink").addEventListener("click", function(event
     event.preventDefault();  // Evita la acción predeterminada del enlace
     window.location.href = "PersonalAdmin.html";  // Redirige a la nueva página
 });
+document.getElementById("clienteAdminLink").addEventListener("click", function(event) {
+    event.preventDefault();  // Evita la acción predeterminada del enlace
+    window.location.href = "ClientesAdmin.html";  // Redirige a la nueva página
+});
 let etapasData = [
     { id: 1, nombre: 'Masajes', etapa: '1 de 3', personalCargo: 'Carlos' },
     { id: 2, nombre: 'Manicura', etapa: '1 de 1', personalCargo: 'Marta' },
@@ -135,7 +139,7 @@ window.onload = function() {
 
 // Función para redirigir a la página de inicio de sesión
 function redirectToLogin() {
-    window.location.href = "Login.html";
+    window.location.href = "index.html";
 }
 
 // Función para abrir/cerrar el menú lateral
