@@ -112,6 +112,7 @@
             justify-content: center;
             align-items: center;
         }
+
         .logout-btn {
             padding: 15px 20px;
             background-color: #f48fb1;
@@ -120,7 +121,8 @@
             border: none;
             cursor: pointer;
             border-radius: 4px;
-            margin: 20px 15px;
+            margin: 0px 15px;
+            margin-bottom: 50px; /* Reduce este valor según lo que necesites */
             transition: background-color 0.3s;
         }
         .logout-btn:hover {
@@ -263,8 +265,9 @@
 label {
     display: block;
     margin-bottom: 5px;
+    color: #fc90b4;
     font-weight: bold;
-    color:#f8bbd0;
+    color:fc90b4;
 }
 
 .form-group {
@@ -274,8 +277,8 @@ label {
 .date-range-form {
     margin-bottom: 20px;
     background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
+    padding: 50px;
+    border-radius: 10px;
     box-shadow: 0px 4px 12px rgba(250, 128, 138, 0.5);
     margin-top: 100px;
 }
@@ -305,7 +308,7 @@ label {
 }
 
 .date-range-form button {
-    padding: 10px 15px;
+    padding: 15px 25px;
     border: none;
     border-radius: 4px;
     background-color: #f48fb1;
@@ -313,7 +316,7 @@ label {
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
-    margin-left: 20px;
+    margin-left: 30px;
 }
 
 .date-range-form button:hover {
@@ -346,7 +349,7 @@ th, td {
 }
 
 th {
-    background-color: #f8bbd0;
+    background-color: #f48fb1;
     color: white;
     font-weight: bold;
 }
@@ -372,8 +375,8 @@ tr:nth-child(even) {
 h3 {
     font-family: "Arima", system-ui;
     font-weight: 700;
-    color: #f8bbd0;
-    font-size: 30px; 
+    color: #fc90b4;
+    font-size: 40px; 
     margin-bottom: 10px;
 }
 /*personal*/
@@ -387,9 +390,11 @@ h3 {
     color: white;
 }
 
+
 .action-buttons button:hover {
     background-color: #f06292; /* Color al pasar el ratón */
 }
+
 
 .add-button {
     margin-right: 40px;
@@ -429,4 +434,57 @@ h3 {
 .search-input:focus {
     border-color: #ff69b4; /* Cambiar el color del borde al enfocar */
     outline: none;
+}
+
+
+ /* Estilos para el modal */
+ .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #ffe3ec;
+    width: 40%;
+    border-radius: 8px;
+    text-align: left; /* Cambiado a alineación izquierda */
+}
+
+
+.modal input {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.modal button {
+    background-color: #f8bbd0;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 20px 0;
+}
+
+.modal button:hover {
+    background-color: #ff72a1;
+}
+
+.p .bajaMensaje {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 20px 0; /* Espacio superior e inferior */
+    text-align: left; /* Alineación del texto a la izquierda */
 }
