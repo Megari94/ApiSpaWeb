@@ -147,4 +147,3 @@ function filtrarTurnos() {
         rows[i].style.display = found ? '' : 'none';
     }
 }
-
