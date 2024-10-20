@@ -4,10 +4,12 @@
  */
 package com.madeTUP.AppSpa.Service;
 
+import com.madeTUP.AppSpa.DTO.UsuarioAdminDTO;
 import com.madeTUP.AppSpa.Model.Administrador;
 import com.madeTUP.AppSpa.Model.Personal;
 import com.madeTUP.AppSpa.Model.Secretaria;
 import com.madeTUP.AppSpa.Model.Usuario;
+import com.madeTUP.AppSpa.Repository.IUsuarioRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UsuarioService implements IUsuarioService{
+    @Autowired
+    private IUsuarioRepository repo;
     @Autowired 
     private AdministradorService serviAdmin;
     @Autowired
@@ -57,6 +61,23 @@ public boolean verifyPassword(Usuario usuario, String password) {
     // Comparar la contraseña proporcionada con la contraseña almacenada
     return usuario.getContrasenia().equals(password);
 }
+
+    @Override
+    public List<UsuarioAdminDTO> traerUsuarios() {
+        List<UsuarioAdminDTO> ususAdmin= new ArrayList<>();
+        List<Usuario> usuarios=repo.findAll();
+        for(Usuario usuario:usuarios){
+            UsuarioAdminDTO u=new UsuarioAdminDTO();
+            u.setId(usuario.getId());
+            u.setContrasenia(usuario.getContrasenia());
+            u.setNombre_usuario(usuario.getNombre_usuario());
+            u.setNombre(usuario.getNombre());
+            u.setApellido(usuario.getApellido());
+            u.setCorreo(usuario.getCorreo());
+            ususAdmin.add(u);
+        }
+        return ususAdmin;
+    }
 
     
 }
