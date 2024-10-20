@@ -149,17 +149,34 @@
     </div>
 
     <script>
+        let personalData = [];
+let personalIdSeleccionado = null;
    // URL de la API
 const apiUrl = 'https://spaadministrativo-production-4488.up.railway.app'; // Cambia esto a la URL de tu API
 
 // Función para cargar personal desde la API
 async function cargarPersonal() {
     try {
-        const response = await fetch(`${apiUrl}/Administrador/traerPersonal`); // Realizamos una petición GET a la API
-        const data = await response.json();   // Convertimos la respuesta a JSON
-        mostrarPersonal(data);                // Llamamos a la función que muestra los datos en la tabla
+        const response = await fetch(`${apiUrl}/Administrador/traerPersonal`);
+        const data = await response.json();
+        personalData = data;
+        mostrarPersonal(data);
     } catch (error) {
         console.error('Error al cargar el personal:', error);
+    }
+}
+
+function abrirModalEditarPersonal(id) {
+    const persona = personalData.find(p => p.id === id);
+
+    if (persona) {
+        personalIdSeleccionado = id;
+        document.getElementById('nombreUsuarioEditar').value = persona.nombre_usuario;
+        document.getElementById('nombreEditar').value = persona.nombre;
+        document.getElementById('apellidoEditar').value = persona.apellido;
+        document.getElementById('correoEditar').value = persona.correo;
+        document.getElementById('contrasenaEditar').value = persona.contrasenia;
+        document.getElementById('modalEditarPersonal').style.display = 'block';
     }
 }
 
@@ -233,19 +250,7 @@ async function guardarPersonal() {
 }
 
 // Abrir modal para editar personal
-function abrirModalEditarPersonal(id) {
-    const persona = personalData.find(p => p.id === id);
 
-    if (persona) {
-        personalIdSeleccionado = id;
-        document.getElementById('nombreUsuarioEditar').value = persona.nombreUsuario;
-        document.getElementById('apellidoEditar').value = persona.apellido;
-        document.getElementById('correoEditar').value = persona.correo;
-        document.getElementById('contrasenaEditar').value = persona.contrasena;
-
-        document.getElementById('modalEditarPersonal').style.display = 'block';
-    }
-}
 
 // Función para editar personal usando la API
 async function guardarEdicionPersonal() {
