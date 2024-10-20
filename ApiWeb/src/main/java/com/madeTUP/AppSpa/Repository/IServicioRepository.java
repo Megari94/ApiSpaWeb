@@ -4,8 +4,11 @@
  */
 package com.madeTUP.AppSpa.Repository;
 
+import com.madeTUP.AppSpa.DTO.ServicioAdminDTO;
 import com.madeTUP.AppSpa.Model.Servicio;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,5 +17,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface IServicioRepository extends JpaRepository<Servicio,Long>{
-    
+    @Query("SELECT new com.madeTUP.AppSpa.DTO.ServicioAdminDTO(s.id, s.nombreServicio, s.nroEtapas, u.nombre, u.apellido) " +
+           "FROM Servicio s " +
+           "JOIN s.personal u")
+   List<ServicioAdminDTO> findAllServiciosWithPersonal();
 }
