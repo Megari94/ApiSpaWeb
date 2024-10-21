@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Facturas</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/estilo.css">
+    <script src="js/scriptAdmin.js" defer></script>
+    <script src="js/factura.js" defer></script>
+    <script src="js/script.js" defer></script>
+    
+    <style>
+        /* Aquí puedes agregar estilos adicionales si es necesario */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Barra de Menú Lateral -->
+        <div id="sidebar" class="sidebar">
+            <div class="link-container">
+                <a href="#" id="clienteAdminLink"><i class="fas fa-users"></i>Clientes</a>
+                <a href="#" id="PersonalLink"><i class="fas fa-user-tie"></i>Personal</a>
+                <a href="#" id="TurnoLink"><i class="fas fa-calendar-alt"></i>Turno</a>
+                <a href="#" id="ServicioLink"><i class="fas fa-concierge-bell"></i>Servicio</a>
+                <a href="#"  id="IPAdminLink"><i class="fas fa-wallet"></i>Informe de Pagos</a>
+                <a href="#" id="ISAdminLink"><i class="fas fa-file-alt"></i>Informe de Servicios</a>
+                <a href="#" id="turnoAdminLink"><i class="fas fa-chart-pie"></i>Turnos Solicitados</a>
+                <a href="#" id="facturaAdminLink"><i class="fas fa-receipt"></i>Factura</a>
+            </div>
+            <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="main-content">
+            <button id="menuButton" class="open-btn" onclick="toggleMenu()">☰ Menú</button>
+            <div class="invoice-section">
+                <h2>Factura</h2>
+                <div class="form-container">
+                    <input type="date" id="invoiceDate" placeholder="Fecha de la Factura" value="">
+                    <input type="text" id="clientName" placeholder="Nombre del Cliente">
+                    <div id="servicesContainer"></div>
+                    <button id="addService" onclick="addService()">Agregar Servicio</button>
+                    <input type="text" id="totalAmount" class="total" placeholder="Total" readonly>
+                    <button id="generateInvoice" onclick="generarFactura()">Generar Factura</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
