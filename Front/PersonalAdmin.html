@@ -237,16 +237,16 @@ async function guardarPersonal() {
 
     if (nombre_usuario && nombre && apellido && correo && contrasenia && tipoUsuario) {
         const nuevoPersonal = {
-            nombre_usuario,
             nombre,
             apellido,
+            nombre_usuario,
             correo,
             contrasenia,
             tipoUsuario
         };
 
         try {
-            const response = await fetch(`${apiUrl}/Personal/agregar`, {
+            const response = await fetch(`${apiUrl}/Administrador/crearUsuario`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
