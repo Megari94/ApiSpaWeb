@@ -110,8 +110,8 @@ public ResponseEntity<Map<String, Object>> crearServicio(@RequestBody ServicioAd
 }
 
 
-    @PutMapping("/editarAdmin")
-public void editServicioIIAdmin(@RequestBody ServicioAdministradorDTO c) {
+   @PutMapping("/editarAdmin")
+public ResponseEntity<Map<String, String>> editServicioIIAdmin(@RequestBody ServicioAdministradorDTO c) {
     // Buscar el servicio existente
     Servicio servicio = servis.findServicio(c.getId());
     if (servicio == null) {
@@ -130,7 +130,13 @@ public void editServicioIIAdmin(@RequestBody ServicioAdministradorDTO c) {
     servicio.setPersonal(personal);
     
     servis.editServicioII(servicio);
+    
+    // Devolver una respuesta vacía pero en formato JSON
+    Map<String, String> response = new HashMap<>();
+    response.put("message", "Servicio actualizado correctamente");
+    return ResponseEntity.ok(response);
 }
+
 
 }
  
