@@ -12,8 +12,15 @@ package com.madeTUP.AppSpa.Controller;
 import com.madeTUP.AppSpa.DTO.ClienteLoginDTO;
 import com.madeTUP.AppSpa.DTO.UsuarioAdminDTO;
 import com.madeTUP.AppSpa.Model.Administrador;
+import com.madeTUP.AppSpa.Model.Personal;
+import com.madeTUP.AppSpa.Model.Secretaria;
+import com.madeTUP.AppSpa.Model.Servicio;
+import com.madeTUP.AppSpa.Model.Usuario;
 import com.madeTUP.AppSpa.Service.IAdministradorService;
+import com.madeTUP.AppSpa.Service.IPersonalService;
+import com.madeTUP.AppSpa.Service.ISecretariaService;
 import com.madeTUP.AppSpa.Service.IUsuarioService;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +39,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdministradorController {
     @Autowired 
     private IAdministradorService servis;
-     @Autowired 
+    @Autowired
     private IUsuarioService servisUsu;
+    @Autowired
+    private IPersonalService servisP;
+    @Autowired
+    private ISecretariaService servisS;
     
      @GetMapping("/Administrador/traer")
     public List<Administrador> getAdministrador(){
@@ -89,5 +100,52 @@ public Administrador editAdministrador(@PathVariable Long id_administrador,
     @GetMapping("Administrador/traerPersonal")
     public List<UsuarioAdminDTO> traerUsuarios(){
         return servisUsu.traerUsuarios();
+    }
+     @PostMapping("/Administrador/crearuUsuario")
+    public String crearPerfilUsuario(@RequestBody Usuario c){
+        if(null == c.getTipoUsuario()){
+            Administrador p=new Administrador();
+            p.setNombre(c.getNombre());
+            p.setApellido(c.getApellido());
+            p.setNombre_usuario(c.getNombre_usuario());
+            p.setCorreo(c.getCorreo());
+            p.setContrasenia(c.getContrasenia());
+            p.setTipoUsuario(c.getTipoUsuario());
+            servis.saveAdministrador(p);
+        }else switch (c.getTipoUsuario()) {
+            case "PERSONAL" ->                 {
+                    Personal p=new Personal();
+                    p.setNombre(c.getNombre());
+                    p.setApellido(c.getApellido());
+                    p.setNombre_usuario(c.getNombre_usuario());
+                    p.setCorreo(c.getCorreo());
+                    p.setContrasenia(c.getContrasenia());
+                    p.setTipoUsuario(c.getTipoUsuario());
+                    List<Servicio> listaServicio=new ArrayList<>();
+                    p.setListaServicio(listaServicio);
+                    servisP.savePersonal(p);
+                }
+            case "SECRETARIA" ->                 {
+                    Secretaria p=new Secretaria();
+                    p.setNombre(c.getNombre());
+                    p.setApellido(c.getApellido());
+                    p.setNombre_usuario(c.getNombre_usuario());
+                    p.setCorreo(c.getCorreo());
+                    p.setContrasenia(c.getContrasenia());
+                    p.setTipoUsuario(c.getTipoUsuario());
+                    servisS.saveSecretaria(p);
+                }
+            default ->                 {
+                    Administrador p=new Administrador();
+                    p.setNombre(c.getNombre());
+                    p.setApellido(c.getApellido());
+                    p.setNombre_usuario(c.getNombre_usuario());
+                    p.setCorreo(c.getCorreo());
+                    p.setContrasenia(c.getContrasenia());
+                    p.setTipoUsuario(c.getTipoUsuario());
+                    servis.saveAdministrador(p);
+                }
+        }
+        return "Usuario creado";
     }
 }
