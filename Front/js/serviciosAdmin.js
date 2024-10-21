@@ -119,21 +119,31 @@ function abrirModalEditar(servicioId) {
     const servicio = serviciosData.find(s => s.id === servicioId);
     if (servicio) {
         document.getElementById("nombreEditar").value = servicio.nombreServicio;
-        document.getElementById("etapaEditar").value = servicio.nroEtapas; // Cambia si el nombre del campo es diferente
+        document.getElementById("etapaEditar").value = servicio.nroEtapas;
 
-        // Llamamos a cargarPersonal para asegurarnos de que el desplegable esté actualizado
+        // Llamamos a cargarPersonal y luego seleccionamos el personal una vez que esté cargado
         cargarPersonal().then(() => {
-            // Una vez que el personal esté cargado, seleccionamos el personal correspondiente
-            document.getElementById("personalCargoEditar").value = servicio.personal.id; // Asegúrate de que el ID esté correctamente mapeado
+            // Después de cargar las opciones, seleccionamos el personal correcto
+            const selectPersonal = document.getElementById("personalCargoEditar");
+            
+            // Seleccionar el personal del servicio
+            const options = selectPersonal.options;
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].value == servicio.personal.id) {
+                    selectPersonal.selectedIndex = i;
+                    break;
+                }
+            }
         });
 
         // Guarda el ID del servicio para su uso en la función de guardado
         document.getElementById("formEditar").setAttribute("data-servicio-id", servicioId);
-        
+
         // Abre el modal
         document.getElementById("modalEditar").style.display = "block";
     }
 }
+
 
 function cargarPersonal() {
     return fetch("https://spaadministrativo-production-4488.up.railway.app/Personal/PersonalDTO")
