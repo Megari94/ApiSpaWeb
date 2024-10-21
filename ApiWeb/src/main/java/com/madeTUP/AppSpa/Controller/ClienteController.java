@@ -118,7 +118,7 @@ public class ClienteController {
          return "Consulta Agregada";
      }
      
- @CrossOrigin(origins = "*")
+
 @PostMapping("/Cliente/login")
 public ResponseEntity<Map<String, Object>> loginCliente(@RequestBody ClienteLoginDTO clienteDTO) {
     List<Cliente> listaClientes = servis.getClientes();
@@ -148,7 +148,7 @@ public ResponseEntity<Map<String, Object>> loginCliente(@RequestBody ClienteLogi
 
 
 
-@CrossOrigin(origins = "*")
+
 @GetMapping("/cliente/perfil")
     public ResponseEntity<ClientePerfilDTO> getPerfilCliente(@RequestParam Long clienteId) {
         Cliente cliente1= servis.findCliente(clienteId);
@@ -167,7 +167,7 @@ public ResponseEntity<Map<String, Object>> loginCliente(@RequestBody ClienteLogi
         return ResponseEntity.ok(perfilDTO);
     }
     
-    @CrossOrigin(origins = "*")
+
 @GetMapping("/clientes/traerClientes")
 public ResponseEntity<List<ClienteDTO>> getClientesD() {
     List<Cliente> clientes = servis.getClientes();
@@ -181,7 +181,7 @@ public ResponseEntity<List<ClienteDTO>> getClientesD() {
     return new ResponseEntity<>(clienteDTOs, HttpStatus.OK);
 }
 
- @CrossOrigin(origins = "*")
+
 @GetMapping("/clientes/traerClientesAdmin")
 public ResponseEntity<List<ClientePerfilDTO>> getClientesAdmin() {
     List<Cliente> clientes = servis.getClientes();
