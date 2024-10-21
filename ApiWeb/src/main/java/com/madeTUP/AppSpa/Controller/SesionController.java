@@ -187,6 +187,18 @@ public ResponseEntity<String> rechazarSesion(@PathVariable Long id_sesion) {
     }
 }
 
+@PutMapping("/Sesion/cancelar/{id_sesion}")
+public ResponseEntity<String> cancelarSesion(@PathVariable Long id_sesion) {
+    try {
+        // Llama al método editSesion para actualizar el estado de asistencia a "CANCELADO"
+        servis.editSesion(id_sesion, null, null, null, null, "CANCELADO");
+        return ResponseEntity.ok("Sesión cancelada");
+    } catch (EntityNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sesión no encontrada");
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al cancelar la sesión: " + e.getMessage());
+    }
+}
 
 
 }
