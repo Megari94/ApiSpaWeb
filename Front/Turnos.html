@@ -137,8 +137,9 @@
 <select id="servicioSelect" size="5" onchange="seleccionarServicio()" style="display: none;"></select>
 
 
-            <label for="hora">Hora:</label>
-            <input type="time" id="hora" name="hora" required> <!-- Cambiado a 'time' para hora -->
+          <label for="fechaHora">Fecha y Hora:</label>
+<input type="datetime-local" id="fechaHora" name="fechaHora" required>
+
 
             <label for="costo">Costo:</label> <!-- Etiqueta para el nuevo campo -->
             <input type="number" id="costo" name="costo" required step="0.01" min="0"> <!-- Campo para costo -->
