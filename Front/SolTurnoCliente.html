@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="css/estilo.css">
 
     <script src="js/cliente.js" defer></script> <!-- Este archivo gestionará la solicitud de turno -->
+    <style> .form-container {
+            margin: 20px;
+            padding: 20px;
+            background-color: #fce4ec;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(250, 128, 138, 0.5);
+        } </style>
 </head>
 <body data-page="SolTurnoCliente">
     <div class="container">
@@ -23,6 +30,7 @@
         <!-- Contenido Principal -->
         <div class="main-content">
             <button id="menuButton" class="open-btn">☰ Menú</button>
+            <div class="form-container">
             <h2>Solicitar Turno</h2>
             <form id="appointmentForm">
             <label for="appointmentDateTime">Fecha y Hora:</label>
@@ -43,6 +51,7 @@
                 <button type="submit" class="btn btn-primary">Guardar Turno</button>
             </form>
         </div>
+    </div>
     </div>
 </body>
 </html>
