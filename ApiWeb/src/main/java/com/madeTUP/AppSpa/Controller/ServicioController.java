@@ -100,7 +100,7 @@ public String crearServicio(@RequestBody ServicioAdministradorDTO c) {
     return "Servicio creado";
 }
 
-    @PutMapping("/Servicio/editarII")
+    @PutMapping("/Servicio/editarAdmin")
 public void editServicioIIAdmin(@RequestBody ServicioAdministradorDTO c) {
     // Buscar el servicio existente
     Servicio servicio = servis.findServicio(c.getId());
