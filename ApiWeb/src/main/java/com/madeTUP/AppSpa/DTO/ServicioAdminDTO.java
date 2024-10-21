@@ -22,12 +22,16 @@ public class ServicioAdminDTO {
     public ServicioAdminDTO() {
     }
 
-    public ServicioAdminDTO(Long id, String nombreServicio, Long nroEtapas, String personalNombre) {
+    public ServicioAdminDTO(Long id, String nombreServicio, Long nroEtapas, String personalNombre, String personalApellido) {
         this.id = id;
         this.nombreServicio = nombreServicio;
         this.nroEtapas = nroEtapas;
         this.personalNombre = personalNombre;
+        this.personalApellido = personalApellido;
     }
+
+    
+    
 
     
 }
