@@ -190,20 +190,7 @@
             margin-top: 10px;
         }
 /*Pagos*/
-        table {
-            border-collapse: collapse;
-            width: 80%;
-            background-color: #ffe6f2; /* Rosa pastel */
-            border-radius: 10px;
-            overflow: hidden;
-        }
 
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #ffb3d1; /* Rosa más oscuro */
-            white-space: nowrap; /* Para que todo quede en una sola línea */
-        }
 
         th {
             background-color: #f8bbd0; /* Rosa pastel más oscuro */
@@ -339,14 +326,27 @@ table {
     border-radius: 10px;
     overflow: hidden;
     margin: 0 auto; /* Centra la tabla en la pantalla */
+     border: 5px solid;
+     
 }
 
 th, td {
     padding: 10px;
-    text-align: left;
+    
     font-size: 1rem;
     word-wrap: break-word; /* Permite que el texto se ajuste dentro de la celda */
+     border-bottom: 1px solid #ffb3d1; /* Rosa más oscuro */
+       white-space: nowrap; /* Para que todo quede en una sola línea */
+       text-align: center;
 }
+        table {
+
+            background-color: #ffe6f2; /* Rosa pastel */
+          
+         
+        }
+
+      
 th {
     background-color: #f48fb1;
     color: white;
@@ -414,7 +414,6 @@ h3 {
 
 /* Estilo para el contenedor del buscador y botón */
 .search-container {
-    display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
