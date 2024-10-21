@@ -42,6 +42,12 @@ async function obtenerTurnos() {
     }
 }
 
+function filtrarTurnos() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Convertir el valor a minúsculas
+    const turnosFiltrados = turnos.filter(turno => turno.nombre_completo.toLowerCase().includes(searchInput)); // Filtrar por nombre
+
+    mostrarTurnos(turnosFiltrados); // Mostrar los turnos filtrados
+}
 // Función para cancelar el turno
 // Función para cancelar el turno sin preguntar y actualizar la interfaz
 async function cancelarTurno(turnoId, boton) {
