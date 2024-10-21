@@ -12,6 +12,7 @@ import com.madeTUP.AppSpa.Model.Servicio;
 import com.madeTUP.AppSpa.Model.Sesion;
 import com.madeTUP.AppSpa.Service.IPersonalService;
 import com.madeTUP.AppSpa.Service.ISesionService;
+import com.madeTUP.AppSpa.DTO.PersonalServicioDTO;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -101,6 +102,17 @@ public Personal editPersonal(@PathVariable Long id_personal,
         return ResponseEntity.ok(sesiones);
     }
 
-
+@GetMapping("/Personal/PersonalDTO")
+    public List<PersonalServicioDTO> getPersonalAdmin(){
+        List<PersonalServicioDTO> listadto=new ArrayList<>();
+        List<Personal> lista= this.getPersonal();
+        for(Personal p:lista){
+            PersonalServicioDTO PD=new PersonalServicioDTO();
+            PD.setId(p.getId());
+            PD.setNombre_Completo(p.getNombre()+" "+p.getApellido());
+            listadto.add(PD);
+        }
+        return listadto;
+    }
 
 }
