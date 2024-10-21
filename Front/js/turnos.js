@@ -16,7 +16,7 @@ async function obtenerTurnos() {
                 <td>${turno.asistencia}</td>
                 <td>${turno.costo}</td>
                 <td>${turno.fecha}</td>
-                <td>${turno.nombre_cliente}</td>
+                <td>${turno.nombre_completo}</td>
                 <td>${turno.nombre_servicio}</td>
                 <td>
                     <button onclick="cancelarTurno(${turno.id})" class="cancelar-btn">Cancelar</button>
