@@ -127,8 +127,9 @@
         <h3>Agregar Personal</h3>
         <form id="formAgregarPersonal">
            <label for="nombreCliente">Nombre del Cliente:</label>
-            <select id="nombreCliente" name="nombreCliente" required>
-                <option value="" disabled selected>Selecciona un cliente</option>
+            <input type="text" id="nombreUsuario" name="nombreUsuario" oninput="filtrarClientes()" required>
+           <select id="clienteSelect" size="5" onchange="seleccionarCliente()" style="display: none;">
+               
             </select>
 
             <label for="apellido">Servicio:</label>
