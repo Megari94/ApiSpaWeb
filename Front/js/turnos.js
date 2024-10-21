@@ -9,21 +9,24 @@ async function obtenerTurnos() {
         tableBody.innerHTML = ''; // Limpiar la tabla antes de insertar los datos
 
         turnos.forEach(turno => {
-            const fila = document.createElement('tr');
-            
-            fila.innerHTML = `
-                <td>${turno.id}</td>
-                <td>${turno.asistencia}</td>
-                <td>${turno.costo}</td>
-                <td>${turno.fecha}</td>
-                <td>${turno.nombre_completo}</td>
-                <td>${turno.nombre_servicio}</td>
-                <td>
-                    <button onclick="cancelarTurno(${turno.id})" class="cancelar-btn">Cancelar</button>
-                </td>
-            `;
+            // Mostrar solo turnos que estén en estado 'confirmado' o 'cancelado'
+            if (turno.estado === 'confirmado' || turno.estado === 'cancelado') {
+                const fila = document.createElement('tr');
+                
+                fila.innerHTML = `
+                    <td>${turno.id}</td>
+                    <td>${turno.asistencia}</td>
+                    <td>${turno.costo}</td>
+                    <td>${turno.fecha}</td>
+                    <td>${turno.nombre_completo}</td>
+                    <td>${turno.nombre_servicio}</td>
+                    <td>
+                        <button onclick="cancelarTurno(${turno.id})" class="cancelar-btn">Cancelar</button>
+                    </td>
+                `;
 
-            tableBody.appendChild(fila);
+                tableBody.appendChild(fila);
+            }
         });
     } catch (error) {
         console.error('Error al obtener los turnos:', error);
