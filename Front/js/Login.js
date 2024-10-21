@@ -1,21 +1,62 @@
-// login.js
+// Escucha el envío del formulario
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Evita que el formulario se envíe de forma tradicional
 
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    let apiUrl = ''; // URL de la API
-
-    // Lógica para determinar la URL de la API según el rol seleccionado
+    // Lógica para determinar el rol seleccionado y llamar a la función correspondiente
     if (document.getElementById('roleCliente').checked) {
-        apiUrl = 'https://spaadministrativo-production-4488.up.railway.app/Cliente/login';
-    } else {
-        apiUrl = 'https://spaadministrativo-production-4488.up.railway.app/login';
+        loginCliente(username, password);  // Llamar la función para cliente
+    } else if (document.getElementById('rolePersonal').checked) {
+        loginPersonal(username, password);  // Llamar la función para personal
     }
+});
 
-    // Enviar la solicitud a la API
-    fetch(apiUrl, {
+// Función para loguear un cliente
+function loginCliente(username, password) {
+    fetch('https://spaadministrativo-production-4488.up.railway.app/Cliente/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }), // Enviar credenciales
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la autenticación del cliente'); // Maneja errores de red o backend
+        }
+        return response.json(); // Convierte la respuesta a JSON
+    })
+    .then(data => {
+        // Verifica si el inicio de sesión fue exitoso
+        if (data.success) {
+            // Guarda el token, nombre de usuario y rol en el localStorage
+            localStorage.setItem('token', data.token); // Guarda el token
+            localStorage.setItem('idCliente', data.Id); // Guarda el ID del cliente
+            localStorage.setItem('nombreUsuario', data.nombre_usuario); // Guarda el nombre de usuario
+            localStorage.setItem('rol', 'Cliente'); // Guarda el rol como cliente
+
+            // Verifica que los valores se hayan almacenado correctamente
+            console.log('Token cliente almacenado:', data.token);
+            console.log('ID de Cliente almacenado:', data.Id);
+            
+            // Redirige a la página del cliente
+            window.location.href = '/cliente/Cliente.html';
+        } else {
+            // Muestra un mensaje de error si la autenticación no fue exitosa
+            throw new Error(data.message || 'Inicio de sesión fallido para cliente');
+        }
+    })
+    .catch(error => {
+        // Muestra el mensaje de error en la página
+        document.getElementById('error-message').innerText = error.message;
+    });
+}
+
+// Función para loguear personal
+function loginPersonal(username, password) {
+    fetch('https://spaadministrativo-production-4488.up.railway.app/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -33,7 +74,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         if (data.success) {
             // Guarda el token, nombre de usuario y rol en el localStorage
             localStorage.setItem('token', data.token); // Guarda el token
-            localStorage.setItem('idPersonal', data.Id);
+            localStorage.setItem('idPersonal', data.Id); // Guarda el ID del personal
             localStorage.setItem('nombreUsuario', data.nombre_usuario); // Guarda el nombre de usuario
             localStorage.setItem('rol', data.rol); // Guarda el rol del usuario
 
@@ -64,4 +105,4 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         // Muestra el mensaje de error en la página
         document.getElementById('error-message').innerText = error.message;
     });
-});
+}
