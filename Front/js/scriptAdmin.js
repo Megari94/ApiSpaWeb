@@ -104,7 +104,7 @@ window.onload = function() {
 
 // Función para redirigir a la página de inicio de sesión
 function redirectToLogin() {
-    window.location.href = "index.html";
+    window.location.href = "Login.html";
 }
 
 // Función para abrir/cerrar el menú lateral
