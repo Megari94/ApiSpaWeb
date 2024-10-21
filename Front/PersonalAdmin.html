@@ -190,6 +190,7 @@ function abrirModalEditarPersonal(id) {
         document.getElementById('apellidoEditar').value = persona.apellido;
         document.getElementById('correoEditar').value = persona.correo;
         document.getElementById('contrasenaEditar').value = persona.contrasenia;
+        document.getElementById('tipoUsuarioEditarText').textContent = persona.tipoUsuario;
         document.getElementById('modalEditarPersonal').style.display = 'block';
     }
 }
