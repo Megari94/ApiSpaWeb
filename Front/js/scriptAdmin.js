@@ -36,12 +36,12 @@ let etapaIdSeleccionada; // Variable global para ID de etapa seleccionada
 
 
 // Función para abrir el modal para agregar servicio
-function abrirModalAgregar() {
+/*function abrirModalAgregar() {
     document.getElementById('modalAgregar').style.display = 'block';
-}
+}*/
 
 // Función para guardar el nuevo servicio
-function guardarServicio() {
+/*/function guardarServicio() {
     const nombre = document.getElementById('nombreServicio').value;
     const personalCargo = document.getElementById('personalCargo').value;
     
@@ -56,10 +56,10 @@ function guardarServicio() {
     etapasData.push(nuevoServicio); // Agregar el nuevo servicio a la lista
     cargarEtapas(etapasData); // Recargar la tabla
     cerrarModal('modalAgregar'); // Cerrar el modal
-}
+}*/
 
 // Funciones de acción para editar
-function abrirModalEditar(id) {
+/*function abrirModalEditar(id) {
     etapaIdSeleccionada = id; // Guardar el ID de la etapa seleccionada
     const etapa = etapasData.find(e => e.id === id);
     document.getElementById('nombreEditar').value = etapa.nombre;
@@ -67,8 +67,8 @@ function abrirModalEditar(id) {
     document.getElementById('personalCargoEditar').value = etapa.personalCargo;
     document.getElementById('modalEditar').style.display = 'block';
 }
-
-function guardarEdicion() {
+*/
+/*function guardarEdicion() {
     const nombre = document.getElementById('nombreEditar').value;
     const etapa = document.getElementById('etapaEditar').value;
     const personalCargo = document.getElementById('personalCargoEditar').value;
@@ -78,7 +78,7 @@ function guardarEdicion() {
 
     cargarEtapas(etapasData);
     cerrarModal('modalEditar');
-}
+}*/
 
 // Funciones para dar de baja
 function abrirModalBaja(id) {
