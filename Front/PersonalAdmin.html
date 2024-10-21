@@ -274,24 +274,25 @@ async function guardarEdicionPersonal() {
     const apellido = document.getElementById('apellidoEditar').value;
     const correo = document.getElementById('correoEditar').value;
     const contrasena = document.getElementById('contrasenaEditar').value;
-  const tipoUsuario = document.getElementById('tipoUsuarioEditarText').textContent;
- // Aunque esté deshabilitado, obtenemos su valor
+    const tipoUsuario = document.getElementById('tipoUsuarioEditarText').textContent; // Obtenemos el valor del tipo de usuario
 
     const personaIndex = personalIdSeleccionado;
 
+    // Verifica que todos los campos tengan valores
     if (nombreUsuario && nombre && apellido && correo && contrasena && tipoUsuario) {
         const personalActualizado = {
-            nombreUsuario,
+            id: personaIndex, // Asegúrate de incluir el ID
+            nombre_usuario: nombreUsuario, // Cambiado a nombre_usuario
             nombre,
             apellido,
             correo,
-            contrasena,
-            tipoUsuario // Incluimos el tipo de usuario en el objeto enviado al backend
+            contrasenia: contrasena, // Cambiado a contrasenia
+            tipoUsuario // Este valor debe coincidir con lo que espera el backend
         };
 
         try {
-            const response = await fetch(`${apiUrl}/Personal/editar/${personaIndex}`, {
-                method: 'PUT',
+            const response = await fetch(`${apiUrl}/Administrador/editarPerfil`, { // Cambié la URL para coincidir con tu endpoint
+                method: 'POST', // Cambié a POST
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -307,6 +308,8 @@ async function guardarEdicionPersonal() {
         } catch (error) {
             console.error('Error al editar el personal:', error);
         }
+    } else {
+        console.error('Por favor, completa todos los campos.');
     }
 }
 // Función para eliminar personal usando la API
