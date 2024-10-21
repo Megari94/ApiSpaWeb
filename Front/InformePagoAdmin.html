@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="css/estilo.css">
+    <script src="js/script.js" defer></script>
+    <script src="js/scriptAdmin.js" defer></script>
+    <script src="js/factura.js" defer></script>
+    <style>
+        /* Estilo del formulario */
+        .form-container {
+            margin: 20px;
+            padding: 20px;
+            background-color: #fce4ec;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(250, 128, 138, 0.5);
+        } 
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Barra de Menú Lateral -->
+        <div id="sidebar" class="sidebar">
+            <div class="link-container">
+                <a href="#" id="PersonalLink"><i class="fas fa-user-tie"></i>Personal</a>
+                <a href="#" id="TurnoLink"><i class="fas fa-calendar-alt"></i>Turno</a>
+                <a href="#" id="ServicioLink"><i class="fas fa-concierge-bell"></i>Servicio</a>
+                <a href="#"  id="IPAdminLink"><i class="fas fa-wallet"></i>Informe de Pagos</a>
+                <a href="#" id="ISAdminLink"><i class="fas fa-file-alt"></i>Informe de Servicios</a>
+                <a href="#" id="turnoAdminLink"><i class="fas fa-chart-pie"></i>Turnos Solicitados</a>
+                <a href="#" id="facturaAdminLink"><i class="fas fa-receipt"></i>Factura</a>
+            </div>
+            <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="main-content">
+            <button id="menuButton" class="open-btn" onclick="toggleMenu()">☰ Menú</button>
+
+            <!-- Formulario para el Informe de Ingresos -->
+            <div class="form-container">
+                <h2>Informe de Ingresos</h2>
+                <form id="informeForm" onsubmit="generarInforme(event)">
+                    <div class="form-group">
+                        <label for="fechaInicio">Fecha de Inicio:</label>
+                        <input type="date" id="fechaInicio" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaFin">Fecha de Fin:</label>
+                        <input type="date" id="fechaFin" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipoPago">Tipo de Pago:</label>
+                        <select id="tipoPago" required>
+                            <option value="">Seleccione un tipo de pago</option>
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="Tarjeta">Tarjeta</option>
+                            <option value="Transferencia">Transferencia</option>
+                        </select>
+                    </div>
+                    <button type="submit">Generar Informe</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor para vista previa del PDF -->
+    <div id="previewContainer" style="display:none;">
+        <iframe id="pdfPreview" style="width:100%; height:500px;"></iframe>
+        <button onclick="descargarInforme()">Descargar Informe</button>
+    </div>
+
+    <script>
+       
+    </script>
+    
+</body>
+</html>
