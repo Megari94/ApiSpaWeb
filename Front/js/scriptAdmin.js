@@ -34,36 +34,6 @@ document.getElementById("clienteAdminLink").addEventListener("click", function(e
 
 let etapaIdSeleccionada; // Variable global para ID de etapa seleccionada
 
-// Función para cargar datos en la tabla
-function cargarEtapas(data) {
-    const tableBody = document.getElementById('personalTableBody');
-    tableBody.innerHTML = ''; // Limpiar tabla antes de cargar
-
-    data.forEach(etapa => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${etapa.id}</td>
-            <td>${etapa.nombre}</td>
-            <td>${etapa.etapa}</td>
-            <td>${etapa.personalCargo}</td>
-            <td class="action-buttons">
-                <button onclick="abrirModalEditar(${etapa.id})">Editar</button>
-                <button onclick="abrirModalBaja(${etapa.id})">Dar de Baja</button>
-            </td>
-        `;
-        tableBody.appendChild(row);
-    });
-}
-
-// Función para filtrar las etapas por nombre del servicio o personal a cargo
-function filtrarEtapas() {
-    const searchInput = document.getElementById('searchInput').value.toLowerCase();
-    const filteredData = etapasData.filter(etapa =>
-        etapa.nombre.toLowerCase().includes(searchInput) || 
-        etapa.personalCargo.toLowerCase().includes(searchInput)
-    );
-    cargarEtapas(filteredData);
-}
 
 // Función para abrir el modal para agregar servicio
 function abrirModalAgregar() {
