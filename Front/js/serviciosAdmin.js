@@ -123,16 +123,20 @@ function abrirModalEditar(servicioId) {
 
         // Llamamos a cargarPersonal y luego seleccionamos el personal una vez que esté cargado
         cargarPersonal().then(() => {
-            // Después de cargar las opciones, seleccionamos el personal correcto
             const selectPersonal = document.getElementById("personalCargoEditar");
-            
-            // Seleccionar el personal del servicio
-            const options = selectPersonal.options;
-            for (let i = 0; i < options.length; i++) {
-                if (options[i].value == servicio.personal.id) {
-                    selectPersonal.selectedIndex = i;
-                    break;
+
+            // Verificamos si el servicio tiene personal asignado antes de intentar seleccionar
+            if (servicio.personal && servicio.personal.id) {
+                const options = selectPersonal.options;
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].value == servicio.personal.id) {
+                        selectPersonal.selectedIndex = i;
+                        break;
+                    }
                 }
+            } else {
+                // Si no hay personal asignado, podrías manejarlo de alguna manera (ej: mostrar una opción por defecto)
+                selectPersonal.selectedIndex = 0; // O cualquier otro valor por defecto
             }
         });
 
@@ -143,6 +147,7 @@ function abrirModalEditar(servicioId) {
         document.getElementById("modalEditar").style.display = "block";
     }
 }
+
 
 
 function cargarPersonal() {
