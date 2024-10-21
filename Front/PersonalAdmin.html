@@ -292,7 +292,7 @@ async function guardarEdicionPersonal() {
 
         try {
             const response = await fetch(`${apiUrl}/Administrador/editarPerfil`, { // Cambié la URL para coincidir con tu endpoint
-                method: 'POST', // Cambié a POST
+                method: 'PUT', // Cambié a POST
                 headers: {
                     'Content-Type': 'application/json',
                 },
