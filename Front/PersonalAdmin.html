@@ -313,25 +313,49 @@ async function guardarEdicionPersonal() {
     }
 }
 // Función para eliminar personal usando la API
-async function darDeBaja(id) {
-    const confirmar = confirm('¿Estás seguro de que deseas dar de baja a esta persona?');
+async function darDeBaja(idUsuario) {
+    const persona = personalData.find(p => p.id === idUsuario); // Encuentra al usuario en la tabla
 
-    if (confirmar) {
-        try {
-            const response = await fetch(`${apiUrl}/Personal/eliminar/${id}`, {
-                method: 'DELETE',
-            });
+    if (!persona) {
+        console.error('Usuario no encontrado');
+        return; // Salir si el usuario no se encuentra
+    }
 
-            if (response.ok) {
-                cargarPersonal();  // Recargar la tabla después de eliminar el personal
-            } else {
-                console.error('Error al eliminar el personal');
-            }
-        } catch (error) {
-            console.error('Error al eliminar el personal:', error);
+    // Crear el objeto para enviar al servidor, incluyendo el tipo de usuario
+    const usuarioDTO = {
+        id: persona.id,
+        tipoUsuario: persona.tipoUsuario // Incluir el tipo de usuario
+    };
+
+    try {
+        // Hacer la llamada al API
+        const response = await fetch(`${apiUrl}/Administrador/eliminarPerfil`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(usuarioDTO) // Convertir a JSON
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al dar de baja el usuario');
         }
+
+        // Manejar la respuesta de eliminación
+        if (response.status === 204) {
+            console.log('Usuario dado de baja con éxito');
+            // Actualizar la tabla después de eliminar
+            personalData = personalData.filter(p => p.id !== idUsuario); // Eliminar de los datos locales
+            mostrarPersonal(personalData); // Actualiza la tabla para reflejar los cambios
+        } else {
+            const data = await response.json();
+            console.log('Respuesta del servidor:', data);
+        }
+    } catch (error) {
+        console.error('Error:', error);
     }
 }
+
 
 // Cargar la tabla cuando la página se carga por primera vez
 window.onload = function() {
