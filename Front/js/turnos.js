@@ -1,54 +1,60 @@
-document.addEventListener("DOMContentLoaded", () => {
-    getTurnosData(); // Llama a la función para obtener los datos al cargar la página
-});
-
-// Función para obtener los datos de los turnos
-async function getTurnosData() {
+// Llamada para obtener los turnos desde la API
+async function obtenerTurnos() {
     try {
-        const response = await fetch("http://localhost:8080/Sesion/traer");
-        if (!response.ok) {
-            throw new Error(`Error HTTP: ${response.status}`);
-        }
+        const response = await fetch('https://spaadministrativo-production-4488.up.railway.app/Sesion/traerAdmin');
         const turnos = await response.json();
-        populateTable(turnos);
+
+        // Llenar la tabla con los datos obtenidos
+        const tableBody = document.getElementById('TableBody');
+        tableBody.innerHTML = ''; // Limpiar la tabla antes de insertar los datos
+
+        turnos.forEach(turno => {
+            const fila = document.createElement('tr');
+            
+            fila.innerHTML = `
+                <td>${turno.id}</td>
+                <td>${turno.asistencia}</td>
+                <td>${turno.costo}</td>
+                <td>${turno.fecha}</td>
+                <td>${turno.cliente}</td>
+                <td>${turno.servicio}</td>
+                <td>
+                    <button onclick="cancelarTurno(${turno.id})" class="cancelar-btn">Cancelar</button>
+                </td>
+            `;
+
+            tableBody.appendChild(fila);
+        });
     } catch (error) {
-        console.error("Error al obtener los datos de los turnos:", error);
+        console.error('Error al obtener los turnos:', error);
     }
 }
 
-// Función para llenar la tabla con los datos obtenidos
-function populateTable(turnos) {
-    const tableBody = document.querySelector("#turnosTable tbody");
-    tableBody.innerHTML = ""; // Limpia el contenido existente
+// Función para cancelar el turno
+async function cancelarTurno(turnoId) {
+    try {
+        const respuesta = confirm("¿Estás seguro de que deseas cancelar este turno?");
+        if (respuesta) {
+            // Actualizar el estado del turno en la base de datos (PUT o POST según API)
+            const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/cancelar/${turnoId}`, {
+                method: 'PUT', // Ajustar el método según la API (puede ser PUT o POST)
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ estado: 'Cancelado' }) // Mandar el estado actualizado
+            });
 
-    turnos.forEach(turno => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${turno.id}</td>
-            <td>${turno.asistencia}</td>
-            <td>${turno.costo}</td>
-            <td>${turno.fecha}</td>
-            <td>${turno.clienteId}</td>
-            <td>${turno.servicioId}</td>
-            <td>
-                <button onclick="editTurno(${turno.id})">Editar</button>
-                <button onclick="deleteTurno(${turno.id})">Eliminar</button>
-            </td>
-        `;
-        tableBody.appendChild(row);
-    });
-}
-
-// Función para editar un turno
-function editTurno(id) {
-    alert(`Editando turno con ID: ${id}`);
-    // Aquí puedes implementar la lógica para editar el turno
-}
-
-// Función para eliminar un turno
-function deleteTurno(id) {
-    if (confirm(`¿Estás seguro de que deseas eliminar el turno con ID: ${id}?`)) {
-        alert(`Eliminando turno con ID: ${id}`);
-        // Aquí puedes implementar la lógica para eliminar el turno
+            if (response.ok) {
+                alert('Turno cancelado exitosamente.');
+                obtenerTurnos(); // Refrescar la tabla con los nuevos datos
+            } else {
+                alert('Error al cancelar el turno.');
+            }
+        }
+    } catch (error) {
+        console.error('Error al cancelar el turno:', error);
     }
 }
+
+// Llamar a la función para obtener los turnos al cargar la página
+document.addEventListener('DOMContentLoaded', obtenerTurnos);
