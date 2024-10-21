@@ -76,7 +76,12 @@ function abrirModalEditar(servicioId) {
     if (servicio) {
         document.getElementById("nombreEditar").value = servicio.nombreServicio;
         document.getElementById("etapaEditar").value = servicio.nroEtapas; // Cambia si el nombre del campo es diferente
-        document.getElementById("personalCargoEditar").value = servicio.personalId; // Ajusta según la estructura
+
+        // Llamamos a cargarPersonal para asegurarnos de que el desplegable esté actualizado
+        cargarPersonal().then(() => {
+            // Una vez que el personal esté cargado, seleccionamos el personal correspondiente
+            document.getElementById("personalCargoEditar").value = servicio.personalId; // Ajusta según la estructura
+        });
 
         // Guarda el ID del servicio para su uso en la función de guardado
         document.getElementById("formEditar").setAttribute("data-servicio-id", servicioId);
