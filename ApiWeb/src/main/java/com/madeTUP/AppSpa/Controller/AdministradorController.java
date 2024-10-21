@@ -145,5 +145,33 @@ public ResponseEntity<String> crearPerfilUsuario(@RequestBody UsuarioDTO c) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear el usuario: " + e.getMessage());
     }
 }
+@PutMapping("/Administrador/editarPerfil")
+public ResponseEntity<String> editarPerfilUsuario(@RequestBody UsuarioDTO c) {
+    try {
+        // Validar que el tipo de usuario no sea nulo o vacío
+        if (c.getTipoUsuario() == null || c.getTipoUsuario().isEmpty()) {
+            return ResponseEntity.badRequest().body("El tipo de usuario es requerido");
+        }
+        
+        // Control de flujo basado en el tipo de usuario
+        switch (c.getTipoUsuario().toUpperCase()) {
+            case "PERSONAL" -> {
+                servisP.editPersonal(c.getId(), c.getNombre(), c.getApellido(), c.getCorreo(), c.getNombre_usuario(), c.getContrasenia(), null, c.getTipoUsuario());
+            }
+            case "SECRETARIA" -> {
+                servisS.editSecretaria(c.getId(), c.getNombre(), c.getApellido(), c.getCorreo(), c.getNombre_usuario(), c.getContrasenia(), c.getTipoUsuario());
+            }
+            case "ADMINISTRADOR" -> {
+                servis.editAdministrador(c.getId(), c.getNombre(), c.getApellido(), c.getCorreo(), c.getNombre_usuario(), c.getContrasenia(), c.getTipoUsuario());
+            }
+            default -> {
+                return ResponseEntity.badRequest().body("Tipo de usuario no válido");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("Perfil actualizado exitosamente");
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar el perfil: " + e.getMessage());
+    }
+}
 
 }
