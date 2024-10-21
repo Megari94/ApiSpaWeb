@@ -151,8 +151,9 @@
     <input type="password" id="contrasenaEditar" required>
 
     <!-- Campo de "Tipo de Usuario" deshabilitado para que no sea editable -->
-    <label for="tipoUsuarioEditar">Tipo de Usuario:</label>
-    <input type="text" id="tipoUsuarioEditar" name="tipoUsuarioEditar" disabled> <!-- Deshabilitado pero muestra el valor -->
+   <label for="tipoUsuarioEditar">Tipo de Usuario:</label>
+    <p id="tipoUsuarioEditarText"></p>
+ <!-- Deshabilitado pero muestra el valor -->
 
     <button type="button" onclick="guardarEdicionPersonal()">Guardar</button>
     <button type="button" onclick="cerrarModal('modalEditarPersonal')">Cancelar</button>
@@ -272,7 +273,8 @@ async function guardarEdicionPersonal() {
     const apellido = document.getElementById('apellidoEditar').value;
     const correo = document.getElementById('correoEditar').value;
     const contrasena = document.getElementById('contrasenaEditar').value;
-    const tipoUsuario = document.getElementById('tipoUsuarioEditar').value; // Aunque esté deshabilitado, obtenemos su valor
+  const tipoUsuario = document.getElementById('tipoUsuarioEditarText').textContent;
+ // Aunque esté deshabilitado, obtenemos su valor
 
     const personaIndex = personalIdSeleccionado;
 
