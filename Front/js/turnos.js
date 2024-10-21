@@ -1,6 +1,45 @@
 
-const fechaHora = document.getElementById('fechaHora').value;
-console.log("Fecha y Hora seleccionadas:", fechaHora);
+// Función para formatear la fecha
+function formatearFecha(fechaISO) {
+    const options = { 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        hour12: false 
+    };
+    const fecha = new Date(fechaISO);
+    return new Intl.DateTimeFormat('es-ES', options).format(fecha);
+}
+
+// Función para obtener y formatear la fecha y hora
+function obtenerFechaHoraFormateada() {
+    const fechaHora = document.getElementById('fechaHora').value; // Obtiene la fecha y hora del input
+
+    if (fechaHora) {
+        const fechaFormateada = formatearFecha(fechaHora); // Formatea la fecha
+        console.log("Fecha y hora formateada:", fechaFormateada);
+
+        return fechaFormateada;
+    } else {
+        console.error("No se ha seleccionado una fecha y hora.");
+        return null;
+    }
+}
+
+// Llama a la función cuando el usuario envíe el formulario
+document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Evita el envío del formulario por defecto
+
+    const fechaHoraFinal = obtenerFechaHoraFormateada(); // Obtén la fecha y hora formateada
+    if (fechaHoraFinal) {
+        alert(`Fecha y hora seleccionada: ${fechaHoraFinal}`); // Muestra la fecha y hora formateada
+    }
+
+    // Aquí puedes procesar la fecha y hora formateada según lo que necesites
+});
+
 
 let turnos = []; // Variable global para almacenar los turnos obtenidos
 
