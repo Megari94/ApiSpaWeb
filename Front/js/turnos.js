@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', obtenerTurnos);
             // Muestra el modal al hacer clic en "Agregar Turno"
             const modal = document.getElementById('modalAgregarPersonal');
             modal.style.display = 'block';
+             obtenerClientes();
         }
 
         function cerrarModalAlHacerClickFuera(event, modalId) {
