@@ -11,6 +11,7 @@ package com.madeTUP.AppSpa.Controller;
 
 import com.madeTUP.AppSpa.DTO.ClienteLoginDTO;
 import com.madeTUP.AppSpa.DTO.UsuarioAdminDTO;
+import com.madeTUP.AppSpa.DTO.UsuarioDTO;
 import com.madeTUP.AppSpa.Model.Administrador;
 import com.madeTUP.AppSpa.Model.Personal;
 import com.madeTUP.AppSpa.Model.Secretaria;
@@ -101,8 +102,8 @@ public Administrador editAdministrador(@PathVariable Long id_administrador,
     public List<UsuarioAdminDTO> traerUsuarios(){
         return servisUsu.traerUsuarios();
     }
-     @PostMapping("/Administrador/crearuUsuario")
-    public String crearPerfilUsuario(@RequestBody Usuario c){
+     @PostMapping("/Administrador/crearUsuario")
+    public String crearPerfilUsuario(@RequestBody UsuarioDTO c){
         if(null == c.getTipoUsuario()){
             Administrador p=new Administrador();
             p.setNombre(c.getNombre());
