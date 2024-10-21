@@ -110,52 +110,66 @@
             nombreClienteGlobal = nombreCliente;
             servicioGlobal = servicio;
 
-            // Abrir modal para ingresar precio
-            document.getElementById('modalPrecio').style.display = 'block';
-        }
+    // Abrir modal para ingresar precio
+        document.getElementById('modalPrecio').style.display = 'block';
+}
 
         function guardarPrecio() {
             const precio = document.getElementById('precio').value;
 
             if (precio) {
-                // Generar factura con el precio ingresado
+        // Generar factura con el precio ingresado
                 generarFactura(nombreClienteGlobal, servicioGlobal, precio);
 
-                // Actualizar estado de la solicitud
+        // Actualizar estado de la solicitud
                 actualizarEstado(filaIdGlobal, 'Aceptado');
 
-                // Cerrar modal
+        // Cerrar modal
                 cerrarModal('modalPrecio');
-            } else {
-                alert("Por favor, ingrese un precio válido.");
-            }
-        }
+        } else {
+        alert("Por favor, ingrese un precio válido.");
+    }
+}
 
         function cerrarModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
-        }
+}
 
         function actualizarEstado(filaId, estado) {
             const fila = document.getElementById(filaId);
             const celdaSolicitud = fila.querySelector('td:last-child');
 
-            // Cambia el contenido de la celda según el estado
+    // Cambia el contenido de la celda según el estado
             if (estado === 'Aceptado') {
                 celdaSolicitud.innerHTML = `<span class="estado-aceptado">${estado}</span>`;
-            } else if (estado === 'Denegado') {
+        } else if (estado === 'Denegado') {
                 celdaSolicitud.innerHTML = `<span class="estado-rechazado">${estado}</span>`;
-            }
         }
+    }
 
         function rechazarSolicitud(filaId) {
             actualizarEstado(filaId, 'Denegado');
-        }
+    }
 
-        // Filtrar la tabla
+// Filtrar la tabla por el estado SOLICITADO
+        function filtrarSolicitados() {
+            const tableRows = document.querySelectorAll('#turnosTable tbody tr');
+
+            tableRows.forEach(row => {
+            const estado = row.querySelector('td:last-child').textContent.trim();
+            if (estado === 'SOLICITADO') {
+                row.style.display = '';  // Mostrar la fila si el estado es SOLICITADO
+        } else {
+                row.style.display = 'none';  // Ocultar la fila si el estado no es SOLICITADO
+        }
+    });
+}
+
+// Evento para filtrar por búsqueda de texto
         document.getElementById('searchInput').addEventListener('keyup', function() {
             const searchValue = this.value.toLowerCase();
             const tableRows = document.querySelectorAll('#turnosTable tbody tr');
-
+        
             tableRows.forEach(row => {
                 const rowText = row.textContent.toLowerCase();
                 if (rowText.includes(searchValue)) {
@@ -163,8 +177,12 @@
                 } else {
                     row.style.display = 'none';
                 }
-            });
-        });
+    });
+});
+
+// Llamar a la función de filtro de turnos solicitados al cargar la página o en algún evento
+        document.addEventListener('DOMContentLoaded', filtrarSolicitados);
+
     </script>
 </body>
 </html>
