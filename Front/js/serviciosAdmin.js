@@ -224,3 +224,35 @@ function cerrarModal(modalId) {
     document.getElementById(modalId).style.display = "none";
 }
 
+let servicioIdSeleccionado; // Para almacenar el ID del servicio seleccionado para dar de baja
+
+function abrirModalBajaServicio(id) {
+    servicioIdSeleccionado = id; // Guardar ID del servicio seleccionado
+    document.getElementById('modalBaja').style.display = 'block'; // Mostrar modal
+}
+
+function confirmarBajaServicio() {
+    if (!servicioIdSeleccionado) return;
+
+    // Realizar la petición para dar de baja el servicio
+    fetch(`https://spaadministrativo-production-4488.up.railway.app/servicio/darBaja/${servicioIdSeleccionado}`, {
+        method: "DELETE"
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al dar de baja el servicio: ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(() => {
+        alert('Servicio dado de baja con éxito');
+        cerrarModal('modalBaja'); // Cierra el modal después de la baja
+        cargarServicios(); // Actualizar la lista de servicios
+    })
+    .catch(error => {
+        console.error('Error al dar de baja el servicio:', error);
+        alert('No se pudo dar de baja el servicio.');
+    });
+}
+
+
