@@ -32,14 +32,13 @@ function loginCliente(username, password) {
         // Verifica si el inicio de sesión fue exitoso
         if (data.success) {
             // Guarda el token, nombre de usuario y rol en el localStorage
-            localStorage.setItem('token', data.token); // Guarda el token
-            localStorage.setItem('idCliente', data.Id); // Guarda el ID del cliente
-            localStorage.setItem('nombreUsuario', data.nombre_usuario); // Guarda el nombre de usuario
-            localStorage.setItem('rol', 'Cliente'); // Guarda el rol como cliente
+           localStorage.setItem('token', data.token); // Guarda el token
+            localStorage.setItem('idCliente', data.clienteId); // Guarda el ID del cliente
 
             // Verifica que los valores se hayan almacenado correctamente
             console.log('Token cliente almacenado:', data.token);
-            console.log('ID de Cliente almacenado:', data.Id);
+            console.log('ID de Cliente almacenado:', data.clienteId);
+
             
             // Redirige a la página del cliente
             window.location.href = 'ClienteVista.html';
