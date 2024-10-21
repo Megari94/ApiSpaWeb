@@ -228,7 +228,7 @@ let servicioIdSeleccionado; // Para almacenar el ID del servicio seleccionado pa
 
 function abrirModalBajaServicio(id) {
     servicioIdSeleccionado = id; // Guardar ID del servicio seleccionado
-    document.getElementById('modalBaja').style.display = 'block'; // Mostrar modal
+    document.getElementById('modalBajaServicio').style.display = 'block'; // Mostrar modal
 }
 
 function confirmarBajaServicio() {
@@ -246,7 +246,7 @@ function confirmarBajaServicio() {
     })
     .then(() => {
         alert('Servicio dado de baja con éxito');
-        cerrarModal('modalBaja'); // Cierra el modal después de la baja
+        cerrarModal('modalBajaServicio'); // Cierra el modal después de la baja
         cargarServicios(); // Actualizar la lista de servicios
     })
     .catch(error => {
