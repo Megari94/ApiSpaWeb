@@ -58,24 +58,5 @@ document.getElementById("facturaLink").addEventListener("click", function(event)
     doc.save(`Factura_${nombreCliente}.pdf`);
 }
 
-function aceptarSolicitud(filaId, nombreCliente, servicio, monto) {
-    generarFactura(nombreCliente, servicio, monto);
-    actualizarEstado(filaId, 'Aceptado');
-}
 
-function rechazarSolicitud(filaId) {
-    actualizarEstado(filaId, 'Denegado');
-}
-
-function actualizarEstado(filaId, estado) {
-    const fila = document.getElementById(filaId);
-    const celdaSolicitud = fila.querySelector('td:last-child');
-
-    // Cambia el contenido de la celda según el estado
-    if (estado === 'Aceptado') {
-        celdaSolicitud.innerHTML = `<span class="estado-aceptado">${estado}</span>`;
-    } else if (estado === 'Denegado') {
-        celdaSolicitud.innerHTML = `<span class="estado-rechazado">${estado}</span>`;
-    }
-}
 
