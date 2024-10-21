@@ -72,3 +72,91 @@ function filtrarEtapas() {
 
     mostrarServicios(filteredServicios); // Mostrar los servicios filtrados
 }
+function abrirModalEditar(servicioId) {
+    const servicio = serviciosData.find(s => s.id === servicioId);
+    if (servicio) {
+        document.getElementById("nombreEditar").value = servicio.nombreServicio;
+        document.getElementById("etapaEditar").value = servicio.nroEtapas; // Cambia si el nombre del campo es diferente
+        document.getElementById("personalCargoEditar").value = servicio.personalId; // Ajusta según la estructura
+
+        // Guarda el ID del servicio para su uso en la función de guardado
+        document.getElementById("formEditar").setAttribute("data-servicio-id", servicioId);
+        
+        // Abre el modal
+        document.getElementById("modalEditar").style.display = "block";
+    }
+}
+function guardarEdicion() {
+    const servicioId = document.getElementById("formEditar").getAttribute("data-servicio-id");
+    const nombreServicio = document.getElementById("nombreEditar").value;
+    const nroEtapas = document.getElementById("etapaEditar").value; // Asegúrate que el nombre de la variable coincida
+    const personalId = document.getElementById("personalCargoEditar").value; // Asegúrate que esto se mapee correctamente
+
+    const servicioActualizado = {
+        id: servicioId,
+        nombreServicio: nombreServicio,
+        nroEtapas: nroEtapas,
+        personalId: personalId
+    };
+
+    fetch(`https://spaadministrativo-production-4488.up.railway.app/servicio/editarII`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(servicioActualizado)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Error al editar el servicio: " + response.statusText);
+        }
+        return response.json(); // Puedes omitir esto si no necesitas manejar la respuesta
+    })
+    .then(() => {
+        alert("Servicio editado con éxito");
+        cargarServicios(); // Recargar servicios después de editar
+        cerrarModal("modalEditar"); // Cierra el modal
+    })
+    .catch(error => {
+        console.error("Error al editar el servicio:", error.message);
+        alert("No se pudo editar el servicio.");
+    });
+}
+function guardarServicio() {
+    const nombreServicio = document.getElementById("nombreServicio").value;
+    const nroEtapas = document.getElementById("etapasServicio").value; // Asegúrate que el nombre del campo coincida
+    const personalId = document.getElementById("personalCargo").value; // Asegúrate que esto se mapee correctamente
+
+    const nuevoServicio = {
+        nombreServicio: nombreServicio,
+        nroEtapas: nroEtapas,
+        personalId: personalId
+    };
+
+    fetch(`https://spaadministrativo-production-4488.up.railway.app/servicio/crearAdmin`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(nuevoServicio)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Error al crear el servicio: " + response.statusText);
+        }
+        return response.json(); // Puedes omitir esto si no necesitas manejar la respuesta
+    })
+    .then(() => {
+        alert("Servicio agregado con éxito");
+        cargarServicios(); // Recargar servicios después de agregar
+        cerrarModal("modalAgregar"); // Cierra el modal
+    })
+    .catch(error => {
+        console.error("Error al agregar el servicio:", error.message);
+        alert("No se pudo agregar el servicio.");
+    });
+}
+function cerrarModal(modalId) {
+    document.getElementById(modalId).style.display = "none";
+}
+
