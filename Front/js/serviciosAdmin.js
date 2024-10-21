@@ -19,6 +19,9 @@ function cargarServicios() {
         const tableBody = document.getElementById("personalTableBody");
         tableBody.innerHTML = ""; // Limpiar el contenido actual
 
+        // Guardamos los servicios en un arreglo para filtrarlos más tarde
+        window.serviciosData = servicios;
+
         servicios.forEach(servicio => {
             const row = document.createElement("tr");
             row.innerHTML = `
@@ -37,5 +40,32 @@ function cargarServicios() {
     .catch(error => {
         console.error("Error al cargar servicios:", error.message);
         alert("No se pueden cargar los servicios en este momento.");
+    });
+}
+
+function filtrarEtapas() {
+    const searchInput = document.getElementById("searchInput").value.toLowerCase();
+    const tableBody = document.getElementById("personalTableBody");
+    tableBody.innerHTML = ""; // Limpiar el contenido actual
+
+    const filteredServicios = window.serviciosData.filter(servicio => {
+        const nombreServicio = servicio.nombreServicio.toLowerCase();
+        const personalCompleto = `${servicio.personalNombre || ''} ${servicio.personalApellido || ''}`.toLowerCase();
+        return nombreServicio.includes(searchInput) || personalCompleto.includes(searchInput);
+    });
+
+    filteredServicios.forEach(servicio => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${servicio.id}</td>
+            <td>${servicio.nombreServicio}</td>
+            <td>${servicio.nroEtapas}</td>
+            <td>${servicio.personalNombre || 'N/A'} ${servicio.personalApellido || 'N/A'}</td>
+            <td>
+                <button onclick="abrirModalEditar(${servicio.id})">Editar</button>
+                <button onclick="confirmarBaja(${servicio.id})">Dar de baja</button>
+            </td>
+        `;
+        tableBody.appendChild(row);
     });
 }
