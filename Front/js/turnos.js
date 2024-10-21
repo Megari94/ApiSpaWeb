@@ -82,3 +82,17 @@ async function cancelarTurno(turnoId, boton) {
 
 // Llamar a la función para obtener los turnos al cargar la página
 document.addEventListener('DOMContentLoaded', obtenerTurnos);
+
+ function agregarTurno() {
+            // Muestra el modal al hacer clic en "Agregar Turno"
+            const modal = document.getElementById('modalAgregarPersonal');
+            modal.style.display = 'block';
+        }
+
+        function cerrarModalAlHacerClickFuera(event, modalId) {
+            const modal = document.getElementById(modalId);
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
