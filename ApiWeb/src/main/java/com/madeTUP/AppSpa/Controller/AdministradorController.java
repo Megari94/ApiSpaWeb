@@ -102,51 +102,47 @@ public Administrador editAdministrador(@PathVariable Long id_administrador,
     public List<UsuarioAdminDTO> traerUsuarios(){
         return servisUsu.traerUsuarios();
     }
-     @PostMapping("/Administrador/crearUsuario")
-    public String crearPerfilUsuario(@RequestBody UsuarioDTO c){
-        if(null == c.getTipoUsuario()){
-            Administrador p=new Administrador();
-            p.setNombre(c.getNombre());
-            p.setApellido(c.getApellido());
-            p.setNombre_usuario(c.getNombre_usuario());
-            p.setCorreo(c.getCorreo());
-            p.setContrasenia(c.getContrasenia());
-            p.setTipoUsuario(c.getTipoUsuario());
-            servis.saveAdministrador(p);
-        }else switch (c.getTipoUsuario()) {
-            case "PERSONAL" ->                 {
-                    Personal p=new Personal();
-                    p.setNombre(c.getNombre());
-                    p.setApellido(c.getApellido());
-                    p.setNombre_usuario(c.getNombre_usuario());
-                    p.setCorreo(c.getCorreo());
-                    p.setContrasenia(c.getContrasenia());
-                    p.setTipoUsuario(c.getTipoUsuario());
-                    List<Servicio> listaServicio=new ArrayList<>();
-                    p.setListaServicio(listaServicio);
-                    servisP.savePersonal(p);
-                }
-            case "SECRETARIA" ->                 {
-                    Secretaria p=new Secretaria();
-                    p.setNombre(c.getNombre());
-                    p.setApellido(c.getApellido());
-                    p.setNombre_usuario(c.getNombre_usuario());
-                    p.setCorreo(c.getCorreo());
-                    p.setContrasenia(c.getContrasenia());
-                    p.setTipoUsuario(c.getTipoUsuario());
-                    servisS.saveSecretaria(p);
-                }
-            default ->                 {
-                    Administrador p=new Administrador();
-                    p.setNombre(c.getNombre());
-                    p.setApellido(c.getApellido());
-                    p.setNombre_usuario(c.getNombre_usuario());
-                    p.setCorreo(c.getCorreo());
-                    p.setContrasenia(c.getContrasenia());
-                    p.setTipoUsuario(c.getTipoUsuario());
-                    servis.saveAdministrador(p);
-                }
+    @PostMapping("/Administrador/crearUsuario")
+public ResponseEntity<String> crearPerfilUsuario(@RequestBody UsuarioDTO c) {
+    try {
+        switch (c.getTipoUsuario()) {
+            case "PERSONAL" -> {
+                Personal p = new Personal();
+                p.setNombre(c.getNombre());
+                p.setApellido(c.getApellido());
+                p.setNombre_usuario(c.getNombre_usuario());
+                p.setCorreo(c.getCorreo());
+                p.setContrasenia(c.getContrasenia());
+                p.setTipoUsuario(c.getTipoUsuario());
+                p.setListaServicio(new ArrayList<>()); // Inicializa la lista de servicios
+                servisP.savePersonal(p);
+            }
+            case "SECRETARIA" -> {
+                Secretaria p = new Secretaria();
+                p.setNombre(c.getNombre());
+                p.setApellido(c.getApellido());
+                p.setNombre_usuario(c.getNombre_usuario());
+                p.setCorreo(c.getCorreo());
+                p.setContrasenia(c.getContrasenia());
+                p.setTipoUsuario(c.getTipoUsuario());
+                servisS.saveSecretaria(p);
+            }
+            default -> {
+                Administrador p = new Administrador();
+                p.setNombre(c.getNombre());
+                p.setApellido(c.getApellido());
+                p.setNombre_usuario(c.getNombre_usuario());
+                p.setCorreo(c.getCorreo());
+                p.setContrasenia(c.getContrasenia());
+                p.setTipoUsuario(c.getTipoUsuario() == null ? "ADMINISTRADOR" : c.getTipoUsuario());
+                servis.saveAdministrador(p);
+            }
         }
-        return "Usuario creado";
+        return ResponseEntity.status(HttpStatus.CREATED).body("Usuario creado exitosamente");
+    } catch (Exception e) {
+        // Devuelve una respuesta con un error interno en caso de excepción
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear el usuario: " + e.getMessage());
     }
+}
+
 }
