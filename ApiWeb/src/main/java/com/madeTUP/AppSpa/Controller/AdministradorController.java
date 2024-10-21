@@ -175,5 +175,34 @@ public ResponseEntity<String> editarPerfilUsuario(@RequestBody UsuarioDTO c) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar el perfil: " + e.getMessage());
     }
 }
+@DeleteMapping("/Administrador/editarPerfil")
+public ResponseEntity<String> eliminarPerfilUsuario(@RequestBody UsuarioDTO c) {
+    try {
+        // Validar que el tipo de usuario no sea nulo o vacío
+        if (c.getTipoUsuario() == null || c.getTipoUsuario().isEmpty()) {
+            return ResponseEntity.badRequest().body("El tipo de usuario es requerido");
+        }
+        
+        // Control de flujo basado en el tipo de usuario
+        switch (c.getTipoUsuario().toUpperCase()) {
+            case "PERSONAL" -> {
+                servisP.deletePersonal(c.getId());
+            }
+            case "SECRETARIA" -> {
+                servisS.deleteSecretaria(c.getId());
+            }
+            
+            case "ADMINISTRADOR" -> {
+                servis.deleteAdministrador(c.getId());
+            }
+            default -> {
+                return ResponseEntity.badRequest().body("Tipo de usuario no válido");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("Perfil eliminado exitosamente");
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el perfil: " + e.getMessage());
+    }
+}
 
 }
