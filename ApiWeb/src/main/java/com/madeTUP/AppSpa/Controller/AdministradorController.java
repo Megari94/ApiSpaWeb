@@ -102,7 +102,7 @@ public Administrador editAdministrador(@PathVariable Long id_administrador,
     public List<UsuarioAdminDTO> traerUsuarios(){
         return servisUsu.traerUsuarios();
     }
-    @PostMapping("/Administrador/crearUsuario")
+@PostMapping("/Administrador/crearUsuario")
 public ResponseEntity<String> crearPerfilUsuario(@RequestBody UsuarioDTO c) {
     try {
         switch (c.getTipoUsuario()) {
@@ -143,6 +143,4 @@ public ResponseEntity<String> crearPerfilUsuario(@RequestBody UsuarioDTO c) {
         // Devuelve una respuesta con un error interno en caso de excepción
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear el usuario: " + e.getMessage());
     }
-}
-
 }
