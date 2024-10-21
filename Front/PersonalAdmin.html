@@ -228,25 +228,25 @@ function cerrarModal(modalId) {
 }
 // Función para agregar personal usando la API
 async function guardarPersonal() {
-    const nombreUsuario = document.getElementById('nombreUsuario').value;
+    const nombre_usuario = document.getElementById('nombreUsuario').value;
     const nombre = document.getElementById('nombre').value;
     const apellido = document.getElementById('apellido').value;
     const correo = document.getElementById('correo').value;
-    const contrasena = document.getElementById('contrasena').value;
-    const tipoUsuario = document.getElementById('tipoUsuario').value; // Obtener el valor del desplegable
+    const contrasenia = document.getElementById('contrasena').value;
+    const tipoUsuario = document.getElementById('tipoUsuario').value;
 
-    if (nombreUsuario && nombre && apellido && correo && contrasena && tipoUsuario) {
+    if (nombre_usuario && nombre && apellido && correo && contrasenia && tipoUsuario) {
         const nuevoPersonal = {
-            nombreUsuario,
+            nombre_usuario,
             nombre,
             apellido,
             correo,
-            contrasena,
-            tipoUsuario // Añadir tipoUsuario al objeto
+            contrasenia,
+            tipoUsuario
         };
 
         try {
-            const response = await fetch(apiUrl, {
+            const response = await fetch(`${apiUrl}/Personal/agregar`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -255,7 +255,7 @@ async function guardarPersonal() {
             });
 
             if (response.ok) {
-                cargarPersonal();
+                cargarPersonal();  // Recargar la tabla con los nuevos datos
                 cerrarModal('modalAgregarPersonal');
             } else {
                 console.error('Error al guardar el personal');
