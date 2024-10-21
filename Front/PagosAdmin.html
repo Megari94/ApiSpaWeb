@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,14 +13,14 @@
 
     <style>
         .modal {
-            display: none;
+            display: none; 
             position: fixed;
-            z-index: 1;
+            z-index: 1; 
             left: 0;
             top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.5); 
         }
 
         .modal-content {
@@ -29,13 +29,13 @@
             padding: 20px;
             border: 1px solid #888;
             width: 30%;
-            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px black;
         }
 
-        .modal-content h3 {
-            margin-top: 0;
+        .center-table {
+            margin-top: 20px;
         }
-    </style>
+    </style>    
 </head>
 <body>
     <div class="container">
@@ -79,29 +79,19 @@
                     </thead>
                     <tbody>
                         <!-- Las filas se llenarán dinámicamente con JavaScript -->
-                        <tr>
-                            <td>1</td>
-                            <td>Presente</td>
-                            <td>$50</td>
-                            <td>2024-10-21</td>
-                            <td>Juan Pérez</td>
-                            <td>Masaje Relajante</td>
-                            <td><button onclick="aceptarTurno(1)">Aceptar</button></td>
-                        </tr>
-                        <!-- Agrega más filas aquí -->
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Modal para Ingresar Precio de la Sesión -->
+        <!-- Modal para ingresar el precio -->
         <div id="modalPrecio" class="modal">
             <div class="modal-content">
                 <h3>Ingresar Precio de la Sesión</h3>
                 <form id="formPrecio">
-                    <label for="precioSesion">Precio de la Sesión</label>
-                    <input type="number" id="precioSesion" required>
-
+                    <label for="precio">Precio:</label>
+                    <input type="number" id="precio" required>
+                    
                     <button type="button" onclick="guardarPrecio()">Guardar</button>
                     <button type="button" onclick="cerrarModal('modalPrecio')">Cancelar</button>
                 </form>
@@ -110,30 +100,54 @@
     </div>
 
     <script>
-        // Función para abrir el modal
-        function abrirModalPrecio() {
+        let filaIdGlobal = null;
+        let nombreClienteGlobal = null;
+        let servicioGlobal = null;
+
+        function aceptarSolicitud(filaId, nombreCliente, servicio) {
+            filaIdGlobal = filaId;
+            nombreClienteGlobal = nombreCliente;
+            servicioGlobal = servicio;
+
+            // Abrir modal para ingresar precio
             document.getElementById('modalPrecio').style.display = 'block';
         }
 
-        // Función para cerrar el modal
+        function guardarPrecio() {
+            const precio = document.getElementById('precio').value;
+
+            if (precio) {
+                // Generar factura con el precio ingresado
+                generarFactura(nombreClienteGlobal, servicioGlobal, precio);
+
+                // Actualizar estado de la solicitud
+                actualizarEstado(filaIdGlobal, 'Aceptado');
+
+                // Cerrar modal
+                cerrarModal('modalPrecio');
+            } else {
+                alert("Por favor, ingrese un precio válido.");
+            }
+        }
+
         function cerrarModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
 
-        // Función para guardar el precio (debes agregar la lógica de guardado aquí)
-        function guardarPrecio() {
-            const precio = document.getElementById('precioSesion').value;
-            // Lógica para enviar el precio al backend o procesarlo
-            console.log("Precio ingresado:", precio);
+        function actualizarEstado(filaId, estado) {
+            const fila = document.getElementById(filaId);
+            const celdaSolicitud = fila.querySelector('td:last-child');
 
-            cerrarModal('modalPrecio');
+            // Cambia el contenido de la celda según el estado
+            if (estado === 'Aceptado') {
+                celdaSolicitud.innerHTML = `<span class="estado-aceptado">${estado}</span>`;
+            } else if (estado === 'Denegado') {
+                celdaSolicitud.innerHTML = `<span class="estado-rechazado">${estado}</span>`;
+            }
         }
 
-        // Vincula el botón "Aceptar" en la tabla con la apertura del modal
-        function aceptarTurno(idTurno) {
-            // Aquí puedes hacer algo con el ID del turno, como cargar detalles adicionales
-            console.log("Turno aceptado con ID:", idTurno);
-            abrirModalPrecio();
+        function rechazarSolicitud(filaId) {
+            actualizarEstado(filaId, 'Denegado');
         }
 
         // Filtrar la tabla
@@ -153,4 +167,3 @@
     </script>
 </body>
 </html>
-
