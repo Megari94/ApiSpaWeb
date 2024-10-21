@@ -235,7 +235,7 @@ function confirmarBajaServicio() {
     if (!servicioIdSeleccionado) return;
 
     // Realizar la petición para dar de baja el servicio
-    fetch(`https://spaadministrativo-production-4488.up.railway.app/servicio/darBaja/${servicioIdSeleccionado}`, {
+    fetch(`https://spaadministrativo-production-4488.up.railway.app/servicio/Servicio/eliminar/${servicioIdSeleccionado}`, {
         method: "DELETE"
     })
     .then(response => {
