@@ -71,6 +71,11 @@ function filtrarEtapas() {
 
     mostrarServicios(filteredServicios); // Mostrar los servicios filtrados
 }
+function abrirModalAgregar() {
+    cargarPersonal(); // Cargar el personal antes de abrir el modal
+    document.getElementById("modalAgregar").style.display = "block";
+}
+
 function abrirModalEditar(servicioId) {
     const servicio = serviciosData.find(s => s.id === servicioId);
     if (servicio) {
