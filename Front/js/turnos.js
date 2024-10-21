@@ -49,6 +49,7 @@ async function cancelarTurno(turnoId, boton) {
         if (response.ok) {
             // Cambiar el texto del botón o eliminarlo de la interfaz
             boton.remove(); // Eliminar el botón de cancelar
+            obtenerTurnos(); 
             // También podrías actualizar el estado del turno directamente en la tabla si lo deseas
         } else {
             alert('Error al cancelar el turno.');
