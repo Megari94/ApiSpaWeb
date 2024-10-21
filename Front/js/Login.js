@@ -42,7 +42,7 @@ function loginCliente(username, password) {
             console.log('ID de Cliente almacenado:', data.Id);
             
             // Redirige a la página del cliente
-            window.location.href = '/cliente/Cliente.html';
+            window.location.href = 'ClienteVista.html';
         } else {
             // Muestra un mensaje de error si la autenticación no fue exitosa
             throw new Error(data.message || 'Inicio de sesión fallido para cliente');
