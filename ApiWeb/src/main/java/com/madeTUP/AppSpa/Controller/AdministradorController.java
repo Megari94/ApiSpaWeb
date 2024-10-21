@@ -175,7 +175,7 @@ public ResponseEntity<String> editarPerfilUsuario(@RequestBody UsuarioDTO c) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar el perfil: " + e.getMessage());
     }
 }
-@DeleteMapping("/Administrador/editarPerfil")
+@DeleteMapping("/Administrador/eliminarPerfil")
 public ResponseEntity<String> eliminarPerfilUsuario(@RequestBody UsuarioDTO c) {
     try {
         // Validar que el tipo de usuario no sea nulo o vacío
