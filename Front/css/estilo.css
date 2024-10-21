@@ -191,14 +191,7 @@
             margin-top: 10px;
         }
 /*Pagos*/
-        table {
-            border-collapse: collapse;
-            width: 80%;
-            background-color: #ffe6f2; /* Rosa pastel */
-            border-radius: 10px;
-            overflow: hidden;
-        border: 5px solid;
-        }
+       
 
         th, td {
             padding: 12px;
@@ -341,14 +334,10 @@ table {
     border-radius: 10px;
     overflow: hidden;
     margin: 0 auto; /* Centra la tabla en la pantalla */
+    border: 5px solid;
 }
 
-th, td {
-    padding: 10px;
-    text-align: left;
-    font-size: 1rem;
-    word-wrap: break-word; /* Permite que el texto se ajuste dentro de la celda */
-}
+
 th {
     background-color: #f48fb1;
     color: white;
