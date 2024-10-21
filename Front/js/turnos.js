@@ -1,46 +1,53 @@
+let turnos = []; // Variable global para almacenar los turnos obtenidos
+
 // Llamada para obtener los turnos desde la API
 async function obtenerTurnos() {
     try {
         const response = await fetch('https://spaadministrativo-production-4488.up.railway.app/Sesion/traerAdmin');
-        const turnos = await response.json();
+        turnos = await response.json(); // Guardar los turnos en la variable global
 
-        // Llenar la tabla con los datos obtenidos
-        const tableBody = document.getElementById('TableBody');
-        tableBody.innerHTML = ''; // Limpiar la tabla antes de insertar los datos
-
-        turnos.forEach(turno => {
-            // Mostrar solo turnos que estén en estado 'confirmado' o 'cancelado'
-            if (turno.asistencia === 'CONFIRMADO' || turno.asistencia === 'CANCELADO') {
-                const claseAsistencia = turno.asistencia === 'CANCELADO' ? 'asistencia-cancelado' : 'asistencia-confirmado';
-                const fila = document.createElement('tr');
-                
-                fila.innerHTML = `
-                    <td>${turno.id}</td>
-                   <td class="${claseAsistencia}">${turno.asistencia}</td>
-                    <td>${turno.costo}</td>
-                    <td>${turno.fecha}</td>
-                    <td>${turno.nombre_completo}</td>
-                    <td>${turno.nombre_servicio}</td>
-                      `;
-                   if (turno.asistencia !== 'CANCELADO') {
-                    fila.innerHTML += `
-                        <td>
-                            <button onclick="cancelarTurno(${turno.id}, this)" class="cancelar-btn">Cancelar</button>
-                        </td>
-                    `;
-                } else {
-                    // Si está cancelado, dejar la columna vacía o con un texto de "Cancelado"
-                    fila.innerHTML += `<td></td>`;
-                }
-                
-
-                tableBody.appendChild(fila);
-            }
-        });
+        mostrarTurnos(turnos); // Llenar la tabla con los datos obtenidos
     } catch (error) {
         console.error('Error al obtener los turnos:', error);
     }
 }
+
+// Función para mostrar los turnos en la tabla
+function mostrarTurnos(turnosAmostrar) {
+    const tableBody = document.getElementById('TableBody');
+    tableBody.innerHTML = ''; // Limpiar la tabla antes de insertar los datos
+
+    turnosAmostrar.forEach(turno => {
+        // Mostrar solo turnos que estén en estado 'confirmado' o 'cancelado'
+        if (turno.asistencia === 'CONFIRMADO' || turno.asistencia === 'CANCELADO') {
+            const claseAsistencia = turno.asistencia === 'CANCELADO' ? 'asistencia-cancelado' : 'asistencia-confirmado';
+            const fila = document.createElement('tr');
+
+            fila.innerHTML = `
+                <td>${turno.id}</td>
+                <td class="${claseAsistencia}">${turno.asistencia}</td>
+                <td>${turno.costo}</td>
+                <td>${turno.fecha}</td>
+                <td>${turno.nombre_completo}</td>
+                <td>${turno.nombre_servicio}</td>
+            `;
+            if (turno.asistencia !== 'CANCELADO') {
+                fila.innerHTML += `
+                    <td>
+                        <button onclick="cancelarTurno(${turno.id}, this)" class="cancelar-btn">Cancelar</button>
+                    </td>
+                `;
+            } else {
+                // Si está cancelado, dejar la columna vacía o con un texto de "Cancelado"
+                fila.innerHTML += `<td></td>`;
+            }
+
+            tableBody.appendChild(fila);
+        }
+    });
+}
+
+// Función para filtrar turnos por nombre del cliente
 function filtrarTurnos() {
     const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Obtener el valor del input
     const turnosFiltrados = turnos.filter(turno => 
@@ -49,13 +56,13 @@ function filtrarTurnos() {
 
     mostrarTurnos(turnosFiltrados); // Mostrar los turnos filtrados
 }
+
 // Función para cancelar el turno
-// Función para cancelar el turno sin preguntar y actualizar la interfaz
 async function cancelarTurno(turnoId, boton) {
     try {
-        // Actualizar el estado del turno en la base de datos (PUT o POST según API)
+        // Actualizar el estado del turno en la base de datos
         const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/cancelar/${turnoId}`, {
-            method: 'PUT', // Ajustar el método según la API
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -63,10 +70,8 @@ async function cancelarTurno(turnoId, boton) {
         });
 
         if (response.ok) {
-            // Cambiar el texto del botón o eliminarlo de la interfaz
             boton.remove(); // Eliminar el botón de cancelar
-            obtenerTurnos(); 
-            // También podrías actualizar el estado del turno directamente en la tabla si lo deseas
+            obtenerTurnos(); // Volver a obtener y mostrar los turnos
         } else {
             alert('Error al cancelar el turno.');
         }
@@ -74,7 +79,6 @@ async function cancelarTurno(turnoId, boton) {
         console.error('Error al cancelar el turno:', error);
     }
 }
-
 
 // Llamar a la función para obtener los turnos al cargar la página
 document.addEventListener('DOMContentLoaded', obtenerTurnos);
