@@ -75,6 +75,45 @@ function abrirModalAgregar() {
     cargarPersonal(); // Cargar el personal antes de abrir el modal
     document.getElementById("modalAgregar").style.display = "block";
 }
+function guardarServicio() {
+    const nombreServicio = document.getElementById('nombreServicio').value;
+    const nroEtapas = document.getElementById('etapasServicio').value;
+    const personalId = document.getElementById('personalCargo').value;
+
+    // Crear el objeto servicio
+    const nuevoServicio = {
+        id: null, // ID se maneja automáticamente en el backend
+        nombreServicio: nombreServicio,
+        nroEtapas: parseInt(nroEtapas), // Asegurarte de que sea un número
+        personalId: parseInt(personalId) // Asegurarte de que sea un número
+    };
+
+    // Enviar el objeto al servidor
+    fetch("https://spaadministrativo-production-4488.up.railway.app/servicio/crearAdmin", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(nuevoServicio)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Error al guardar el servicio: " + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("Servicio guardado:", data);
+        // Recargar los datos de servicios o cerrar el modal
+        cargarServicios(); // Asumiendo que tienes una función para cargar servicios
+        cerrarModal('modalAgregar'); // Cierra el modal después de guardar
+    })
+    .catch(error => {
+        console.error("Error al guardar el servicio:", error);
+        alert("No se pudo guardar el servicio. Intente nuevamente.");
+    });
+}
+
 
 function abrirModalEditar(servicioId) {
     const servicio = serviciosData.find(s => s.id === servicioId);
