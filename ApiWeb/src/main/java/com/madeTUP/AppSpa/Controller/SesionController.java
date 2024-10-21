@@ -204,6 +204,38 @@ public ResponseEntity<String> cancelarSesion(@PathVariable Long id_sesion) {
     }
 }
 
+        @PostMapping("/Sesion/agregarSesionAdmin")
+public ResponseEntity<String> agregarSesion(@RequestBody NewSesionDTO nuevaSesion, @RequestHeader("Authorization") String token) {
+    try {
+        // Verificamos si el cliente existe
+        Cliente cliente = servis2.findCliente(nuevaSesion.getId_Cliente());
+        if (cliente == null) {
+            return new ResponseEntity<>("Cliente no encontrado", HttpStatus.NOT_FOUND);
+        }
+
+        // Verificamos si el servicio existe
+        Servicio servicio = servis1.findServicio(nuevaSesion.getId_Servicio());
+        if (servicio == null) {
+            return new ResponseEntity<>("Servicio no encontrado", HttpStatus.NOT_FOUND);
+        }
+
+        // Creamos la nueva sesión
+        Sesion sesion = new Sesion();
+        sesion.setCliente(cliente);
+        sesion.setServicio(servicio);
+        sesion.setFecha(LocalDateTime.parse(nuevaSesion.getFecha()));
+        sesion.setCosto(costo);
+        sesion.setAsistencia("SOLICITADO"); // Puedes ajustarlo según la lógica del negocio
+
+        // Guardamos la sesión
+        servis.saveSesion(sesion);
+
+        return new ResponseEntity<>("Sesión creada con éxito", HttpStatus.CREATED);
+
+    } catch (Exception e) {
+        return new ResponseEntity<>("Error al crear la sesión: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
 
 }
  
