@@ -27,7 +27,7 @@ function displaySessions(sesiones) {
         const row = document.createElement('tr');
         const fechaFormateada = formatearFecha(sesion.fecha);
 
-        row.innerHTML = '
+        row.innerHTML = `
             <td>${sesion.id}</td>
             <td>${sesion.asistencia}</td>
             <td>${sesion.costo}</td>
@@ -40,7 +40,7 @@ function displaySessions(sesiones) {
                     <button class="btn-rechazar" onclick="rechazarSolicitud('${sesion.id}')">Denegar</button>
                 </div>
             </td>
-        ';
+        `;
 
         tableBody.appendChild(row);
     });
