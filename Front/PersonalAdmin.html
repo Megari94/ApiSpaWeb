@@ -346,7 +346,7 @@ async function darDeBaja(idUsuario) {
             }
 
             // Manejar la respuesta de eliminación
-            if (response.status === 204) {
+            if (response.ok) {
                 console.log('Usuario dado de baja con éxito');
                 // Recargar la página para reflejar los cambios
                 cargarPersonal(); // Recargar la página
