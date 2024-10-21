@@ -59,25 +59,26 @@
             </table>
 
             <!-- Modal para Agregar Servicio -->
-            <div id="modalAgregar" class="modal">
-                <div class="modal-content">
-                    <h3>Agregar Servicio</h3>
-                    <form id="formAgregar">
-                        <label for="nombreServicio">Nombre del Servicio</label>
-                        <input type="text" id="nombreServicio" required>
+            <!-- Modal para Agregar Servicio -->
+<div id="modalAgregar" class="modal">
+    <div class="modal-content">
+        <h3>Agregar Servicio</h3>
+        <form id="formAgregar">
+            <label for="nombreServicio">Nombre del Servicio</label>
+            <input type="text" id="nombreServicio" required>
 
-                        <label for="etapasServicio">Numero de Etapas</label>
-                        <input type="text" id="etapasServicio" required>
-                        
+            <label for="etapasServicio">Numero de Etapas</label>
+            <input type="text" id="etapasServicio" required>
 
-                        <label for="personalCargo">Personal a Cargo</label>
-                        <input type="text" id="personalCargo" required>
+            <label for="personalCargo">Personal a Cargo</label>
+            <select id="personalCargo" required></select> <!-- Cambiado a <select> -->
 
-                        <button type="button" onclick="guardarServicio()">Guardar</button>
-                        <button type="button" onclick="cerrarModal('modalAgregar')">Cancelar</button>
-                    </form>
-                </div>
-            </div>
+            <button type="button" onclick="guardarServicio()">Guardar</button>
+            <button type="button" onclick="cerrarModal('modalAgregar')">Cancelar</button>
+        </form>
+    </div>
+</div>
+
 
             <!-- Modal para Editar Etapa -->
             <div id="modalEditar" class="modal">
@@ -94,7 +95,7 @@
                         <input type="text" id="etapaEditar" required>
 
                         <label for="personalCargoEditar">Personal a Cargo</label>
-                        <input type="text" id="personalCargoEditar" required>
+                        <select id="personalCargoEditar" required></select>
 
                         <button type="button" onclick="guardarEdicion()">Guardar</button>
                         <button type="button" onclick="cerrarModal('modalEditar')">Cancelar</button>
