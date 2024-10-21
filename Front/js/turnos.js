@@ -88,6 +88,8 @@ document.addEventListener('DOMContentLoaded', obtenerTurnos);
             const modal = document.getElementById('modalAgregarPersonal');
             modal.style.display = 'block';
              obtenerClientes();
+     obtenerServicios();
+     
         }
 
         function cerrarModalAlHacerClickFuera(event, modalId) {
@@ -149,3 +151,57 @@ function seleccionarCliente() {
 
 // Llama a la función para obtener los clientes cuando se carga la página
 document.addEventListener('DOMContentLoaded', obtenerClientes);
+
+let servicios = []; // Variable para almacenar los servicios
+
+// Función para obtener los servicios de la API
+async function obtenerServicios() {
+    try {
+        const response = await fetch("https://spaadministrativo-production-4488.up.railway.app/servicio/traerServicio");
+        servicios = await response.json(); // Guardar los servicios en la variable
+    } catch (error) {
+        console.error("Error al obtener los servicios:", error);
+    }
+}
+
+// Llama a la función para obtener los servicios cuando se carga la página
+document.addEventListener('DOMContentLoaded', obtenerServicios);
+// Función para filtrar los servicios según el input
+function filtrarServicios() {
+    const input = document.getElementById('servicioInput').value.toLowerCase();
+    const select = document.getElementById('servicioSelect');
+    select.innerHTML = ''; // Limpiar las opciones
+
+    if (input.length > 0) {
+        const serviciosFiltrados = servicios.filter(servicio =>
+            servicio.nombre.toLowerCase().includes(input) // Filtrar por nombre de servicio
+        );
+
+        if (serviciosFiltrados.length > 0) {
+            select.style.display = 'block'; // Mostrar la lista desplegable
+
+            serviciosFiltrados.forEach(servicio => {
+                const option = document.createElement('option');
+                option.value = servicio.id; // Suponiendo que cada servicio tiene un ID
+                option.textContent = servicio.nombreServicio;
+                select.appendChild(option);
+            });
+        } else {
+            select.style.display = 'none'; // Ocultar si no hay coincidencias
+        }
+    } else {
+        select.style.display = 'none'; // Ocultar si el input está vacío
+    }
+}
+
+// Función para seleccionar un servicio de la lista
+function seleccionarServicio() {
+    const select = document.getElementById('servicioSelect');
+    const selectedOption = select.options[select.selectedIndex];
+
+    if (selectedOption) {
+        document.getElementById('servicioInput').value = selectedOption.textContent; // Llenar el input con el nombre del servicio
+        select.style.display = 'none'; // Ocultar la lista después de seleccionar
+    }
+}
+
