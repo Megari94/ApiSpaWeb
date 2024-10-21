@@ -11,11 +11,12 @@ async function obtenerTurnos() {
         turnos.forEach(turno => {
             // Mostrar solo turnos que estén en estado 'confirmado' o 'cancelado'
             if (turno.asistencia === 'CONFIRMADO' || turno.asistencia === 'CANCELADO') {
+                const claseAsistencia = turno.asistencia === 'CANCELADO' ? 'asistencia-cancelado' : 'asistencia-confirmado';
                 const fila = document.createElement('tr');
                 
                 fila.innerHTML = `
                     <td>${turno.id}</td>
-                    <td>${turno.asistencia}</td>
+                   <td class="${claseAsistencia}">${turno.asistencia}</td>
                     <td>${turno.costo}</td>
                     <td>${turno.fecha}</td>
                     <td>${turno.nombre_completo}</td>
@@ -29,7 +30,7 @@ async function obtenerTurnos() {
                     `;
                 } else {
                     // Si está cancelado, dejar la columna vacía o con un texto de "Cancelado"
-                    fila.innerHTML += `<td>Cancelado</td>`;
+                    fila.innerHTML += `<td></td>`;
                 }
                 
 
