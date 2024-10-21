@@ -15,6 +15,7 @@ import com.madeTUP.AppSpa.DTO.UsuarioDTO;
 import com.madeTUP.AppSpa.Model.Administrador;
 import com.madeTUP.AppSpa.Model.Personal;
 import com.madeTUP.AppSpa.Model.Secretaria;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import com.madeTUP.AppSpa.Model.Servicio;
 import com.madeTUP.AppSpa.Model.Usuario;
 import com.madeTUP.AppSpa.Service.IAdministradorService;
