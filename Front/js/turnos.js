@@ -1,3 +1,7 @@
+
+const fechaHora = document.getElementById('fechaHora').value;
+console.log("Fecha y Hora seleccionadas:", fechaHora);
+
 let turnos = []; // Variable global para almacenar los turnos obtenidos
 
 // Llamada para obtener los turnos desde la API
