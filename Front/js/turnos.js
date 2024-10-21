@@ -41,10 +41,11 @@ async function obtenerTurnos() {
         console.error('Error al obtener los turnos:', error);
     }
 }
-
 function filtrarTurnos() {
-    const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Convertir el valor a minúsculas
-    const turnosFiltrados = turnos.filter(turno => turno.nombre_completo.toLowerCase().includes(searchInput)); // Filtrar por nombre
+    const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Obtener el valor del input
+    const turnosFiltrados = turnos.filter(turno => 
+        turno.nombre_completo.toLowerCase().includes(searchInput) // Filtrar por nombre completo
+    );
 
     mostrarTurnos(turnosFiltrados); // Mostrar los turnos filtrados
 }
