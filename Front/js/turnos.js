@@ -95,4 +95,20 @@ document.addEventListener('DOMContentLoaded', obtenerTurnos);
                 modal.style.display = 'none';
             }
         }
+async function obtenerClientes() {
+    const response = await fetch('https://spaadministrativo-production-4488.up.railway.app/clientes/traerClientesAdmin');
+    const clientes = await response.json();
 
+    const selectClientes = document.getElementById('nombreCliente');
+
+    // Limpia las opciones existentes
+    selectClientes.innerHTML = '<option value="" disabled selected>Selecciona un cliente</option>';
+
+    // Agrega las opciones al select
+    clientes.forEach(cliente => {
+        const option = document.createElement('option');
+        option.value = cliente.id; // Asigna el ID del cliente como valor
+        option.textContent = `${cliente.nombre} ${cliente.apellido}`; // Muestra el nombre y apellido
+        selectClientes.appendChild(option);
+    });
+}
