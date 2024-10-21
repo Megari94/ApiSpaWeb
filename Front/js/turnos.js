@@ -20,10 +20,18 @@ async function obtenerTurnos() {
                     <td>${turno.fecha}</td>
                     <td>${turno.nombre_completo}</td>
                     <td>${turno.nombre_servicio}</td>
-                    <td>
-                        <button onclick="cancelarTurno(${turno.id},this)" class="cancelar-btn">Cancelar</button>
-                    </td>
-                `;
+                      `;
+                   if (turno.asistencia !== 'CANCELADO') {
+                    fila.innerHTML += `
+                        <td>
+                            <button onclick="cancelarTurno(${turno.id}, this)" class="cancelar-btn">Cancelar</button>
+                        </td>
+                    `;
+                } else {
+                    // Si está cancelado, dejar la columna vacía o con un texto de "Cancelado"
+                    fila.innerHTML += `<td>Cancelado</td>`;
+                }
+                
 
                 tableBody.appendChild(fila);
             }
