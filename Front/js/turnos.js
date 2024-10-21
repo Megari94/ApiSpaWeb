@@ -121,6 +121,7 @@ function filtrarClientes() {
 
         if (clientesFiltrados.length > 0) {
             select.style.display = 'block'; // Mostrar la lista desplegable
+            select.size = Math.min(clientesFiltrados.length, 5); // Ajustar el tamaño a un máximo de 5 opciones
             clientesFiltrados.forEach(cliente => {
                 const option = document.createElement('option');
                 option.value = cliente.id; // Suponiendo que cada cliente tiene un ID
