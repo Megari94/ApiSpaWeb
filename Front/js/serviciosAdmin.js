@@ -191,7 +191,7 @@ function guardarEdicion() {
         personalId: personalId
     };
 
-    fetch(`https://spaadministrativo-production-4488.up.railway.app/servicio/editarII`, {
+    fetch(`https://spaadministrativo-production-4488.up.railway.app/servicio/editarAdmin`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
