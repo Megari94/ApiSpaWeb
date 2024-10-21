@@ -166,6 +166,7 @@ async function obtenerServicios() {
 
 // Llama a la función para obtener los servicios cuando se carga la página
 document.addEventListener('DOMContentLoaded', obtenerServicios);
+
 // Función para filtrar los servicios según el input
 function filtrarServicios() {
     const input = document.getElementById('servicioInput').value.toLowerCase();
@@ -174,7 +175,7 @@ function filtrarServicios() {
 
     if (input.length > 0) {
         const serviciosFiltrados = servicios.filter(servicio =>
-            servicio.nombre.toLowerCase().includes(input) // Filtrar por nombre de servicio
+            servicio.nombreServicio.toLowerCase().includes(input) // Filtrar por nombre de servicio
         );
 
         if (serviciosFiltrados.length > 0) {
@@ -182,8 +183,8 @@ function filtrarServicios() {
 
             serviciosFiltrados.forEach(servicio => {
                 const option = document.createElement('option');
-                option.value = servicio.id; // Suponiendo que cada servicio tiene un ID
-                option.textContent = servicio.nombreServicio;
+                option.value = servicio.id; // Usar el ID del servicio
+                option.textContent = servicio.nombreServicio; // Mostrar el nombre
                 select.appendChild(option);
             });
         } else {
@@ -204,4 +205,3 @@ function seleccionarServicio() {
         select.style.display = 'none'; // Ocultar la lista después de seleccionar
     }
 }
-
