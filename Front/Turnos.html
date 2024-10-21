@@ -126,8 +126,10 @@
     <div class="modal-content">
         <h3>Agregar Personal</h3>
         <form id="formAgregarPersonal">
-            <label for="nombreUsuario">Nombre del Cliente:</label>
-            <input type="text" id="nombreUsuario" name="nombreUsuario" required>
+           <label for="nombreCliente">Nombre del Cliente:</label>
+            <select id="nombreCliente" name="nombreCliente" required>
+                <option value="" disabled selected>Selecciona un cliente</option>
+            </select>
 
             <label for="apellido">Servicio:</label>
             <input type="text" id="apellido" name="apellido" required>
