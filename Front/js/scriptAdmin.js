@@ -30,12 +30,7 @@ document.getElementById("clienteAdminLink").addEventListener("click", function(e
     event.preventDefault();  // Evita la acción predeterminada del enlace
     window.location.href = "ClientesAdmin.html";  // Redirige a la nueva página
 });
-let etapasData = [
-    { id: 1, nombre: 'Masajes', etapa: '1 de 3', personalCargo: 'Carlos' },
-    { id: 2, nombre: 'Manicura', etapa: '1 de 1', personalCargo: 'Marta' },
-    { id: 3, nombre: 'Depilación', etapa: '1 de 1', personalCargo: 'Laura' },
-    { id: 4, nombre: 'Afeitado', etapa: '1 de 1', personalCargo: 'José' }
-];
+
 
 let etapaIdSeleccionada; // Variable global para ID de etapa seleccionada
 
