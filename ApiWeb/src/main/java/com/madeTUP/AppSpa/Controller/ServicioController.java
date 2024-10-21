@@ -83,7 +83,7 @@ public class ServicioController {
      }
      
      
-    @PostMapping("/Servicio/crearAdmin")
+    @PostMapping("/crearAdmin")
 public String crearServicio(@RequestBody ServicioAdministradorDTO c) {
     Servicio servicio = new Servicio();
     servicio.setNombreServicio(c.getNombreServicio());
@@ -100,7 +100,7 @@ public String crearServicio(@RequestBody ServicioAdministradorDTO c) {
     return "Servicio creado";
 }
 
-    @PutMapping("/Servicio/editarAdmin")
+    @PutMapping("/editarAdmin")
 public void editServicioIIAdmin(@RequestBody ServicioAdministradorDTO c) {
     // Buscar el servicio existente
     Servicio servicio = servis.findServicio(c.getId());
