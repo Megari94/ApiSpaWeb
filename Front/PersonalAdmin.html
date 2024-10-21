@@ -150,12 +150,9 @@
     <label for="contrasenaEditar">Contraseña:</label>
     <input type="password" id="contrasenaEditar" required>
 
+    <!-- Campo de "Tipo de Usuario" deshabilitado para que no sea editable -->
     <label for="tipoUsuarioEditar">Tipo de Usuario:</label>
-    <select id="tipoUsuarioEditar" name="tipoUsuarioEditar" required>
-        <option value="ADMINISTRADOR">ADMINISTRADOR</option>
-        <option value="PERSONAL">PERSONAL</option>
-        <option value="SECRETARIA">SECRETARIA</option>
-    </select>
+    <input type="text" id="tipoUsuarioEditar" name="tipoUsuarioEditar" disabled> <!-- Deshabilitado pero muestra el valor -->
 
     <button type="button" onclick="guardarEdicionPersonal()">Guardar</button>
     <button type="button" onclick="cerrarModal('modalEditarPersonal')">Cancelar</button>
@@ -275,7 +272,7 @@ async function guardarEdicionPersonal() {
     const apellido = document.getElementById('apellidoEditar').value;
     const correo = document.getElementById('correoEditar').value;
     const contrasena = document.getElementById('contrasenaEditar').value;
-    const tipoUsuario = document.getElementById('tipoUsuarioEditar').value; // Obtener el valor del desplegable
+    const tipoUsuario = document.getElementById('tipoUsuarioEditar').value; // Aunque esté deshabilitado, obtenemos su valor
 
     const personaIndex = personalIdSeleccionado;
 
@@ -286,7 +283,7 @@ async function guardarEdicionPersonal() {
             apellido,
             correo,
             contrasena,
-            tipoUsuario // Añadir tipoUsuario al objeto
+            tipoUsuario // Incluimos el tipo de usuario en el objeto enviado al backend
         };
 
         try {
