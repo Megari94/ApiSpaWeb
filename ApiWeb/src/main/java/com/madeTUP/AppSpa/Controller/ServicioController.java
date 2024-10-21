@@ -5,13 +5,18 @@
 package com.madeTUP.AppSpa.Controller;
 
 import com.madeTUP.AppSpa.DTO.ServicioAdminDTO;
+import com.madeTUP.AppSpa.DTO.ServicioAdministradorDTO;
 import com.madeTUP.AppSpa.DTO.ServicioDTO;
+import com.madeTUP.AppSpa.Model.Personal;
 import com.madeTUP.AppSpa.Model.Servicio;
+import com.madeTUP.AppSpa.Service.IPersonalService;
 import com.madeTUP.AppSpa.Service.IServicioService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  *
@@ -24,6 +29,8 @@ import org.springframework.web.bind.annotation.*;
 public class ServicioController {
     @Autowired 
     private IServicioService servis;
+    @Autowired
+    private IPersonalService servisP;
     
     @GetMapping("/traerServicioAdmin")
     public ResponseEntity<List<ServicioAdminDTO>> obtenerServiciosAdmin() {
@@ -75,5 +82,45 @@ public class ServicioController {
          return servis.findServicio(c.getId());
      }
      
+     
+    @PostMapping("/Servicio/crearAdmin")
+public String crearServicio(@RequestBody ServicioAdministradorDTO c) {
+    Servicio servicio = new Servicio();
+    servicio.setNombreServicio(c.getNombreServicio());
+    servicio.setNroEtapas(c.getNroEtapas());
+    
+    // Validar que el ID del personal sea válido
+    Personal personal = servisP.findPersonal(c.getPersonalId());
+    if (personal == null) {
+        return "Personal no encontrado"; // Manejar el error de manera adecuada
+    }
+    servicio.setPersonal(personal);
+    
+    servis.saveServicio(servicio);
+    return "Servicio creado";
+}
+
+    @PutMapping("/Servicio/editarII")
+public void editServicioIIAdmin(@RequestBody ServicioAdministradorDTO c) {
+    // Buscar el servicio existente
+    Servicio servicio = servis.findServicio(c.getId());
+    if (servicio == null) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Servicio no encontrado");
+    }
+    
+    // Actualizar los atributos
+    servicio.setNombreServicio(c.getNombreServicio());
+    servicio.setNroEtapas(c.getNroEtapas());
+    
+    // Validar que el ID del personal sea válido
+    Personal personal = servisP.findPersonal(c.getPersonalId());
+    if (personal == null) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Personal no encontrado");
+    }
+    servicio.setPersonal(personal);
+    
+    servis.editServicioII(servicio);
+}
+
 }
  
