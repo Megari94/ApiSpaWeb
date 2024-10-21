@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
     searchInput.addEventListener("input", filtrarEtapas);
 });
 
-let serviciosData = []; // Variable global para almacenar los servicios
 
 function cargarServicios() {
     console.log("Cargando servicios...");
@@ -122,40 +121,7 @@ function guardarEdicion() {
         alert("No se pudo editar el servicio.");
     });
 }
-function guardarServicio() {
-    const nombreServicio = document.getElementById("nombreServicio").value;
-    const nroEtapas = document.getElementById("etapasServicio").value; // Asegúrate que el nombre del campo coincida
-    const personalId = document.getElementById("personalCargo").value; // Asegúrate que esto se mapee correctamente
-
-    const nuevoServicio = {
-        nombreServicio: nombreServicio,
-        nroEtapas: nroEtapas,
-        personalId: personalId
-    };
-
-    fetch(`https://spaadministrativo-production-4488.up.railway.app/servicio/crearAdmin`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(nuevoServicio)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Error al crear el servicio: " + response.statusText);
-        }
-        return response.json(); // Puedes omitir esto si no necesitas manejar la respuesta
-    })
-    .then(() => {
-        alert("Servicio agregado con éxito");
-        cargarServicios(); // Recargar servicios después de agregar
-        cerrarModal("modalAgregar"); // Cierra el modal
-    })
-    .catch(error => {
-        console.error("Error al agregar el servicio:", error.message);
-        alert("No se pudo agregar el servicio.");
-    });
-}
+let serviciosData = []; // Variable global para almacenar los servicios
 function cerrarModal(modalId) {
     document.getElementById(modalId).style.display = "none";
 }
