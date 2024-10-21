@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Facturas</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/estilo.css">
+    <script src="js/scriptAdmin.js" defer></script>
+ 
+    <script src="js/script.js" defer></script>
+    
+    <style>
+        .form-container {
+            border-radius: 10px;
+            display: none;
+            margin-top: 0px;
+            padding: 10px; /* 减少内边距 */
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            margin: 0 auto;
+            width: 50%; /* 减小宽度 */
+            margin-bottom: 20px;
+          
+        }
+
+        .button-container button {
+            width: 200px;
+        }
+
+        .tabla-contenido {
+            display: none;
+            max-height: 300px; /* Altura máxima visible */
+            overflow-y: scroll; /* Habilitar desplazamiento vertical */
+            margin-top: 20px;
+        }
+
+        .tabla-contenido table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tabla-contenido th,
+        .tabla-contenido td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+     
+        .main-content1 {
+            text-align: center;
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s;
+            width: 100%;
+           
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        h2 {
+            margin: 20px 0;
+        }
+
+        /* Fija el título y botones en la parte superior */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            background-color:#fafafa;
+            z-index: 1000;
+        }
+
+        /* 模态框样式 */
+        .modal {
+            
+            display: none; /* 隐藏模态框 */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4); /* 背景透明 */
+        }
+
+        .modal-content {
+           
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* 模态框宽度 */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Barra de Menú Lateral -->
+        <div id="sidebar" class="sidebar">
+            <div class="link-container">
+                <a href="#" id="clienteAdminLink"><i class="fas fa-users"></i>Clientes</a>
+                <a href="#" id="PersonalLink"><i class="fas fa-user-tie"></i>Personal</a>
+                <a href="#" id="TurnoLink"><i class="fas fa-calendar-alt"></i>Turno</a>
+                <a href="#" id="ServicioLink"><i class="fas fa-concierge-bell"></i>Servicio</a>
+                <a href="#"  id="IPAdminLink"><i class="fas fa-wallet"></i>Informe de Pagos</a>
+                <a href="#" id="ISAdminLink"><i class="fas fa-file-alt"></i>Informe de Servicios</a>
+                <a href="#" id="turnoAdminLink"><i class="fas fa-chart-pie"></i>Turnos Solicitados</a>
+                <a href="#" id="facturaAdminLink"><i class="fas fa-receipt"></i>Factura</a>
+            </div>
+            <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="main-content1">
+            <!-- Header fijo -->
+            <div class="sticky-header">
+                <button id="menuButton" class="open-btn" onclick="toggleMenu()">☰ Menú</button>
+                <h2>Gestión Clientes</h2>
+
+                <div class="button-container">
+                    <button class="add-button" onclick="mostrarListadoClientes()">Listado de Clientes</button>
+                    <button class="add-button" onclick="mostrarFormularioDia()">Listado por Día</button>
+                    <button class="add-button" onclick="mostrarBuscadorProfesional()">Listado por Profesional</button>
+                </div>
+            </div>
+
+            <!-- Formulario emergente para listado por día -->
+            <div id="formularioDia" class="form-container">
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" name="fecha">
+                
+                <label for="hora">Hora:</label>
+                <input type="time" id="hora" name="hora">
+                
+                <label for="servicio">Servicio:</label>
+                <input type="text" id="servicio" name="servicio">
+                
+                <button type="button" onclick="buscarPorDia()">Buscar</button>
+            </div>
+
+            <!-- 模态框 -->
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="cerrarModal()">&times;</span>
+                    <h2>Resultados de la búsqueda</h2>
+                    <div id="modalTurnosContent" class="tabla-contenido">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Cliente</th>
+                                    <th>Servicio</th>
+                                    <th>Profesional</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalTurnosTableBody">
+                                <!-- Los datos de turnos filtrados se insertarán aquí dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buscador de clientes por apellido -->
+            <div id="buscadorClientes" class="form-container">
+                <label for="buscadorApellido">Apellido:</label>
+                <input type="text" id="buscadorApellido" name="buscadorApellido" placeholder="Ingresa el apellido..." oninput="buscarPorApellido()">
+            </div>
+
+            <!-- Buscador por profesional -->
+            <div id="buscadorProfesional" class="form-container">
+                <label for="profesional">Profesional:</label>
+                <input type="text" id="profesional" name="profesional" placeholder="Ingresa el nombre del profesional..." oninput="buscarPorProfesional()">
+            </div>
+
+            <!-- Tabla de Clientes (contenedor desplazable) -->
+            <div id="clientesContent" class="tabla-contenido">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Cliente</th>
+                            <th>Nombre</th>
+                            <th>Correo Electrónico</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientesTableBody">
+                        <!-- Los datos de clientes se insertarán aquí dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tabla para mostrar los turnos -->
+            <div id="turnosContent" class="tabla-contenido">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Cliente</th>
+                            <th>Servicio</th>
+                            <th>Profesional</th>
+                        </tr>
+                    </thead>
+                    <tbody id="turnosTableBody">
+                        <!-- Los datos de turnos se insertarán aquí dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <script>
+                const turnosData = [
+                    { id: 1, fecha: '2024-10-14', hora: '10:00', cliente: 'Juan Pérez', servicio: 'Masajes', profesional: 'María Gómez' },
+                    { id: 2, fecha: '2024-10-15', hora: '12:00', cliente: 'Ana García', servicio: 'Manicura', profesional: 'Laura Martínez' },
+                    { id: 3, fecha: '2024-10-16', hora: '15:00', cliente: 'Carlos Rodríguez', servicio: 'Depilación', profesional: 'María Gómez' },
+                    { id: 3, fecha: '2024-10-16', hora: '15:00', cliente: 'Carlos Rodríguez', servicio: 'Depilación', profesional: 'María Gómez' },
+                    // 更多数据...
+                    // 更多数据...
+                ];
+
+                const clientesData = [
+                    { id: 1, nombre: 'Juan Pérez', apellido: 'Pérez', correo: 'juan.perez@example.com' },
+                    { id: 2, nombre: 'Ana García', apellido: 'García', correo: 'ana.garcia@example.com' },
+                    { id: 3, nombre: 'Carlos Rodríguez', apellido: 'Rodríguez', correo: 'carlos.rodriguez@example.com' },
+                    { id: 3, nombre: 'Carlos Rodríguez', apellido: 'Rodríguez', correo: 'carlos.rodriguez@example.com' }
+                ];
+
+                function cargarTurnos(data) {
+                    const tableBody = document.getElementById('turnosTableBody');
+                    tableBody.innerHTML = ''; 
+
+                    data.forEach(turno => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${turno.id}</td>
+                            <td>${turno.fecha}</td>
+                            <td>${turno.hora}</td>
+                            <td>${turno.cliente}</td>
+                            <td>${turno.servicio}</td>
+                            <td>${turno.profesional}</td>
+
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+
+                function cargarClientes(data) {
+                    const tableBody = document.getElementById('clientesTableBody');
+                    tableBody.innerHTML = ''; 
+
+                    data.forEach(cliente => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${cliente.id}</td>
+                            <td>${cliente.nombre}</td>
+                            <td>${cliente.correo}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+
+                function mostrarListadoClientes() {
+                    cargarClientes(clientesData);
+                    mostrarSeccion('clientesContent');
+                    document.getElementById('buscadorClientes').style.display = 'block'; // Mostrar buscador de clientes
+                    document.getElementById('formularioDia').style.display = 'none'; // Ocultar formulario por día
+                    document.getElementById('buscadorProfesional').style.display = 'none'; // Ocultar buscador por profesional
+                }
+
+                function mostrarFormularioDia() {
+                    document.getElementById('formularioDia').style.display = 'block';
+                    mostrarSeccion('turnosContent');
+                    document.getElementById('buscadorClientes').style.display = 'none'; // Ocultar buscador de clientes
+                    document.getElementById('buscadorProfesional').style.display = 'none'; // Ocultar buscador por profesional
+                }
+
+                function mostrarBuscadorProfesional() {
+                    document.getElementById('buscadorProfesional').style.display = 'block';
+                    mostrarSeccion('turnosContent');
+                    document.getElementById('buscadorClientes').style.display = 'none'; // Ocultar buscador de clientes
+                    document.getElementById('formularioDia').style.display = 'none'; // Ocultar formulario por día
+                }
+
+               function buscarPorDia() {
+    const fecha = document.getElementById('fecha').value;
+    const hora = document.getElementById('hora').value;
+    const servicio = document.getElementById('servicio').value.trim().toLowerCase(); // 获取服务输入并转为小写
+
+    // 根据日期、小时和服务过滤数据
+    const filteredData = turnosData.filter(turno =>
+        turno.fecha === fecha && 
+        (hora === '' || turno.hora === hora) && 
+        (servicio === '' || turno.servicio.toLowerCase().includes(servicio)) // 根据服务过滤
+    );
+
+    cargarTurnosModal(filteredData);
+    abrirModal();
+}
+
+                
+                
+
+                function cargarTurnosModal(data) {
+                    const tableBody = document.getElementById('modalTurnosTableBody');
+                    tableBody.innerHTML = ''; 
+
+                    data.forEach(turno => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${turno.id}</td>
+                            <td>${turno.fecha}</td>
+                            <td>${turno.hora}</td>
+                            <td>${turno.cliente}</td>
+                            <td>${turno.servicio}</td>
+                            <td>${turno.profesional}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+
+                function abrirModal() {
+                    document.getElementById('myModal').style.display = 'block';
+                }
+
+                function cerrarModal() {
+                    document.getElementById('myModal').style.display = 'none';
+                }
+
+                function buscarPorApellido() {
+                    const apellido = document.getElementById('buscadorApellido').value.toLowerCase();
+
+                    const filteredData = clientesData.filter(cliente =>
+                        cliente.apellido.toLowerCase().includes(apellido)
+                    );
+
+                    cargarClientes(filteredData);
+                }
+
+                function mostrarSeccion(seccionId) {
+                    document.getElementById('clientesContent').style.display = 'none';
+                    document.getElementById('turnosContent').style.display = 'none';
+
+                    document.getElementById(seccionId).style.display = 'block';
+                }
+
+                window.onload = () => {
+                    cargarTurnos(turnosData);
+                };
+            </script>
+        </div>
+    </div>
+</body>
+</html>
