@@ -90,6 +90,39 @@ function abrirModalEditar(servicioId) {
         document.getElementById("modalEditar").style.display = "block";
     }
 }
+function cargarPersonal() {
+    return fetch("https://spaadministrativo-production-4488.up.railway.app/Personal/PersonalDTO")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al obtener el personal: " + response.statusText);
+            }
+            return response.json();
+        })
+        .then(personal => {
+            const selectAgregar = document.getElementById("personalCargo");
+            const selectEditar = document.getElementById("personalCargoEditar");
+
+            // Limpiar las opciones existentes
+            selectAgregar.innerHTML = "";
+            selectEditar.innerHTML = "";
+
+            // Crear opciones y agregarlas a los selects
+            personal.forEach(p => {
+                const option = document.createElement("option");
+                option.value = p.id; // El valor será el ID del personal
+                option.text = p.nombre_Completo; // El texto será el nombre completo
+
+                // Añadir la opción a ambos selects
+                selectAgregar.appendChild(option.cloneNode(true));
+                selectEditar.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error("Error al cargar el personal:", error.message);
+            alert("No se puede cargar el personal en este momento.");
+        });
+}
+
 function guardarEdicion() {
     const servicioId = document.getElementById("formEditar").getAttribute("data-servicio-id");
     const nombreServicio = document.getElementById("nombreEditar").value;
