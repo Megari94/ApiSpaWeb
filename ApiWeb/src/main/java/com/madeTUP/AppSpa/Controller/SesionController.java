@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Virginia
  */
 @RestController
+@CrossOrigin(origins = "https://apispaweb-production.up.railway.app")
 public class SesionController {
     @Autowired 
     private ISesionService servis;
