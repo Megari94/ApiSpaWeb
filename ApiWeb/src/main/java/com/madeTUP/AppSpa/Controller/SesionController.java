@@ -145,6 +145,7 @@ public ResponseEntity<String> agregarSesion(@RequestBody NewSesionDTO nuevaSesio
         sesion.setCliente(cliente);
         sesion.setServicio(servicio);
         sesion.setFecha(LocalDateTime.parse(nuevaSesion.getFecha()));
+        sesion.setCosto(0.0);
         sesion.setAsistencia("SOLICITADO"); // Puedes ajustarlo según la lógica del negocio
 
         // Guardamos la sesión
