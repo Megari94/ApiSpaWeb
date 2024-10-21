@@ -193,12 +193,13 @@
 /*Pagos*/
        
 
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #ffb3d1; /* Rosa más oscuro */
-            white-space: nowrap; /* Para que todo quede en una sola línea */
-        }
+      th, td {
+    padding: 10px;
+    text-align: left;
+    font-size: 1rem;
+    word-wrap: break-word;
+    border: 1px solid #f55f4e; /* Borde en cada celda con color */
+}
 
         th {
             background-color: #f8bbd0; /* Rosa pastel más oscuro */
