@@ -124,7 +124,7 @@ function abrirModalEditar(servicioId) {
         // Llamamos a cargarPersonal para asegurarnos de que el desplegable esté actualizado
         cargarPersonal().then(() => {
             // Una vez que el personal esté cargado, seleccionamos el personal correspondiente
-            document.getElementById("personalCargoEditar").value = servicio.personalId; // Ajusta según la estructura
+            document.getElementById("personalCargoEditar").value = servicio.personal.id; // Asegúrate de que el ID esté correctamente mapeado
         });
 
         // Guarda el ID del servicio para su uso en la función de guardado
@@ -134,6 +134,7 @@ function abrirModalEditar(servicioId) {
         document.getElementById("modalEditar").style.display = "block";
     }
 }
+
 function cargarPersonal() {
     return fetch("https://spaadministrativo-production-4488.up.railway.app/Personal/PersonalDTO")
         .then(response => {
