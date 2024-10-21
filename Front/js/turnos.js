@@ -95,21 +95,56 @@ document.addEventListener('DOMContentLoaded', obtenerTurnos);
             if (event.target === modal) {
                 modal.style.display = 'none';
             }
-        }
+        }let clientes = [];
+
+// Función para obtener los clientes de la API
 async function obtenerClientes() {
-    const response = await fetch('https://spaadministrativo-production-4488.up.railway.app/clientes/traerClientesAdmin');
-    const clientes = await response.json();
-
-    const selectClientes = document.getElementById('nombreCliente');
-
-    // Limpia las opciones existentes
-    selectClientes.innerHTML = '<option value="" disabled selected>Selecciona un cliente</option>';
-
-    // Agrega las opciones al select
-    clientes.forEach(cliente => {
-        const option = document.createElement('option');
-        option.value = cliente.id; // Asigna el ID del cliente como valor
-        option.textContent = `${cliente.nombre} ${cliente.apellido}`; // Muestra el nombre y apellido
-        selectClientes.appendChild(option);
-    });
+    try {
+        const response = await fetch("https://spaadministrativo-production-4488.up.railway.app/clientes/traerClientesAdmin");
+        clientes = await response.json();
+    } catch (error) {
+        console.error("Error al obtener los clientes:", error);
+    }
 }
+
+// Función para filtrar los clientes según el input
+function filtrarClientes() {
+    const input = document.getElementById('nombreUsuario').value.toLowerCase();
+    const select = document.getElementById('clienteSelect');
+    select.innerHTML = ''; // Limpiar las opciones
+
+    if (input.length > 0) {
+        const clientesFiltrados = clientes.filter(cliente =>
+            cliente.nombre.toLowerCase().includes(input) || 
+            cliente.apellido.toLowerCase().includes(input)
+        );
+
+        if (clientesFiltrados.length > 0) {
+            select.style.display = 'block'; // Mostrar la lista desplegable
+            clientesFiltrados.forEach(cliente => {
+                const option = document.createElement('option');
+                option.value = cliente.id; // Suponiendo que cada cliente tiene un ID
+                option.textContent = `${cliente.nombre} ${cliente.apellido}`;
+                select.appendChild(option);
+            });
+        } else {
+            select.style.display = 'none'; // Ocultar si no hay coincidencias
+        }
+    } else {
+        select.style.display = 'none'; // Ocultar si el input está vacío
+    }
+}
+
+// Función para seleccionar un cliente de la lista
+function seleccionarCliente() {
+    const select = document.getElementById('clienteSelect');
+    const selectedOption = select.options[select.selectedIndex];
+    
+    if (selectedOption) {
+        document.getElementById('nombreUsuario').value = selectedOption.textContent; // Llenar el input con el nombre completo
+        select.style.display = 'none'; // Ocultar la lista después de seleccionar
+    }
+}
+
+// Llama a la función para obtener los clientes cuando se carga la página
+document.addEventListener('DOMContentLoaded', obtenerClientes);
