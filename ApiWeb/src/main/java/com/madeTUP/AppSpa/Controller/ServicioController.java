@@ -84,21 +84,29 @@ public class ServicioController {
      
      
     @PostMapping("/crearAdmin")
-public String crearServicio(@RequestBody ServicioAdministradorDTO c) {
+public ResponseEntity<Map<String, Object>> crearServicio(@RequestBody ServicioAdministradorDTO c) {
     Servicio servicio = new Servicio();
     servicio.setNombreServicio(c.getNombreServicio());
     servicio.setNroEtapas(c.getNroEtapas());
-    
+
     // Validar que el ID del personal sea válido
     Personal personal = servisP.findPersonal(c.getPersonalId());
     if (personal == null) {
-        return "Personal no encontrado"; // Manejar el error de manera adecuada
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Personal no encontrado"));
     }
     servicio.setPersonal(personal);
     
+    // Guardar el servicio
     servis.saveServicio(servicio);
-    return "Servicio creado";
+
+    // Crear la respuesta JSON
+    Map<String, Object> response = new HashMap<>();
+    response.put("message", "Servicio creado");
+    response.put("id", servicio.getId()); // Suponiendo que el servicio tiene un método getId()
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
 }
+
 
     @PutMapping("/editarAdmin")
 public void editServicioIIAdmin(@RequestBody ServicioAdministradorDTO c) {
