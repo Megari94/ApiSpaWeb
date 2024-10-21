@@ -204,6 +204,8 @@
             border-radius: 5px;
             cursor: pointer;
             margin-left: 5px; /* Espaciado entre los botones */
+             color: white;
+    background-color: #f48fb1;
         }
 
         .btn-aceptar {
