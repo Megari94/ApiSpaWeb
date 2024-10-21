@@ -321,41 +321,44 @@ async function darDeBaja(idUsuario) {
         return; // Salir si el usuario no se encuentra
     }
 
-    // Crear el objeto para enviar al servidor, incluyendo el tipo de usuario
-    const usuarioDTO = {
-        id: persona.id,
-        tipoUsuario: persona.tipoUsuario // Incluir el tipo de usuario
-    };
+    // Preguntar al usuario si está seguro de eliminar
+    const confirmar = confirm('¿Estás seguro de que deseas dar de baja a esta persona?');
 
-    try {
-        // Hacer la llamada al API
-        const response = await fetch(`${apiUrl}/Administrador/eliminarPerfil`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(usuarioDTO) // Convertir a JSON
-        });
+    if (confirmar) {
+        // Crear el objeto para enviar al servidor, incluyendo el tipo de usuario
+        const usuarioDTO = {
+            id: persona.id,
+            tipoUsuario: persona.tipoUsuario // Incluir el tipo de usuario
+        };
 
-        if (!response.ok) {
-            throw new Error('Error al dar de baja el usuario');
+        try {
+            // Hacer la llamada al API
+            const response = await fetch(`${apiUrl}/Administrador/eliminarPerfil`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(usuarioDTO) // Convertir a JSON
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al dar de baja el usuario');
+            }
+
+            // Manejar la respuesta de eliminación
+            if (response.status === 204) {
+                console.log('Usuario dado de baja con éxito');
+                // Recargar la página para reflejar los cambios
+                cargarPersonal(); // Recargar la página
+            } else {
+                const data = await response.json();
+                console.log('Respuesta del servidor:', data);
+            }
+        } catch (error) {
+            console.error('Error:', error);
         }
-
-        // Manejar la respuesta de eliminación
-        if (response.status === 204) {
-            console.log('Usuario dado de baja con éxito');
-            // Actualizar la tabla después de eliminar
-            personalData = personalData.filter(p => p.id !== idUsuario); // Eliminar de los datos locales
-            mostrarPersonal(personalData); // Actualiza la tabla para reflejar los cambios
-        } else {
-            const data = await response.json();
-            console.log('Respuesta del servidor:', data);
-        }
-    } catch (error) {
-        console.error('Error:', error);
     }
 }
-
 
 // Cargar la tabla cuando la página se carga por primera vez
 window.onload = function() {
