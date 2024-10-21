@@ -10,7 +10,7 @@ async function obtenerTurnos() {
 
         turnos.forEach(turno => {
             // Mostrar solo turnos que estén en estado 'confirmado' o 'cancelado'
-            if (turno.estado === 'CONFIRMADO' || turno.estado === 'CANCELADO') {
+            if (turno.asistencia === 'CONFIRMADO' || turno.asistencia === 'CANCELADO') {
                 const fila = document.createElement('tr');
                 
                 fila.innerHTML = `
