@@ -49,7 +49,6 @@ function displaySessions(sesiones) {
 // Llamar a la función al cargar la página
 window.onload = loadSessionsAdmin;
 
-
 function formatearFecha(fechaISO) {
     const options = { 
         year: 'numeric', 
