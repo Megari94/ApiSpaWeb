@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin(origins = "https://apispaweb-production.up.railway.app")
 public class AdministradorController {
     @Autowired 
     private IAdministradorService servis;
