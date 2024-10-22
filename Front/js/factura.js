@@ -209,14 +209,14 @@ async function generarInforme(event) {
         doc.setFont("Helvetica", "normal");
 
         // Mostrar los datos en el PDF utilizando el formato JSON que proporcionaste
-        doc.text(servicio.id.toString(), 50, yOffset);
-        doc.text(servicio.nombre_completo, 100, yOffset);
-        doc.text(servicio.asistencia, 270, yOffset);
-        doc.text(servicio.fecha, 370, yOffset);
-        doc.text(servicio.nombre_servicio, 470, yOffset);
-        doc.text(servicio.costo.toFixed(2), 570, yOffset, { align: "right" });
+        doc.text(servicio.id.toString(), 30, yOffset);
+        doc.text(servicio.nombre_completo, 50, yOffset);
+        doc.text(servicio.asistencia, 200, yOffset);
+        doc.text(servicio.fecha, 300, yOffset);
+        doc.text(servicio.nombre_servicio, 400, yOffset);
+        doc.text(servicio.costo.toFixed(2), 500, yOffset, { align: "right" });
 
-        yOffset += 20; // Espaciado entre filas
+        yOffset += 10; // Espaciado entre filas
         doc.line(30, yOffset - 5, 580, yOffset - 5); // Línea debajo de la fila
     });
 
