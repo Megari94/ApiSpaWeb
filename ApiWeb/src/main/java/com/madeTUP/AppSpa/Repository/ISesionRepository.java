@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ISesionRepository extends JpaRepository<Sesion,Long>{
-@Query("SELECT new com.tu.paquete.SesionAdminDTO(s.id, s.asistencia, s.costo, s.fecha, CONCAT(c.nombre, ' ', c.apellido), se.nombre) " +
+@Query("SELECT new com.madeTUP.AppSpa.DTO.SesionAdminDTO(s.id, s.asistencia, s.costo, s.fecha, CONCAT(c.nombre, ' ', c.apellido), se.nombre) " +
            "FROM Sesion s " +
            "JOIN s.cliente c " +
            "JOIN s.servicio se " +
