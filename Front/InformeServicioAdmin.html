@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="css/estilo.css">
-   <script src="js/informeServicioAdmin.js" defer></script>
+    <script src="js/script.js" defer></script>
+    <script src="js/scriptAdmin.js" defer></script>
+    <script src="js/cargarPersonalAdmin.js" defer></script>
+    <script src="js/informeServicioAdmin.js" defer></script>
+
 </head>
 <body>
     <div class="container">
@@ -29,7 +33,7 @@
         <!-- Contenido Principal -->
         <div class="main-content">
             <button id="menuButton" class="open-btn" onclick="toggleMenu()">☰ Menú</button>
-        
+
             <!-- Formulario para ingresar el rango de fechas -->
             <div class="date-range-form">
                 <h3>Informe de Servicios Realizados</h3>
@@ -37,37 +41,38 @@
                 <select id="apellidoPersonal">
                     <option value="">Seleccione un personal</option> <!-- Opción por defecto -->
                 </select>
+
                 <label for="fechaInicio">Fecha de Inicio:</label>
                 <input type="date" id="startDate" required>
                 <label for="fechaFin">Fecha de Fin:</label>
                 <input type="date" id="endDate" required>
                 <div class="button-container">
                     <button onclick="generarInforme()" id="generateInvoice">Generar Informe</button>
+                    <button onclick="descargarInforme()" id="downloadButton">Descargar Informe</button>
                 </div>
             </div>
 
-            <!-- Modal para la vista previa -->
             <div id="modalPreview" class="modal">
-                <div class="modal-content">
-                    <span class="close" onclick="cerrarModal()">&times;</span>
-                    <button onclick="descargarInforme()" id="downloadButton">Descargar Informe</button>
-                    <iframe id="pdfPreview" style="width: 100%; height: 500px;" frameborder="0"></iframe>
-                </div>
-            </div>
+  <div class="modal-content">
+    <span class="close" onclick="cerrarModal()">&times;</span>
+    <button onclick="descargarInforme()" id="downloadButton">Descargar Informe</button>
+    <iframe id="pdfPreview" style="width: 100%; height: 500px;" frameborder="0"></iframe>
+  </div>
+</div>
+            <!-- Vista previa del PDF -->
+
+
         </div>
     </div>
-
-    <script src="js/informeServicioAdmin.js" defer></script>
-    <script>
-        // Función para abrir el modal
+    <scrit>function abrirModal() {
+<script>
         function abrirModal() {
-            document.getElementById('modalPreview').style.display = 'block';
-        }
+    document.getElementById('modalPreview').style.display = 'block';
+}
 
-        // Función para cerrar el modal
-        function cerrarModal() {
-            document.getElementById('modalPreview').style.display = 'none';
-        }
-    </script>
+// Función para cerrar el modal
+function cerrarModal() {
+    document.getElementById('modalPreview').style.display = 'none';
+}</script>
 </body>
 </html>
