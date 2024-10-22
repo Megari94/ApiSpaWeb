@@ -42,7 +42,7 @@ function mostrarServicios(servicios) {
             <td>${servicio.personalNombre || 'N/A'} ${servicio.personalApellido || 'N/A'}</td>
             <td>
                 <button onclick="abrirModalEditar(${servicio.id})">Editar</button>
-                <button onclick="confirmarBajaServicio(${servicio.id})">Dar de baja</button>
+                <button onclick="abrirModalBajaServicio(${servicio.id})">Dar de baja</button>
             </td>
         `;
         tableBody.appendChild(row);
