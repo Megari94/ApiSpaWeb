@@ -156,7 +156,7 @@ async function generarFactura() {
     }, 1000);
 }
 
-
+let pdfBlobInforme; 
 //________________INFORME TIPO PAGO__________________________
 async function generarInforme(event) {
     event.preventDefault(); // Evita el envío del formulario
@@ -236,19 +236,30 @@ async function generarInforme(event) {
     doc.text(totalCosto.toFixed(2), 570, yOffset, { align: "right" });
 
     // Convertir el PDF a Blob para descarga
-    const pdfBlobInforme = doc.output('blob');
+    pdfBlobInforme = doc.output('blob');
+    const pdfUrl = URL.createObjectURL(pdfBlobInforme);
 
-    // Descargar automáticamente el informe
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(pdfBlobInforme);
-    link.download = "informe_pagos.pdf";
-    link.click();
+    // Mostrar la vista previa del PDF en el iframe
+    const pdfPreview = document.getElementById('pdfPreview');
+    pdfPreview.src = pdfUrl;
 
-    // Recargar la página después de un breve retraso
-    setTimeout(() => {
-        location.reload();
-    }, 1000); // Espera 1 segundo antes de recargar la página
+    // Mostrar el contenedor de vista previa
+    const previewContainer = document.getElementById('previewContainer');
+    previewContainer.style.display = 'block';
 }
 
 // Añadir evento para generar informe
 document.getElementById('informeForm').addEventListener('submit', generarInforme);
+function descargarInforme() {
+    if (pdfBlobInforme) {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(pdfBlobInforme);
+        link.download = 'informe_pagos.pdf'; // Nombre del archivo que se descargará
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        alert('Por favor, genera el informe antes de intentar descargarlo.');
+    }
+}
+
