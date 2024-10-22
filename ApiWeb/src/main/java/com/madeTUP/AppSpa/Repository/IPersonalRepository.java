@@ -1,7 +1,9 @@
 package com.madeTUP.AppSpa.Repository;
 
+import com.madeTUP.AppSpa.DTO.SesionAdminDTO;
 import com.madeTUP.AppSpa.DTO.SesionPersonalDTO;
 import com.madeTUP.AppSpa.Model.Personal;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,5 +19,17 @@ public interface IPersonalRepository extends JpaRepository<Personal, Long> {
            "JOIN ser.personal p " +
            "WHERE p.id = :personalId")
     List<SesionPersonalDTO> findSesionesByPersonalId(@Param("personalId") Long personalId);
+
+    @Query("SELECT new com.madeTUP.AppSpa.DTO.SesionAdminDTO(s.id, s.asistencia, s.costo, s.fecha, CONCAT(c.nombre, ' ', c.apellido), se.nombreServicio) " +
+           "FROM Sesion s " +
+           "JOIN s.cliente c " +
+           "JOIN s.servicio se " +
+           "JOIN se.personal p " +
+           "WHERE p.id = :personalId " +
+           "AND s.asistencia = 'CONFIRMADO' " +
+           "AND s.fecha BETWEEN :startDate AND :endDate")
+    List<SesionAdminDTO> findConfirmedSessionsByPersonalBetweenDates(@Param("personalId") Long personalId, 
+                                                                     @Param("startDate") LocalDateTime startDate, 
+                                                                     @Param("endDate") LocalDateTime endDate);
 
 }
