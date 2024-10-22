@@ -54,6 +54,91 @@ function displaySessions(sesiones) {
 // Llamar a la función al cargar la página
 window.onload = loadSessionsAdmin;
 
+    async function generarFactura() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'pt', 'a4');
+
+    // Usar los datos globales para rellenar la factura
+    const invoiceDate = new Date().toLocaleDateString(); // Fecha actual
+    const clientName = nombreClienteGlobal; // Nombre del cliente desde la solicitud
+    const serviceName = servicioGlobal; // Nombre del servicio desde la solicitud
+    const totalAmount = document.getElementById('precio').value; // Precio ingresado en el modal
+
+    // Validar campos obligatorios
+    if (!clientName || totalAmount === '0.00') {
+        alert("Por favor complete todos los campos.");
+        return;
+    }
+
+    // Título y encabezado
+    doc.setFontSize(14);
+    doc.setFont("Helvetica", "bold");
+    doc.text("SENTIRSE BIEN", 70, 75);
+    doc.setFontSize(12);
+    doc.setFont("Helvetica", "normal");
+
+    // Bordes para la estructura de la factura
+    doc.rect(30, 30, 550, 750); // Borde general
+    doc.rect(30, 30, 550, 120); // Borde encabezado
+    doc.rect(30, 700, 550, 50); // Borde subtotal y total
+
+    // Dibuja un rectángulo alrededor de la "C"
+    const cX = 290;
+    const cY = 50;
+    const cWidth = 40;
+    const cHeight = 40;
+    doc.rect(cX, cY, cWidth, cHeight); // Dibuja el rectángulo
+    doc.setFontSize(30);
+    doc.text("C", cX + 13, cY + 30); // Centra la "C" dentro del rectángulo
+    doc.setFontSize(12);
+
+    // Detalles de la factura a la derecha
+    doc.setFontSize(16);
+    doc.setFont("Helvetica", "bold");
+    doc.text("Detalle de Factura", 380, 65);
+
+    // Obtener la fecha actual y formatearla
+    const fechaActual = new Date();
+    const dia = fechaActual.getDate().toString().padStart(2, '0');
+    const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
+    const anio = fechaActual.getFullYear();
+    const fechaFormateada = `${dia}/${mes}/${anio}`;
+    doc.text("Fecha de Emisión: " + fechaFormateada, 380, 95);
+
+    // Datos de recibo
+    doc.text("Recibí de: " + clientName, 40, 170);
+    doc.text("DNI: ", 350, 170);
+    doc.text("Domicilio: ", 40, 190);
+    doc.text("Localidad:", 40, 210);
+    doc.text("Provincia: ", 350, 210);
+    doc.text("Tipo de Ingreso: PRODUCIDOS PROPIOS ", 40, 240);
+    doc.text("Medio de Pago recibido: TRANSFERENCIA A CTA 10071/08 Nº BNA", 40, 260);
+    doc.text("Concepto ", 40, 280);
+
+    // Encabezado de la tabla
+    doc.setFontSize(10);
+    doc.setFont("Helvetica", "bold");
+    doc.text("Código", 50, 330);
+    doc.text("Producto / Servicio", 160, 330);
+    doc.text("Precio Unit.", 550, 330, { align: "right" });
+    doc.line(30, 335, 580, 335); // Línea para el encabezado
+
+    // Añadir el dato del servicio/producto
+    const yOffset = 350;
+    doc.setFont("Helvetica", "normal");
+    doc.text("1", 60, yOffset); // ID del servicio (puedes cambiarlo si necesitas algo específico)
+    const productoDividido = doc.splitTextToSize(serviceName, 180);
+    doc.text(productoDividido, 160, yOffset);
+    doc.text(parseFloat(totalAmount).toFixed(2), 550, yOffset, { align: "right" });
+
+    // Calcular y mostrar el total
+    doc.text("Total:", 450, yOffset + 20);
+    doc.text(parseFloat(totalAmount).toFixed(2), 550, yOffset + 20, { align: "right" });
+
+    // Guardar la factura
+    doc.save(`Factura_${clientName}_${fechaFormateada}.pdf`);
+}
+
 
 function formatearFecha(fechaISO) {
     const options = { 
