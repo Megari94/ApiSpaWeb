@@ -144,7 +144,7 @@ window.onload = loadSessionsAdmin;
 
     // Calcular y mostrar el total
    
-    doc.text(parseFloat(totalAmount).toFixed(2), 550, yOffset + 20, { align: "right" });
+   
     doc.setFontSize(12);
     doc.setFont("Helvetica", "bold");
     doc.text("Importe Total: $" + totalAmount, 400, 727);
