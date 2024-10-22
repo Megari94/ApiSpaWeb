@@ -99,73 +99,95 @@
         </div>
     </div>
 
-    <script>
-let filaIdGlobal = null;
-        let nombreClienteGlobal = null;
-        let servicioGlobal = null;
+    <script>let filaIdGlobal = null;
+let nombreClienteGlobal = null;
+let servicioGlobal = null;
 
-        function aceptarSolicitud(filaId, nombreCliente, servicio) {
-            filaIdGlobal = filaId;
-            nombreClienteGlobal = nombreCliente;
-            servicioGlobal = servicio;
+function aceptarSolicitud(filaId, nombreCliente, servicio) {
+    filaIdGlobal = filaId;
+    nombreClienteGlobal = nombreCliente;
+    servicioGlobal = servicio;
 
-            // Abrir modal para ingresar precio
-            document.getElementById('modalPrecio').style.display = 'block';
-        }
+    // Abrir modal para ingresar precio
+    document.getElementById('modalPrecio').style.display = 'block';
+}
 
-        function guardarPrecio() {
-            const precio = document.getElementById('precio').value;
+function guardarPrecio() {
+    const precio = document.getElementById('precio').value;
 
-            if (precio) {
-                // Generar factura con el precio ingresado
-                generarFactura(nombreClienteGlobal, servicioGlobal, precio);
+    if (precio) {
+        // Generar factura con el precio ingresado
+        generarFactura(nombreClienteGlobal, servicioGlobal, precio);
 
-                // Actualizar estado de la solicitud
-                actualizarEstado(filaIdGlobal, 'Aceptado');
+        // Actualizar el estado de la solicitud
+        actualizarEstado(filaIdGlobal, 'Aceptado');
 
-                // Cerrar modal
-                cerrarModal('modalPrecio');
-            } else {
-                alert("Por favor, ingrese un precio válido.");
-            }
-        }
+        // Actualizar el precio en la base de datos
+        actualizarPrecioEnBD(filaIdGlobal, precio);
 
-        function cerrarModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
+        // Cerrar modal
+        cerrarModal('modalPrecio');
+    } else {
+        alert("Por favor, ingrese un precio válido.");
+    }
+}
 
-        function actualizarEstado(filaId, estado) {
-            const fila = document.getElementById(filaId);
-            const celdaSolicitud = fila.querySelector('td:last-child');
-
-            // Cambia el contenido de la celda según el estado
-            if (estado === 'Aceptado') {
-                celdaSolicitud.innerHTML = `<span class="estado-aceptado">${estado}</span>`;
-            } else if (estado === 'Denegado') {
-                celdaSolicitud.innerHTML = `<span class="estado-rechazado">${estado}</span>`;
-            }
-        }
-
-        function rechazarSolicitud(filaId) {
-            actualizarEstado(filaId, 'Denegado');
-        }
-
-        // Filtrar la tabla
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            const searchValue = this.value.toLowerCase();
-            const tableRows = document.querySelectorAll('#turnosTable tbody tr');
-
-            tableRows.forEach(row => {
-                const rowText = row.textContent.toLowerCase();
-                if (rowText.includes(searchValue)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
+async function actualizarPrecioEnBD(idSesion, nuevoPrecio) {
+    try {
+        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/editarCosto/${idSesion}`, {
+            method: 'PUT', // Asegúrate de que este método sea correcto según tu API
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ costo: nuevoPrecio }) // Envía el nuevo precio en el cuerpo de la solicitud
         });
 
+        if (response.ok) {
+            console.log("Precio actualizado exitosamente en la base de datos.");
+        } else {
+            console.error("Error al actualizar el precio en la base de datos:", response.statusText);
+            alert("No se pudo actualizar el precio en la base de datos.");
+        }
+    } catch (error) {
+        console.error('Error de red al actualizar el precio:', error);
+        alert("Error de red al intentar actualizar el precio.");
+    }
+}
 
+function cerrarModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+function actualizarEstado(filaId, estado) {
+    const fila = document.getElementById(filaId);
+    const celdaSolicitud = fila.querySelector('td:last-child');
+
+    // Cambia el contenido de la celda según el estado
+    if (estado === 'Aceptado') {
+        celdaSolicitud.innerHTML = `<span class="estado-aceptado">${estado}</span>`;
+    } else if (estado === 'Denegado') {
+        celdaSolicitud.innerHTML = `<span class="estado-rechazado">${estado}</span>`;
+    }
+}
+
+function rechazarSolicitud(filaId) {
+    actualizarEstado(filaId, 'Denegado');
+}
+
+// Filtrar la tabla
+document.getElementById('searchInput').addEventListener('keyup', function() {
+    const searchValue = this.value.toLowerCase();
+    const tableRows = document.querySelectorAll('#turnosTable tbody tr');
+
+    tableRows.forEach(row => {
+        const rowText = row.textContent.toLowerCase();
+        if (rowText.includes(searchValue)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
 
     </script>
 </body>
