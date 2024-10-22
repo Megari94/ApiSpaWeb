@@ -225,9 +225,12 @@ async function generarInforme(event) {
     link.href = URL.createObjectURL(pdfBlobInforme);
     link.download = "informe_pagos.pdf";
     link.click();
+
+    // Recargar la página después de un breve retraso
+    setTimeout(() => {
+        location.reload();
+    }, 1000); // Espera 1 segundo antes de recargar la página
 }
-// Recargar la página
-    location.reload();
 
 // Añadir evento para generar informe
 document.getElementById('informeForm').addEventListener('submit', generarInforme);
