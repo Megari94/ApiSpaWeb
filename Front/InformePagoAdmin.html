@@ -227,18 +227,10 @@
             const sidebar = document.getElementById('sidebar');
             sidebar.style.display = (sidebar.style.display === 'block') ? 'none' : 'block';
         }
-            function cerrarModal() {
-        const previewModal = document.getElementById('previewModal');
-        previewModal.style.display = 'none';
-    }
-
-    // Código para manejar el cierre del modal al hacer clic fuera de él
-    window.onclick = function(event) {
-        const previewModal = document.getElementById('previewModal');
-        if (event.target === previewModal) {
-            cerrarModal();
+        
+      function cerrarModal() {
+            document.getElementById('modalPreview').style.display = 'none';
         }
-    }
     </script>
 </body>
 </html>
