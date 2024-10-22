@@ -44,9 +44,9 @@
                 </select>
 
                 <label for="fechaInicio">Fecha de Inicio:</label>
-                <input type="date" id="startDate">
+                <input type="date" id="startDate" required>
                 <label for="fechaFin">Fecha de Fin:</label>
-                <input type="date" id="endDate">
+                <input type="date" id="endDate" required>
                 <div class="button-container">
                     <button onclick="generarInforme()" id="generateInvoice">Generar Informe</button>
                     <button onclick="descargarInforme()" id="downloadButton">Descargar Informe</button>
@@ -71,8 +71,17 @@
             }
 
             // Definir las fechas de inicio y fin para la consulta
-            const startDate = new Date(document.getElementById("startDate").value);
-            const endDate = new Date(document.getElementById("endDate").value);
+            const startDateInput = document.getElementById("startDate").value;
+            const endDateInput = document.getElementById("endDate").value;
+            const startDate = new Date(startDateInput);
+            const endDate = new Date(endDateInput);
+
+            // Validar fechas
+            if (startDate > endDate) {
+                alert("La fecha de inicio no puede ser posterior a la fecha de fin.");
+                return;
+            }
+
             endDate.setDate(endDate.getDate() + 1); 
 
             try {
@@ -126,51 +135,48 @@
                 // Obtener las sesiones del personal usando el nuevo endpoint
                 const sesionesResponse = await fetch(`https://spaadministrativo-production-4488.up.railway.app/personalInfoServicios?personalId=${personalId}&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
                 if (!sesionesResponse.ok) throw new Error(`Error ${sesionesResponse.status}: No se pudo obtener las sesiones`);
-                const sesiones = await sesionesResponse.json();
+                const serviciosPrestados = await sesionesResponse.json();
         
-                // Mostrar las sesiones en el PDF
-                let yPosition = 320;
-                sesiones.forEach(sesion => {
+                // Listar los servicios en el PDF
+                let totalCosto = 0; // Para calcular el total de costos
+                let yPosition = 320; // Posición vertical inicial
+                for (const servicio of serviciosPrestados) {
+                    doc.setFontSize(10);
                     doc.setFont("Helvetica", "normal");
-                    doc.text(sesion.codigo.toString(), 50, yPosition);
-                    const descripcion = doc.splitTextToSize(sesion.descripcion, 180);
-                    doc.text(descripcion, 160, yPosition);
-                    doc.text(sesion.costo.toFixed(2), 550, yPosition, { align: "right" });
-                
-                    yPosition += 20; 
-                    doc.line(30, yPosition + 5, 580, yPosition + 5); 
-                });
-        
-                // Total
-                const total = sesiones.reduce((acc, sesion) => acc + sesion.costo, 0);
+                    doc.text(servicio.codigo, 50, yPosition);
+                    doc.text(servicio.descripcion, 160, yPosition);
+                    doc.text(servicio.costo.toFixed(2).toString(), 550, yPosition, { align: "right" });
+                    totalCosto += servicio.costo; // Acumular el costo total
+                    yPosition += 20; // Espaciado entre filas
+                }
+
+                // Total final
                 doc.setFontSize(12);
                 doc.setFont("Helvetica", "bold");
-                doc.text(`Total: $${total.toFixed(2)}`, 400, 680);
+                doc.text("Total: " + totalCosto.toFixed(2).toString(), 450, yPosition);
         
-                // Convertir PDF a Blob para vista previa
+                // Generar Blob
                 pdfBlob = doc.output('blob');
                 const pdfUrl = URL.createObjectURL(pdfBlob);
         
-                // Mostrar vista previa (si tienes un iframe o contenedor para el PDF)
+                // Mostrar la vista previa del PDF en el iframe
                 document.getElementById('pdfPreview').src = pdfUrl;
-                document.getElementById('previewContainer').style.display = 'block';
+
             } catch (error) {
-                console.error("Error:", error);
-                alert("Ocurrió un error al generar el informe.");
+                console.error(error);
+                alert("Error al generar el informe: " + error.message);
             }
         }
-        
-        async function descargarInforme() {
-            if (!pdfBlob) {
-                alert("Por favor, genera el informe primero.");
-                return;
+
+        function descargarInforme() {
+            if (pdfBlob) {
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(pdfBlob);
+                link.download = 'informe_servicios.pdf';
+                link.click();
+            } else {
+                alert("No se ha generado el informe aún.");
             }
-        
-            // Descargar el PDF generado
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(pdfBlob);
-            link.download = "informe_servicios.pdf";
-            link.click();
         }
     </script>
 </body>
