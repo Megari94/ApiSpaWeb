@@ -282,10 +282,10 @@ let profesionalesData = []; // Variable para almacenar los datos de profesionale
                 method: 'DELETE'
             });
 
-            if (response.ok) {
-                alert('Cliente eliminado correctamente');
-                cerrarModal(); // Cerrar el modal
-                // Actualiza la página o elimina el cliente de la tabla visualmente
+              const filaCliente = document.getElementById(`cliente-${clienteIdSeleccionado}`);
+                if (filaCliente) {
+                    filaCliente.remove(); // Elimina la fila del DOM
+                }
             } else {
                 alert('Error al eliminar el cliente');
             }
