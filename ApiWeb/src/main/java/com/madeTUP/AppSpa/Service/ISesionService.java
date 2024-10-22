@@ -4,6 +4,7 @@
  */
 package com.madeTUP.AppSpa.Service;
 
+import com.madeTUP.AppSpa.DTO.ClientexDiaDTO;
 import com.madeTUP.AppSpa.DTO.SesionDTO;
 import com.madeTUP.AppSpa.DTO.SesionPersonalDTO;
 import com.madeTUP.AppSpa.Model.Cliente;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import com.madeTUP.AppSpa.DTO.SesionAdminDTO;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -30,4 +32,6 @@ public interface ISesionService {
 public List<SesionAdminDTO> sesionesAdmin();
     public List<SesionPersonalDTO> getSesionFecha(LocalDateTime localDate);
     public List<SesionAdminDTO> getInformePago(LocalDateTime startDate, LocalDateTime endDate);
+    List<ClientexDiaDTO> findClientsByDate(@Param("fecha") LocalDateTime fecha);
+    List<ClientexDiaDTO> findClientsByPersonal(@Param("personalId") Long personalId);
 }
