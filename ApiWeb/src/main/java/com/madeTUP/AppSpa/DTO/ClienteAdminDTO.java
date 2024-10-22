@@ -18,10 +18,10 @@ public class ClienteAdminDTO {
     private String apellido;
      private String correo;
 
-    public ClientePerfilDTO() {
+    public ClienteAdminDTO() {
     }
 
-    public ClientePerfilDTO(Long id, String nombre, String apellido, String correo;) {
+    public ClienteAdminDTO(Long id, String nombre, String apellido, String correo;) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
