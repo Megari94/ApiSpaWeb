@@ -4,8 +4,8 @@
  */
 package com.madeTUP.AppSpa.Controller;
 
-import com.madeTUP.AppSpa.DTO.ClienteLoginDTO;
 import com.madeTUP.AppSpa.DTO.ClienteAdminDTO;
+import com.madeTUP.AppSpa.DTO.ClienteLoginDTO;
 import com.madeTUP.AppSpa.DTO.ClientePerfilDTO;
 import com.madeTUP.AppSpa.DTO.ClienteDTO;
 import com.madeTUP.AppSpa.DTO.SesionDTO;
@@ -39,7 +39,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Virginia
  */
 @RestController
-@CrossOrigin(origins = "https://apispaweb-production.up.railway.app")
 public class ClienteController {
     @Autowired
     private IClienteService servis;
@@ -119,7 +118,7 @@ public class ClienteController {
          return "Consulta Agregada";
      }
      
-
+ @CrossOrigin(origins = "*")
 @PostMapping("/Cliente/login")
 public ResponseEntity<Map<String, Object>> loginCliente(@RequestBody ClienteLoginDTO clienteDTO) {
     List<Cliente> listaClientes = servis.getClientes();
@@ -149,7 +148,7 @@ public ResponseEntity<Map<String, Object>> loginCliente(@RequestBody ClienteLogi
 
 
 
-
+@CrossOrigin(origins = "*")
 @GetMapping("/cliente/perfil")
     public ResponseEntity<ClientePerfilDTO> getPerfilCliente(@RequestParam Long clienteId) {
         Cliente cliente1= servis.findCliente(clienteId);
@@ -168,7 +167,7 @@ public ResponseEntity<Map<String, Object>> loginCliente(@RequestBody ClienteLogi
         return ResponseEntity.ok(perfilDTO);
     }
     
-
+    @CrossOrigin(origins = "*")
 @GetMapping("/clientes/traerClientes")
 public ResponseEntity<List<ClienteDTO>> getClientesD() {
     List<Cliente> clientes = servis.getClientes();
@@ -181,9 +180,8 @@ public ResponseEntity<List<ClienteDTO>> getClientesD() {
     
     return new ResponseEntity<>(clienteDTOs, HttpStatus.OK);
 }
-    
 
-
+ @CrossOrigin(origins = "*")
 @GetMapping("/clientes/traerClientesAdmin")
 public ResponseEntity<List<ClientePerfilDTO>> getClientesAdmin() {
     List<Cliente> clientes = servis.getClientes();
@@ -202,16 +200,16 @@ public ResponseEntity<List<ClientePerfilDTO>> getClientesAdmin() {
     return new ResponseEntity<>(clienteDTOs, HttpStatus.OK);
 }
 
-}
 @GetMapping("/clientes/traerClientesADMIN")
-public ResponseEntity<List<ClienteAdminDTO>> getClientesH() {
+public ResponseEntity<List<ClienteAdminDTO>> getClientesH(){
     List<Cliente> clientes = servis.getClientes();
     List<ClienteAdminDTO> clienteDTOs = new ArrayList<>();
     
     for (Cliente cliente : clientes) {
-        ClienteAdminDTO clienteDTO = new ClienteAdminDTO(cliente.getId(), cliente.getNombre(),cliente.getCorreo());
-        clienteDTOs.add(ClienteAdminDTO);
+        ClienteAdminDTO clienteDTO = new ClienteAdminDTO(cliente.getId(), cliente.getNombre(),cliente.getApellido(),cliente.getCorreo());
+        clienteDTOs.add(clienteDTO);
     }
     
     return new ResponseEntity<>(clienteDTOs, HttpStatus.OK);
+}
 }
