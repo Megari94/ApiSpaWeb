@@ -223,168 +223,178 @@
                 </table>
             </div>
 <script>
-   let clientesData = []; // Variable para almacenar los datos de clientes
-let profesionalesData = []; // Variable para almacenar los datos de profesionales
+    let clientesData = []; // Variable para almacenar los datos de clientes
+    let profesionalesData = []; // Variable para almacenar los datos de profesionales
 
-// Función para cargar los clientes
-async function cargarClientes() {
-    try {
-        const response = await fetch('https://spaadministrativo-production-4488.up.railway.app/clientes/traerClientesADMIN');
-        if (!response.ok) throw new Error('Error al cargar clientes');
+    // Función para cargar los clientes
+    async function cargarClientes() {
+        try {
+            const response = await fetch('https://spaadministrativo-production-4488.up.railway.app/clientes/traerClientesADMIN');
+            if (!response.ok) throw new Error('Error al cargar clientes');
 
-        clientesData = await response.json(); // Guardar datos en la variable
-        cargarClientesTabla(clientesData); // Cargar la tabla con todos los clientes
-    } catch (error) {
-        console.error(error);
-        alert('No se pudo cargar la información de clientes.');
-    }
-}
-
-// Función para cargar los profesionales en el select
-async function cargarProfesionales() {
-    try {
-        const response = await fetch('https://spaadministrativo-production-4488.up.railway.app/profesionales');
-        if (!response.ok) throw new Error('Error al cargar profesionales');
-
-        profesionalesData = await response.json(); // Guardar datos en la variable
-        const selectProfesional = document.getElementById('profesional');
-        selectProfesional.innerHTML = '<option value="">Seleccione un profesional</option>'; // Resetear opciones
-
-        profesionalesData.forEach(profesional => {
-            const option = document.createElement('option');
-            option.value = profesional.id;
-            option.textContent = profesional.nombre;
-            selectProfesional.appendChild(option);
-        });
-    } catch (error) {
-        console.error(error);
-        alert('No se pudo cargar la información de profesionales.');
-    }
-}
-
-// Función para cargar los turnos por día
-async function cargarTurnosPorDia(fecha) {
-    try {
-        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/clientesPorFecha?fecha=${fecha}`);
-        if (!response.ok) throw new Error('Error al cargar turnos por día');
-
-        const data = await response.json();
-        if (data.length === 0) {
-            alert('No se encontraron turnos para la fecha seleccionada.');
-        } else {
-            cargarTurnos(data);
+            clientesData = await response.json(); // Guardar datos en la variable
+            cargarClientesTabla(clientesData); // Cargar la tabla con todos los clientes
+        } catch (error) {
+            console.error(error);
+            alert('No se pudo cargar la información de clientes.');
         }
-    } catch (error) {
-        console.error(error);
-        alert('No se pudo cargar la información de turnos.');
     }
-}
 
-// Función para cargar los turnos por profesional
-async function cargarTurnosPorPersonal(personalId) {
-    try {
-        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/clientesPorPersonal/${personalId}`);
-        if (!response.ok) throw new Error('Error al cargar turnos por personal');
+    // Función para cargar los profesionales en el select
+    async function cargarProfesionales() {
+        try {
+            const response = await fetch('https://spaadministrativo-production-4488.up.railway.app/profesionales');
+            if (!response.ok) throw new Error('Error al cargar profesionales');
 
-        const data = await response.json();
-        cargarTurnos(data);
-    } catch (error) {
-        console.error(error);
-        alert('No se pudo cargar la información de turnos.');
+            profesionalesData = await response.json(); // Guardar datos en la variable
+            const selectProfesional = document.getElementById('profesional');
+            selectProfesional.innerHTML = '<option value="">Seleccione un profesional</option>'; // Resetear opciones
+
+            profesionalesData.forEach(profesional => {
+                const option = document.createElement('option');
+                option.value = profesional.id;
+                option.textContent = profesional.nombre;
+                selectProfesional.appendChild(option);
+            });
+        } catch (error) {
+            console.error(error);
+            alert('No se pudo cargar la información de profesionales.');
+        }
     }
-}
 
-// Función para mostrar los turnos en la tabla
-function cargarTurnos(data) {
-    const tableBody = document.getElementById('turnosTableBody');
-    tableBody.innerHTML = '';
+    // Función para cargar los turnos por día
+    async function cargarTurnosPorDia(fecha) {
+        try {
+            const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/clientesPorFecha?fecha=${fecha}`);
+            if (!response.ok) throw new Error('Error al cargar turnos por día');
 
-    data.forEach(turno => {
-        const row = crearFilaTurno(turno);
-        tableBody.appendChild(row);
-    });
-}
+            const data = await response.json();
+            if (data.length === 0) {
+                alert('No se encontraron turnos para la fecha seleccionada.');
+            } else {
+                cargarTurnos(data);
+            }
+        } catch (error) {
+            console.error(error);
+            alert('No se pudo cargar la información de turnos.');
+        }
+    }
 
-// Función para cargar los clientes en la tabla
-function cargarClientesTabla(data) {
-    const tableBody = document.getElementById('clientesTableBody');
-    tableBody.innerHTML = '';
+    // Función para cargar los turnos por profesional
+    async function cargarTurnosPorPersonal(personalId) {
+        try {
+            const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/clientesPorPersonal/${personalId}`);
+            if (!response.ok) throw new Error('Error al cargar turnos por personal');
 
-    data.forEach(cliente => {
-        const row = crearFilaCliente(cliente);
-        tableBody.appendChild(row);
-    });
-}
+            const data = await response.json();
+            cargarTurnos(data);
+        } catch (error) {
+            console.error(error);
+            alert('No se pudo cargar la información de turnos.');
+        }
+    }
 
-// Crear una fila para la tabla de turnos
-function crearFilaTurno(turno) {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-        <td>${turno.id}</td>
-        <td>${turno.Fecha}</td>
-        <td>${turno.hora}</td>
-        <td>${turno.Cliente}</td>
-        <td>${turno.Servicio}</td>
-        <td>${turno.Profesional}</td>
-    `;
-    return row;
-}
+    // Función para mostrar los turnos en la tabla
+    function cargarTurnos(data) {
+        const tableBody = document.getElementById('turnosTableBody');
+        tableBody.innerHTML = '';
 
-// Crear una fila para la tabla de clientes
-function crearFilaCliente(cliente) {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-        <td>${cliente.id}</td>
-        <td>${cliente.nombre}</td>
-        <td>${cliente.apellido}</td>
-        <td>${cliente.correo}</td>
-    `;
-    return row;
-}
+        data.forEach(turno => {
+            const row = crearFilaTurno(turno);
+            tableBody.appendChild(row);
+        });
+    }
 
-// Función para buscar clientes por apellido
-function buscarPorApellido() {
-    const apellido = document.getElementById('buscadorApellido').value.toLowerCase();
-    const filteredData = clientesData.filter(cliente =>
-        cliente.apellido.toLowerCase().includes(apellido)
-    );
-    cargarClientesTabla(filteredData);
-}
+    // Función para cargar los clientes en la tabla
+    function cargarClientesTabla(data) {
+        const tableBody = document.getElementById('clientesTableBody');
+        tableBody.innerHTML = '';
 
-// Función para mostrar la lista de clientes
-function mostrarListadoClientes() {
-    cargarClientes();
-    mostrarSeccion('clientesContent');
-    document.getElementById('buscadorClientes').style.display = 'block';
-    document.getElementById('formularioDia').style.display = 'none';
-    document.getElementById('buscadorProfesional').style.display = 'none';
-}
+        data.forEach(cliente => {
+            const row = crearFilaCliente(cliente);
+            tableBody.appendChild(row);
+        });
+    }
 
-// Función para mostrar el formulario de búsqueda por día
-function mostrarFormularioDia() {
-    document.getElementById('formularioDia').style.display = 'block';
-    document.getElementById('buscadorClientes').style.display = 'none';
-    document.getElementById('buscadorProfesional').style.display = 'none';
-    mostrarSeccion('turnosContent');
-}
+    // Crear una fila para la tabla de turnos
+    function crearFilaTurno(turno) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${turno.id}</td>
+            <td>${turno.Fecha}</td>
+            <td>${turno.hora}</td>
+            <td>${turno.Cliente}</td>
+            <td>${turno.Servicio}</td>
+            <td>${turno.Profesional}</td>
+        `;
+        return row;
+    }
 
-// Función para mostrar el buscador por profesional
-function mostrarBuscadorProfesional() {
-    cargarProfesionales(); // Cargar los profesionales en el select
-    document.getElementById('buscadorProfesional').style.display = 'block';
-    document.getElementById('buscadorClientes').style.display = 'none';
-    document.getElementById('formularioDia').style.display = 'none';
-    mostrarSeccion('turnosContent');
-}
+    // Crear una fila para la tabla de clientes
+    function crearFilaCliente(cliente) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${cliente.id}</td>
+            <td>${cliente.nombre}</td>
+            <td>${cliente.apellido}</td>
+            <td>${cliente.correo}</td>
+        `;
+        return row;
+    }
 
-// Mostrar la sección correspondiente
-function mostrarSeccion(sectionId) {
-    const sections = document.querySelectorAll('.tabla-contenido');
-    sections.forEach(section => section.style.display = 'none');
-    document.getElementById(sectionId).style.display = 'block';
-}
+    // Función para buscar clientes por apellido
+    function buscarPorApellido() {
+        const apellido = document.getElementById('buscadorApellido').value.toLowerCase();
+        const filteredData = clientesData.filter(cliente =>
+            cliente.apellido.toLowerCase().includes(apellido)
+        );
+        cargarClientesTabla(filteredData);
+    }
 
+    // Función para buscar turnos por día (se añade la función faltante)
+    function buscarPorDia() {
+        const fecha = document.getElementById('buscadorDia').value;
+        if (fecha) {
+            cargarTurnosPorDia(fecha);
+        } else {
+            alert('Por favor, ingresa una fecha válida.');
+        }
+    }
+
+    // Función para mostrar la lista de clientes
+    function mostrarListadoClientes() {
+        cargarClientes();
+        mostrarSeccion('clientesContent');
+        document.getElementById('buscadorClientes').style.display = 'block';
+        document.getElementById('formularioDia').style.display = 'none';
+        document.getElementById('buscadorProfesional').style.display = 'none';
+    }
+
+    // Función para mostrar el formulario de búsqueda por día
+    function mostrarFormularioDia() {
+        document.getElementById('formularioDia').style.display = 'block';
+        document.getElementById('buscadorClientes').style.display = 'none';
+        document.getElementById('buscadorProfesional').style.display = 'none';
+        mostrarSeccion('turnosContent');
+    }
+
+    // Función para mostrar el buscador por profesional
+    function mostrarBuscadorProfesional() {
+        cargarProfesionales(); // Cargar los profesionales en el select
+        document.getElementById('buscadorProfesional').style.display = 'block';
+        document.getElementById('buscadorClientes').style.display = 'none';
+        document.getElementById('formularioDia').style.display = 'none';
+        mostrarSeccion('turnosContent');
+    }
+
+    // Mostrar la sección correspondiente
+    function mostrarSeccion(sectionId) {
+        const sections = document.querySelectorAll('.tabla-contenido');
+        sections.forEach(section => section.style.display = 'none');
+        document.getElementById(sectionId).style.display = 'block';
+    }
 </script>
+
 
         </div>
     </div>
