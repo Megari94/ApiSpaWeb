@@ -252,6 +252,8 @@
 <script>
 
         // Variable para almacenar el ID del cliente seleccionado
+      let clientesData = []; // Variable para almacenar los datos de clientes
+let profesionalesData = []; // Variable para almacenar los datos de profesionales
     let clienteIdSeleccionado;
 
     // Función para mostrar el modal de confirmación
@@ -296,8 +298,7 @@
             cerrarModal();
         }
     };
-    let clientesData = []; // Variable para almacenar los datos de clientes
-let profesionalesData = []; // Variable para almacenar los datos de profesionales
+  
 
 // Función para cargar los clientes
 async function cargarClientes() {
