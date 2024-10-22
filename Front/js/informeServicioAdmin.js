@@ -126,3 +126,11 @@ async function generarInforme() {
     }
     abrirModal();
 }
+function descargarInforme() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'pt', 'a4');
+    
+    // Aquí puedes reutilizar la función generarInforme para crear el PDF de nuevo o usar un estado que lo guarde
+    
+    doc.save("Informe_Servicios.pdf");  // Esto descarga el archivo PDF con el nombre especificado
+}
