@@ -66,3 +66,11 @@ function formatearFecha(fechaISO) {
     const fecha = new Date(fechaISO);
     return new Intl.DateTimeFormat('es-ES', options).format(fecha);
 }
+function filtrarTurnos() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Obtener el valor del input
+    const turnosFiltrados = sesionesGlobal.filter(turno => 
+        turno.nombre_completo.toLowerCase().includes(searchInput) // Filtrar por nombre completo
+    );
+
+   displaySessions(turnosFiltrados); // Mostrar los turnos filtrados
+}
