@@ -14,19 +14,7 @@ function formatearFecha(fechaISO) {
 }
 
 // Función para obtener y formatear la fecha y hora
-function obtenerFechaHoraFormateada() {
-    const fechaHora = document.getElementById('fechaHora').value; // Obtiene la fecha y hora del input
 
-    if (fechaHora) {
-        const fechaFormateada = formatearFecha(fechaHora); // Formatea la fecha
-        console.log("Fecha y hora formateada:", fechaFormateada);
-
-        return fechaFormateada;
-    } else {
-        console.error("No se ha seleccionado una fecha y hora.");
-        return null;
-    }
-}
 
 // Llama a la función cuando el usuario envíe el formulario
 document.querySelector('form').addEventListener('submit', function(event) {
@@ -261,6 +249,19 @@ async function guardarPersonal() {
     const fechaHora = document.getElementById('fechaHora').value; // Esto ya incluye fecha y hora
     const costo = document.getElementById('costo').value;
 
+        // Crear objeto Date para asegurarse de que la fecha y hora sean válidas
+        const fechaLocal = new Date(fechaHora); // Esto crea la fecha local
+
+        // Obtener el año, mes, día, hora y minuto
+        const year = fechaLocal.getFullYear();
+        const month = String(fechaLocal.getMonth() + 1).padStart(2, '0'); // Los meses son base 0
+        const day = String(fechaLocal.getDate()).padStart(2, '0');
+        const hour = String(fechaLocal.getHours()).padStart(2, '0');
+        const minute = String(fechaLocal.getMinutes()).padStart(2, '0');
+
+        // Formato de fecha LocalDateTime sin 'Z'
+        const formattedDate = `${year}-${month}-${day}T${hour}:${minute}`; // Aquí estamos formateando correctamente
+
     // Verificar si los campos están completos
     if (!idCliente || !idServicio || !fechaHora || !costo) {
         alert('Por favor, complete todos los campos.');
@@ -268,13 +269,13 @@ async function guardarPersonal() {
     }
 
     // Formatear la fecha y hora usando la función formatearFecha
-    const fechaFormateada = formatearFecha(fechaHora);
+  
 
     // Crear el objeto de la nueva sesión
     const nuevaSesion = {
         id_Cliente: idCliente,
         id_Servicio: idServicio,
-        fecha: fechaFormateada, // Usar la fecha formateada
+        fecha: formattedDate, // Usar la fecha formateada
         costo: parseFloat(costo)
     };
 
