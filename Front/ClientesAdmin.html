@@ -329,6 +329,18 @@
         document.getElementById('formularioDia').style.display = 'none'; // Ocultar formulario por día
         document.getElementById('buscadorProfesional').style.display = 'none'; // Ocultar buscador por profesional
     }
+    function mostrarFormularioDia() {
+    // Mostrar el formulario para seleccionar la fecha
+    document.getElementById('formularioDia').style.display = 'block';
+
+    // Asegurarse de ocultar las secciones que no sean necesarias
+    document.getElementById('buscadorClientes').style.display = 'none';
+    document.getElementById('buscadorProfesional').style.display = 'none';
+
+    // Mostrar la sección de turnos
+    mostrarSeccion('turnosContent');
+}
+
 
     function mostrarTurnosPorDia() {
     const fecha = document.getElementById('fecha').value; // Obteniendo la fecha del input
