@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/estilo.css">
     <script src="js/scriptAdmin.js" defer></script>
     <script src="js/script.js" defer></script>
+    <script src="js/modalClienteAdmin.js" defer></script>
     
     <style>
         .form-container {
@@ -205,6 +206,29 @@
                         <!-- Los datos de clientes se insertarán aquí dinámicamente -->
                     </tbody>
                 </table>
+            </div>
+               <!-- Modal para editar cliente -->
+            <div id="modalEditarCliente" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="cerrarModal('modalEditarCliente')">&times;</span>
+                    <h2>Editar Cliente</h2>
+                    <label for="nombreEditar">Nombre:</label>
+                    <input type="text" id="nombreEditar" />
+                    
+                    <label for="apellidoEditar">Apellido:</label>
+                    <input type="text" id="apellidoEditar" />
+                    
+                    <label for="correoEditar">Correo Electrónico:</label>
+                    <input type="text" id="correoEditar" />
+                    
+                    <label for="contrasenaEditar">Contraseña:</label>
+                    <input type="password" id="contrasenaEditar" />
+                    
+                    <label for="nombreUsuarioEditar">Nombre de Usuario:</label>
+                    <input type="text" id="nombreUsuarioEditar" />
+                    
+                    <button onclick="guardarEdicionCliente()">Guardar Cambios</button>
+                </div>
             </div>
 
             <!-- Tabla para mostrar los turnos -->
