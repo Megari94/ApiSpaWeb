@@ -15,10 +15,10 @@ function redirectToLogin() {
 }
 
 
-document.getElementById("facturaLink").addEventListener("click", function(event) {
+/*document.getElementById("facturaLink").addEventListener("click", function(event) {
     event.preventDefault();  // Evita la acción predeterminada del enlace
     window.location.href = "factura.html";  // Redirige a la nueva página
-  });
+  });*/
 
   document.getElementById("pagosLink").addEventListener("click", function(event) {
     event.preventDefault();  // Evita la acción predeterminada del enlace
