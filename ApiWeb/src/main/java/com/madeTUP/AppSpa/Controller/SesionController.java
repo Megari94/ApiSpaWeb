@@ -205,7 +205,7 @@ public ResponseEntity<String> cancelarSesion(@PathVariable Long id_sesion) {
 }
 
         @PostMapping("/Sesion/agregarSesionAdmin")
-public ResponseEntity<String> agregarSesion(@RequestBody NewSesionDTO nuevaSesion, @RequestHeader("Authorization") String token) {
+public ResponseEntity<String> agregarSesionAdmin(@RequestBody NewSesionDTO nuevaSesion, @RequestHeader("Authorization") String token) {
     try {
         // Verificamos si el cliente existe
         Cliente cliente = servis2.findCliente(nuevaSesion.getId_Cliente());
@@ -224,7 +224,7 @@ public ResponseEntity<String> agregarSesion(@RequestBody NewSesionDTO nuevaSesio
         sesion.setCliente(cliente);
         sesion.setServicio(servicio);
         sesion.setFecha(LocalDateTime.parse(nuevaSesion.getFecha()));
-        sesion.setCosto(costo);
+        sesion.setCosto(nuevaSesion.getCosto());
         sesion.setAsistencia("CONFIRMADO"); // Puedes ajustarlo según la lógica del negocio
 
         // Guardamos la sesión
