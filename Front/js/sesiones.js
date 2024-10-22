@@ -143,7 +143,7 @@ window.onload = loadSessionsAdmin;
     doc.text(parseFloat(totalAmount).toFixed(2), 550, yOffset, { align: "right" });
 
     // Calcular y mostrar el total
-    doc.text("Total:", 450, yOffset + 20);
+   
     doc.text(parseFloat(totalAmount).toFixed(2), 550, yOffset + 20, { align: "right" });
     doc.setFontSize(12);
     doc.setFont("Helvetica", "bold");
