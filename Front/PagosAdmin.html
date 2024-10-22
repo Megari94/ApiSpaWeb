@@ -102,7 +102,7 @@
     <script>
 
             // Abrir modal para ingresar precio
-  
+      
         let filaIdGlobal = null;
 let nombreClienteGlobal = null;
 let servicioGlobal = null;
@@ -178,7 +178,7 @@ async function rechazarSolicitud(id_sesion, boton) {
 }
 function filtrarTurnos() {
     const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Obtener el valor del input
-    const turnosFiltrados = turnos.filter(turno => 
+    const turnosFiltrados = sesionesGlobal.filter(turno => 
         turno.nombre_completo.toLowerCase().includes(searchInput) // Filtrar por nombre completo
     );
 
