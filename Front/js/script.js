@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", function() {
+
 const { jsPDF } = window.jspdf;
 const services = [];
 
@@ -58,5 +60,5 @@ document.getElementById("facturaLink").addEventListener("click", function(event)
     doc.save(`Factura_${nombreCliente}.pdf`);
 }
 
-
+  });
 
