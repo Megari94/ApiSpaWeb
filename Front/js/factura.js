@@ -190,42 +190,54 @@ async function generarInforme(event) {
     // Encabezado del informe
     doc.text(`Desde: ${fechaInicio} Hasta: ${fechaFin}`, 70, 100);
 
-  // Configurar la tabla de servicios
-doc.setFontSize(10);
-doc.setFont("Helvetica", "bold");
+    // Configurar la tabla de servicios
+    doc.setFontSize(10);
+    doc.setFont("Helvetica", "bold");
 
-// Encabezados de la tabla
-doc.text("ID", 30, 130);
-doc.text("Nombre Completo", 70, 130);
-doc.text("Asistencia", 180, 130);
-doc.text("Fecha", 280, 130);
-doc.text("Servicio", 420, 130);
-doc.text("Costo", 550, 130, { align: "right" });
+    // Encabezados de la tabla
+    doc.text("ID", 30, 130);
+    doc.text("Nombre Completo", 70, 130);
+    doc.text("Asistencia", 180, 130);
+    doc.text("Fecha", 280, 130);
+    doc.text("Servicio", 420, 130);
+    doc.text("Costo", 550, 130, { align: "right" });
 
-// Línea para separar los encabezados de los datos
-doc.line(30, 135, 580, 135);
+    // Línea para separar los encabezados de los datos
+    doc.line(30, 135, 580, 135);
 
-// Añadir los servicios a la tabla
-let yOffset = 150; // Posición inicial para los datos
-servicios.forEach(servicio => {
-    doc.setFont("Helvetica", "normal");
+    // Añadir los servicios a la tabla
+    let yOffset = 150; // Posición inicial para los datos
+    let totalCosto = 0; // Variable para almacenar el costo total
 
-    // Mostrar los datos en el PDF con el formato proporcionado
-    doc.text(servicio.id.toString(), 30, yOffset);
-    doc.text(servicio.nombre_completo, 70, yOffset);
-    doc.text(servicio.asistencia, 180, yOffset);
-    doc.text(servicio.fecha, 280, yOffset);
-    doc.text(servicio.nombre_servicio, 420, yOffset);
-    doc.text(servicio.costo.toFixed(2), 570, yOffset, { align: "right" });
+    servicios.forEach(servicio => {
+        doc.setFont("Helvetica", "normal");
 
-    // Incrementar el yOffset para la siguiente fila
+        // Mostrar los datos en el PDF con el formato proporcionado
+        doc.text(servicio.id.toString(), 30, yOffset);
+        doc.text(servicio.nombre_completo, 70, yOffset);
+        doc.text(servicio.asistencia, 180, yOffset);
+        doc.text(servicio.fecha, 280, yOffset);
+        doc.text(servicio.nombre_servicio, 420, yOffset);
+        doc.text(servicio.costo.toFixed(2), 570, yOffset, { align: "right" });
+
+        // Acumular el costo total
+        totalCosto += servicio.costo;
+
+        // Incrementar el yOffset para la siguiente fila
+        yOffset += 20;
+
+        // Línea divisoria debajo de cada fila de datos
+        doc.line(30, yOffset - 10, 580, yOffset - 10);
+    });
+
+    // Dibujar una línea separadora para el total
+    doc.line(30, yOffset, 580, yOffset);
     yOffset += 20;
 
-    // Línea divisoria debajo de cada fila de datos
-    doc.line(30, yOffset - 10, 580, yOffset - 10);
-});
-
-
+    // Mostrar el total en el PDF
+    doc.setFont("Helvetica", "bold");
+    doc.text("Total:", 420, yOffset);
+    doc.text(totalCosto.toFixed(2), 570, yOffset, { align: "right" });
 
     // Convertir el PDF a Blob para descarga
     const pdfBlobInforme = doc.output('blob');
