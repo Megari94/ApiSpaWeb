@@ -118,13 +118,13 @@ public Personal editPersonal(@PathVariable Long id_personal,
         }
         return listadto;
     }
-@GetMapping("/personalInfomeServicios")
+@GetMapping("/personalInfoServicios")
     public List<SesionAdminDTO> getSesionesPorPersonalEntreFechas(@RequestParam("personalId") Long personalId,
                                                                   @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                                                   @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
         return servis.findConfirmedSessionsByPersonalBetweenDates(personalId, startDate, endDate);
     }
-    @GetMapping("/Personal/personalInfo/${id_personal}")
+    @GetMapping("/Personal/personalInfo/{id_personal}")
     public UsuarioDTO findPersonalInforme(@PathVariable Long id_personal){
        Personal p= servis.findPersonal(id_personal);
        UsuarioDTO UDTO= new UsuarioDTO();
