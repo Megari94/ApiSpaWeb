@@ -57,9 +57,9 @@ async function generarInforme() {
         doc.text(`Fecha de Emisión: ${fechaFormateada}`, 380, 80);
 
         // Información general del servicio (datos del personal)
-        doc.text(`Nombre del Personal: ${personalSeleccionado.nombre} ${personalSeleccionado.apellido}`, 40, 150);
-        doc.text(`Nombre de Usuario: ${personalSeleccionado.nombre_usuario}`, 40, 170);
-        doc.text(`Correo: ${personalSeleccionado.correo}`, 40, 190);
+        doc.text(`Nombre del Personal: ${personalSeleccionado.nombre} ${personalSeleccionado.apellido}`, 40, 170);
+        doc.text(`Nombre de Usuario: ${personalSeleccionado.nombre_usuario}`, 40, 190);
+        doc.text(`Correo: ${personalSeleccionado.correo}`, 40, 210);
 
         // Encabezado de la tabla
         doc.setFontSize(10);
@@ -67,8 +67,8 @@ async function generarInforme() {
         doc.text("ID", 50, 250);
         doc.text("Asistencia", 80, 250); // Reducción de espacio
         doc.text("Costo", 180, 250); // Reducción de espacio
-        doc.text("Fecha", 250, 250); // Reducción de espacio
-        doc.text("Nombre Completo", 385, 250); // Reducción de espacio
+        doc.text("Fecha", 280, 250); // Reducción de espacio
+        doc.text("Nombre Completo", 370, 250); // Reducción de espacio
         doc.text("Nombre Servicio", 480, 250); // Reducción de espacio
 
         // Dibujar una línea para el encabezado
