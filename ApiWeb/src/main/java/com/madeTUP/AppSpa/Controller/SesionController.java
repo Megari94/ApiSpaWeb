@@ -251,4 +251,5 @@ public ResponseEntity<String> editarCostoSesion(@PathVariable Long id_sesion, @R
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
     }
 }
+}
 
