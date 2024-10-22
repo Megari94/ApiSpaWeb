@@ -102,9 +102,59 @@
     <script>
 
             // Abrir modal para ingresar precio
-         function aceptarSolicitud() {
-              document.getElementById('modalPrecio').style.display = 'block';
+  
+        let filaIdGlobal = null;
+let nombreClienteGlobal = null;
+let servicioGlobal = null;
+
+function aceptarSolicitud(filaId, nombreCliente, servicio) {
+    filaIdGlobal = filaId;
+    nombreClienteGlobal = nombreCliente;
+    servicioGlobal = servicio;
+
+    // Abrir el modal para ingresar precio
+    document.getElementById('modalPrecio').style.display = 'block';
+}
+
+function guardarPrecio() {
+    const precio = document.getElementById('precio').value;
+
+    if (precio) {
+        // Aquí haces la llamada a la API para actualizar el costo
+        actualizarCostoSesion(filaIdGlobal, precio);
+
+        // Cerrar el modal
+        cerrarModal('modalPrecio');
+    } else {
+        alert("Por favor, ingrese un precio válido.");
+    }
+}
+
+function cerrarModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+// Función para actualizar el costo en la base de datos
+async function actualizarCostoSesion(idSesion, nuevoCosto) {
+    try {
+        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/editarCosto/${idSesion}`, {
+            method: 'PUT',  // Verifica que el método sea correcto
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ costo: nuevoCosto })
+        });
+
+        if (response.ok) {
+            console.log('Costo actualizado correctamente');
+        } else {
+            console.error('Error al actualizar el costo');
         }
+    } catch (error) {
+        console.error('Error al conectarse a la API:', error);
+    }
+}
+
         
     </script>
 </body>
