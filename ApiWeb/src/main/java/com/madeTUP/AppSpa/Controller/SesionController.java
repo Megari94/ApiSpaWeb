@@ -4,6 +4,7 @@
  */
 package com.madeTUP.AppSpa.Controller;
 
+import com.madeTUP.AppSpa.DTO.ClientexDiaDTO;
 import com.madeTUP.AppSpa.DTO.NewSesionDTO;
 import com.madeTUP.AppSpa.DTO.SesionAdminDTO;
 import com.madeTUP.AppSpa.DTO.SesionDTO;
@@ -237,26 +238,18 @@ public ResponseEntity<String> agregarSesionAdmin(@RequestBody NewSesionDTO nueva
         return new ResponseEntity<>("Error al crear la sesión: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
-   @PutMapping("/Sesion/editarCosto/{id_sesion}")
-public ResponseEntity<String> editarCostoSesion(@PathVariable Long id_sesion, @RequestBody Map<String, Double> request) {
+     @PutMapping("/Sesion/editarCosto/{id_sesion}")
+public ResponseEntity<String> editarCostoSesion(@PathVariable Long id_sesion, @RequestParam(required = false) Double nuevoCosto) {
     try {
-        // Extraer el nuevo costo del cuerpo de la solicitud
-        Double nuevoCosto = request.get("costo");
-
-        if (nuevoCosto == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El costo es requerido");
-        }
-
-        // Llama al método editSesion para actualizar el estado de asistencia a "CONFIRMADO"
+        // Llama al método editSesion para actualizar el estado de asistencia a "CANCELADO"
         servis.editSesion(id_sesion, null, null, null, nuevoCosto, "CONFIRMADO");
-        return ResponseEntity.ok("Precio actualizado correctamente");
+        return ResponseEntity.ok("Precio Agregado");
     } catch (EntityNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sesión no encontrada");
     } catch (Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
     }
 }
-
 @GetMapping("/informe-pago")
     public ResponseEntity<List<SesionAdminDTO>> getInformePago(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
@@ -265,4 +258,14 @@ public ResponseEntity<String> editarCostoSesion(@PathVariable Long id_sesion, @R
         List<SesionAdminDTO> informe = servis.getInformePago(startDate, endDate);
         return ResponseEntity.ok(informe);
     }
+   @GetMapping("/clientesPorFecha")
+    public List<ClientexDiaDTO> getClientsByDate(@RequestParam String fecha) {
+        LocalDateTime date = LocalDateTime.parse(fecha); // Asegúrate de que el formato de fecha sea correcto
+        return servis.findClientsByDate(date);
+    }
+    @GetMapping("/clientesPorPersonal/{personalId}")
+    public List<ClientexDiaDTO> getClientsByPersonal(@PathVariable Long personalId) {
+        return servis.findClientsByPersonal(personalId);
+    }
+    
 }
