@@ -70,8 +70,7 @@ window.onload = loadSessionsAdmin;
         return;
     }
 
-    // Título y encabezado
-    doc.setFontSize(14);
+   doc.setFontSize(14);
     doc.setFont("Helvetica", "bold");
     doc.text("SENTIRSE BIEN", 70, 75);
     doc.setFontSize(12);
@@ -91,12 +90,24 @@ window.onload = loadSessionsAdmin;
     doc.setFontSize(30);
     doc.text("C", cX + 13, cY + 30); // Centra la "C" dentro del rectángulo
     doc.setFontSize(12);
+ // Dibuja líneas verticales
+    const lineX = cX + (cWidth / 2);
+    const lineStartY = cY + cHeight;
+    const lineEndY = lineStartY + 60;
+    doc.line(lineX, lineStartY, lineX, lineEndY); // Línea debajo
+    const lineStartYAbove = cY;
+    const lineEndYAbove = lineStartYAbove - 20;
+    doc.line(lineX, lineStartYAbove, lineX, lineEndYAbove); // Línea encima
 
     // Detalles de la factura a la derecha
     doc.setFontSize(16);
     doc.setFont("Helvetica", "bold");
     doc.text("Detalle de Factura", 380, 65);
-
+// Detalle de la factura
+    doc.setFontSize(12);
+    doc.setFont("Helvetica", "normal");
+    doc.text("N°: 00001", 380, 80);
+      
     // Obtener la fecha actual y formatearla
     const fechaActual = new Date();
     const dia = fechaActual.getDate().toString().padStart(2, '0');
@@ -134,9 +145,12 @@ window.onload = loadSessionsAdmin;
     // Calcular y mostrar el total
     doc.text("Total:", 450, yOffset + 20);
     doc.text(parseFloat(totalAmount).toFixed(2), 550, yOffset + 20, { align: "right" });
-
+    doc.setFontSize(12);
+    doc.setFont("Helvetica", "bold");
+    doc.text("Importe Total: $" + totalAmount, 400, 727);
+  const link = document.createElement('a');
     // Guardar la factura
-    doc.save(`Factura_${clientName}_${fechaFormateada}.pdf`);
+    doc.save(`Factura_${clientName}.pdf`);
 }
 
 
