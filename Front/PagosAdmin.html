@@ -60,7 +60,7 @@
 
             <!-- Contenedor del buscador -->
             <div class="search-container">
-                <input type="text" id="searchInput" class="search-input" placeholder="Buscar turnos..." oninput="filtrarTurnos()">
+               <input type="text" id="searchInput" class="search-input" placeholder="Buscar solicitudes por cliente..." oninput="filtrarTurnos()">
             </div>
 
             <!-- Tabla centrada -->
@@ -176,7 +176,14 @@ async function rechazarSolicitud(id_sesion, boton) {
         console.error('Error al cancelar el turno:', error);
     }
 }
+function filtrarTurnos() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Obtener el valor del input
+    const turnosFiltrados = turnos.filter(turno => 
+        turno.nombre_completo.toLowerCase().includes(searchInput) // Filtrar por nombre completo
+    );
 
+    mostrarTurnos(turnosFiltrados); // Mostrar los turnos filtrados
+}
         
     </script>
 </body>
