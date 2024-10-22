@@ -11,9 +11,7 @@
     <script src="js/scriptAdmin.js" defer></script>
     <script src="js/cargarPersonalAdmin.js" defer></script>
     <style>
-   
-
-       
+        /* Aquí puedes agregar estilos CSS si es necesario */
     </style>
 </head>
 <body>
@@ -21,14 +19,14 @@
         <!-- Barra de Menú Lateral -->
         <div id="sidebar" class="sidebar">
             <div class="link-container">
-                 <a href="#" id="clienteAdminLink"><i class="fas fa-users"></i>Clientes</a>
-                <a href="#" id="PersonalLink"><i class="fas fa-user-tie"></i>Personal</a>
-                <a href="#" id="TurnoLink"><i class="fas fa-calendar-alt"></i>Turno</a>
-                <a href="#" id="ServicioLink"><i class="fas fa-concierge-bell"></i>Servicio</a>
-                <a href="#"  id="IPAdminLink"><i class="fas fa-wallet"></i>Informe de Pagos</a>
-                <a href="#" id="ISAdminLink"><i class="fas fa-file-alt"></i>Informe de Servicios</a>
-                <a href="#" id="turnoAdminLink"><i class="fas fa-chart-pie"></i>Turnos Solicitados</a>
-                <a href="#" id="facturaAdminLink"><i class="fas fa-receipt"></i>Factura</a>
+                <a href="#" id="clienteAdminLink"><i class="fas fa-users"></i> Clientes</a>
+                <a href="#" id="PersonalLink"><i class="fas fa-user-tie"></i> Personal</a>
+                <a href="#" id="TurnoLink"><i class="fas fa-calendar-alt"></i> Turno</a>
+                <a href="#" id="ServicioLink"><i class="fas fa-concierge-bell"></i> Servicio</a>
+                <a href="#" id="IPAdminLink"><i class="fas fa-wallet"></i> Informe de Pagos</a>
+                <a href="#" id="ISAdminLink"><i class="fas fa-file-alt"></i> Informe de Servicios</a>
+                <a href="#" id="turnoAdminLink"><i class="fas fa-chart-pie"></i> Turnos Solicitados</a>
+                <a href="#" id="facturaAdminLink"><i class="fas fa-receipt"></i> Factura</a>
             </div>
             <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
         </div>
@@ -42,7 +40,7 @@
                 <h3>Informe de Servicios Realizados</h3>
                 <label for="apellidoPersonal">Nombre del Personal:</label>
                 <select id="apellidoPersonal">
-                <option value="">Seleccione un personal</option> <!-- Opción por defecto -->
+                    <option value="">Seleccione un personal</option> <!-- Opción por defecto -->
                 </select>
 
                 <label for="fechaInicio">Fecha de Inicio:</label>
@@ -54,129 +52,126 @@
                     <button onclick="descargarInforme()" id="downloadButton">Descargar Informe</button>
                 </div>
             </div>
-            
-         
         </div>
     </div>
-    
 
- <script>
-    let pdfBlob; // Variable global para almacenar el Blob del PDF
-    let personalSeleccionado = null; // Variable para almacenar los datos del personal seleccionado
+    <script>
+        let pdfBlob; // Variable global para almacenar el Blob del PDF
+        let personalSeleccionado = null; // Variable para almacenar los datos del personal seleccionado
 
-    async function generarInforme() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF('p', 'pt', 'a4');
+        async function generarInforme() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'pt', 'a4');
 
-        // Verificar si se ha seleccionado un personal
-        const personalId = document.getElementById("apellidoPersonal").value;
-        if (!personalId) {
-            alert("Por favor, seleccione un personal.");
-            return;
-        }
+            // Verificar si se ha seleccionado un personal
+            const personalId = document.getElementById("apellidoPersonal").value;
+            if (!personalId) {
+                alert("Por favor, seleccione un personal.");
+                return;
+            }
 
-        // Definir las fechas de inicio y fin para la consulta
-        const startDate = new Date(); 
-        const endDate = new Date();
-        endDate.setDate(endDate.getDate() + 1); 
+            // Definir las fechas de inicio y fin para la consulta
+            const startDate = new Date(document.getElementById("startDate").value);
+            const endDate = new Date(document.getElementById("endDate").value);
+            endDate.setDate(endDate.getDate() + 1); 
 
-        try {
-            // Obtener los detalles del personal seleccionado desde la API
-            const response = await fetch(https://spaadministrativo-production-4488.up.railway.app/Personal/personalInfo/${personalId});
-            if (!response.ok) throw new Error(Error ${response.status}: No se pudo obtener la información del personal);
-            personalSeleccionado = await response.json();
+            try {
+                // Obtener los detalles del personal seleccionado desde la API
+                const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Personal/personalInfo/${personalId}`);
+                if (!response.ok) throw new Error(`Error ${response.status}: No se pudo obtener la información del personal`);
+                personalSeleccionado = await response.json();
 
-            // Título y encabezado del informe
-            doc.setFontSize(14);
-            doc.setFont("Helvetica", "bold");
-            doc.text("SERVICIOS PRESTADOS", 70, 75);
-            doc.setFontSize(12);
-            doc.setFont("Helvetica", "normal");
-        
-            // Bordes para la estructura del informe
-            doc.rect(30, 30, 550, 750); 
-            doc.rect(30, 30, 550, 120); 
-            doc.rect(30, 660, 550, 50); 
-        
-            // Detalles del informe
-            doc.setFontSize(16);
-            doc.setFont("Helvetica", "bold");
-            doc.text("Detalle del Informe", 380, 65);
-        
-            // Fecha actual
-            const fechaActual = new Date();
-            const dia = fechaActual.getDate().toString().padStart(2, '0');
-            const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
-            const anio = fechaActual.getFullYear();
-            const fechaFormateada = ${dia}/${mes}/${anio};
-            doc.setFontSize(12);
-            doc.setFont("Helvetica", "normal");
-            doc.text(Fecha de Emisión: ${fechaFormateada}, 380, 80);
-        
-            // Información general del servicio (datos del personal)
-            doc.text(Nombre del Personal: ${personalSeleccionado.nombre} ${personalSeleccionado.apellido}, 40, 170);
-            doc.text(Nombre de Usuario: ${personalSeleccionado.nombre_usuario}, 40, 190);
-            doc.text(Correo: ${personalSeleccionado.correo}, 40, 210);
-        
-            // Encabezado de la tabla
-            doc.setFontSize(10);
-            doc.setFont("Helvetica", "bold");
-            doc.text("Código", 50, 300);
-            doc.text("Descripción del Servicio", 160, 300);
-            doc.text("Costo", 550, 300, { align: "right" });
-        
-            // Dibujar una línea para el encabezado
-            doc.line(30, 305, 580, 305);
-        
-            // Obtener las sesiones del personal usando el nuevo endpoint
-            const sesionesResponse = await fetch(https://spaadministrativo-production-4488.up.railway.app/personalInfoServicios?personalId=${personalId}&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()});
-            if (!sesionesResponse.ok) throw new Error(Error ${sesionesResponse.status}: No se pudo obtener las sesiones);
-            const sesiones = await sesionesResponse.json();
-        
-            // Mostrar las sesiones en el PDF
-            let yPosition = 320;
-            sesiones.forEach(sesion => {
+                // Título y encabezado del informe
+                doc.setFontSize(14);
+                doc.setFont("Helvetica", "bold");
+                doc.text("SERVICIOS PRESTADOS", 70, 75);
+                doc.setFontSize(12);
                 doc.setFont("Helvetica", "normal");
-                doc.text(sesion.codigo.toString(), 50, yPosition);
-                doc.text(doc.splitTextToSize(sesion.descripcion, 180), 160, yPosition);
-                doc.text(sesion.costo.toFixed(2), 550, yPosition, { align: "right" });
-            
-                yPosition += 20; 
-                doc.line(30, yPosition + 5, 580, yPosition + 5); 
-            });
         
-            // Total
-            const total = sesiones.reduce((acc, sesion) => acc + sesion.costo, 0);
-            doc.setFontSize(12);
-            doc.setFont("Helvetica", "bold");
-            doc.text(Total: $${total.toFixed(2)}, 400, 680);
+                // Bordes para la estructura del informe
+                doc.rect(30, 30, 550, 750); 
+                doc.rect(30, 30, 550, 120); 
+                doc.rect(30, 660, 550, 50); 
         
-            // Convertir PDF a Blob para vista previa
-            pdfBlob = doc.output('blob');
-            const pdfUrl = URL.createObjectURL(pdfBlob);
+                // Detalles del informe
+                doc.setFontSize(16);
+                doc.setFont("Helvetica", "bold");
+                doc.text("Detalle del Informe", 380, 65);
         
-            // Mostrar vista previa (si tienes un iframe o contenedor para el PDF)
-            document.getElementById('pdfPreview').src = pdfUrl;
-            document.getElementById('previewContainer').style.display = 'block';
-        } catch (error) {
-            console.error("Error:", error);
-            alert("Ocurrió un error al generar el informe.");
+                // Fecha actual
+                const fechaActual = new Date();
+                const dia = fechaActual.getDate().toString().padStart(2, '0');
+                const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
+                const anio = fechaActual.getFullYear();
+                const fechaFormateada = `${dia}/${mes}/${anio}`;
+                doc.setFontSize(12);
+                doc.setFont("Helvetica", "normal");
+                doc.text(`Fecha de Emisión: ${fechaFormateada}`, 380, 80);
+        
+                // Información general del servicio (datos del personal)
+                doc.text(`Nombre del Personal: ${personalSeleccionado.nombre} ${personalSeleccionado.apellido}`, 40, 170);
+                doc.text(`Nombre de Usuario: ${personalSeleccionado.nombre_usuario}`, 40, 190);
+                doc.text(`Correo: ${personalSeleccionado.correo}`, 40, 210);
+        
+                // Encabezado de la tabla
+                doc.setFontSize(10);
+                doc.setFont("Helvetica", "bold");
+                doc.text("Código", 50, 300);
+                doc.text("Descripción del Servicio", 160, 300);
+                doc.text("Costo", 550, 300, { align: "right" });
+        
+                // Dibujar una línea para el encabezado
+                doc.line(30, 305, 580, 305);
+        
+                // Obtener las sesiones del personal usando el nuevo endpoint
+                const sesionesResponse = await fetch(`https://spaadministrativo-production-4488.up.railway.app/personalInfoServicios?personalId=${personalId}&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
+                if (!sesionesResponse.ok) throw new Error(`Error ${sesionesResponse.status}: No se pudo obtener las sesiones`);
+                const sesiones = await sesionesResponse.json();
+        
+                // Mostrar las sesiones en el PDF
+                let yPosition = 320;
+                sesiones.forEach(sesion => {
+                    doc.setFont("Helvetica", "normal");
+                    doc.text(sesion.codigo.toString(), 50, yPosition);
+                    const descripcion = doc.splitTextToSize(sesion.descripcion, 180);
+                    doc.text(descripcion, 160, yPosition);
+                    doc.text(sesion.costo.toFixed(2), 550, yPosition, { align: "right" });
+                
+                    yPosition += 20; 
+                    doc.line(30, yPosition + 5, 580, yPosition + 5); 
+                });
+        
+                // Total
+                const total = sesiones.reduce((acc, sesion) => acc + sesion.costo, 0);
+                doc.setFontSize(12);
+                doc.setFont("Helvetica", "bold");
+                doc.text(`Total: $${total.toFixed(2)}`, 400, 680);
+        
+                // Convertir PDF a Blob para vista previa
+                pdfBlob = doc.output('blob');
+                const pdfUrl = URL.createObjectURL(pdfBlob);
+        
+                // Mostrar vista previa (si tienes un iframe o contenedor para el PDF)
+                document.getElementById('pdfPreview').src = pdfUrl;
+                document.getElementById('previewContainer').style.display = 'block';
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Ocurrió un error al generar el informe.");
+            }
         }
-    }
-    
-    async function descargarInforme() {
-        if (!pdfBlob) {
-            alert("Por favor, genera el informe primero.");
-            return;
+        
+        async function descargarInforme() {
+            if (!pdfBlob) {
+                alert("Por favor, genera el informe primero.");
+                return;
+            }
+        
+            // Descargar el PDF generado
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(pdfBlob);
+            link.download = "informe_servicios.pdf";
+            link.click();
         }
-    
-        // Descargar el PDF generado
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(pdfBlob);
-        link.download = "informe_servicios.pdf";
-        link.click();
-    }
-</script>
-
+    </script>
 </body>
 </html>
