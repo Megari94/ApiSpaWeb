@@ -291,16 +291,17 @@ async function guardarPersonal() {
         });
 
         if (response.ok) {
-            modal.style.display = 'none'; // Oculta el modal
+           alert('Sesión creada con éxito');
             
+            // Aquí cierra el modal
+            $('modalAgregarPersonal').modal('hide');
             // Puedes añadir más lógica, como cerrar el modal o limpiar el formulario
         } else {
             const errorText = await response.text();
             alert('Error al crear la sesión: ' + errorText);
         }
     } catch (error) {
-        console.error('Error al crear la sesión:', error);
-        alert('Error al crear la sesión.');
+      
     }
 }
 
