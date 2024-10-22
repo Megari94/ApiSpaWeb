@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -248,5 +249,12 @@ public ResponseEntity<String> editarCostoSesion(@PathVariable Long id_sesion, @R
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
     }
 }
+@GetMapping("/informe-pago")
+    public ResponseEntity<List<SesionAdminDTO>> getInformePago(
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+        
+        List<SesionAdminDTO> informe = servis.getInformePago(startDate, endDate);
+        return ResponseEntity.ok(informe);
+    }
 }
-
