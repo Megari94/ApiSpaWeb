@@ -254,7 +254,7 @@ async function cargarProfesionales() {
         profesionalesData.forEach(profesional => {
             const option = document.createElement('option');
             option.value = profesional.id; // Usar el ID del profesional
-            option.textContent = profesional.nombre; // Solo mostrar el nombre
+            option.textContent = profesional.nombre_Completo; // Solo mostrar el nombre
             selectProfesional.appendChild(option);
         });
     } catch (error) {
