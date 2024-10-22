@@ -58,3 +58,4 @@ async function guardarEdicionCliente() {
 window.onload = function() {
     cargarClientes(); // Cambié cargarPersonal a cargarClientes
 };
+};
