@@ -1,5 +1,5 @@
 // Función para abrir el modal de edición y llenar los campos
-function abrirModalEditarClienteYGuardar(id) {
+function modalEditarCliente(id) {
     const cliente = clientesData.find(c => c.id === id);
 
     if (cliente) {
