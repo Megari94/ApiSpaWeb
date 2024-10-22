@@ -236,10 +236,7 @@ public ResponseEntity<String> agregarSesionAdmin(@RequestBody NewSesionDTO nueva
         return new ResponseEntity<>("Error al crear la sesión: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
-
-}
- 
-    @PutMapping("/Sesion/editarCosto/{id_sesion}")
+     @PutMapping("/Sesion/editarCosto/{id_sesion}")
 public ResponseEntity<String> editarCostoSesion(@PathVariable Long id_sesion, @RequestParam(required = false) Double nuevoCosto) {
     try {
         // Llama al método editSesion para actualizar el estado de asistencia a "CANCELADO"
