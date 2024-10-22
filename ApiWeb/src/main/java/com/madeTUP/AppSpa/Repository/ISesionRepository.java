@@ -7,6 +7,7 @@ package com.madeTUP.AppSpa.Repository;
 import com.madeTUP.AppSpa.DTO.ClientexDiaDTO;
 import com.madeTUP.AppSpa.DTO.SesionAdminDTO;
 import com.madeTUP.AppSpa.Model.Sesion;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,9 +35,9 @@ public interface ISesionRepository extends JpaRepository<Sesion,Long>{
            "JOIN s.servicio se " +
            "JOIN se.personal p " +
            "WHERE DATE(s.fecha) = :fecha")
-    List<ClientexDiaDTO> findClientsByDate(@Param("fecha") LocalDateTime fecha);
+    List<ClientexDiaDTO> findClientsByDate(@Param("fecha") LocalDate fecha);
     
-    @Query("SELECT new com.madeTUP.AppSpa.DTO.ClientexDiaDTO(s.id, s.fecha, c.nombre, se.nombreServicio, p.nombre) " +
+    @Query("SELECT new com.tu.paquete.ClientexDiaDTO(s.id, s.fecha, c.nombre, se.nombreServicio, p.nombre) " +
            "FROM Sesion s " +
            "JOIN s.cliente c " +
            "JOIN s.servicio se " +
