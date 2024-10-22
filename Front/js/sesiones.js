@@ -10,11 +10,12 @@ async function loadSessionsAdmin() {
             console.error('Error al obtener las sesiones:', responseSesiones.statusText);
             return;
         }
-        sesionesGlobal = sesiones; 
+      
         const sesiones = await responseSesiones.json();
+        sesionesGlobal = sesiones; 
 
         // 2. Mostrar la tabla con los datos obtenidos
-        displaySessions(sesiones);
+        displaySessions(sesionesGlobal);
     } catch (error) {
         console.error('Error al conectarse al servidor:', error);
     }
