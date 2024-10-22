@@ -4,6 +4,7 @@
  */
 package com.madeTUP.AppSpa.Service;
 
+import com.madeTUP.AppSpa.DTO.ClientexDiaDTO;
 import com.madeTUP.AppSpa.DTO.SesionAdminDTO;
 import com.madeTUP.AppSpa.DTO.SesionDTO;
 import com.madeTUP.AppSpa.DTO.SesionPersonalDTO;
@@ -149,6 +150,16 @@ public void editSesion(Long id_sesion, Servicio servicio, Cliente cliente, Local
     @Override
     public List<SesionAdminDTO> getInformePago(LocalDateTime startDate, LocalDateTime endDate) {
         return sesionrepo.findConfirmedSessionsBetweenDates(startDate, endDate);
+    }
+
+    @Override
+    public List<ClientexDiaDTO> findClientsByDate(LocalDateTime fecha) {
+    return sesionrepo.findClientsByDate(fecha);
+    }
+
+    @Override
+    public List<ClientexDiaDTO> findClientsByPersonal(Long personalId) {
+       return sesionrepo.findClientsByPersonal(personalId);
     }
 }
 
