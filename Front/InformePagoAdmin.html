@@ -92,10 +92,12 @@
                     <button type="submit">Generar Informe</button>
                 </form>
             </div>
-            <div id="previewContainer" style="display:none; margin-top: 20px;">
-    <h3>Vista previa del Informe</h3>
-    <iframe id="pdfPreview" style="width:100%; height:500px;"></iframe>
-    <button onclick="descargarInforme()">Descargar Informe</button>
+           <div id="previewModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarModal()">&times;</span>
+        <iframe id="pdfPreview" style="width:100%; height:500px;"></iframe>
+        <button onclick="descargarInforme()">Descargar Informe</button>
+    </div>
 </div>
         </div>
     </div>
