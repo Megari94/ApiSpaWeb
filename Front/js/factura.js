@@ -181,7 +181,7 @@ async function generarInforme(event) {
     const doc = new jsPDF('p', 'pt', 'a4');
 
     // Título y encabezado del informe
-    doc.setFontSize(14);
+    doc.setFontSize(12);
     doc.setFont("Helvetica", "bold");
     doc.text("Informe de Pagos", 70, 75);
     doc.setFontSize(12);
@@ -206,7 +206,7 @@ async function generarInforme(event) {
     doc.line(30, 135, 580, 135);
 
     // Añadir los servicios a la tabla
-    let yOffset = 200; // Posición inicial para los datos
+    let yOffset = 400; // Posición inicial para los datos
     let totalCosto = 0; // Variable para almacenar el costo total
 
     servicios.forEach(servicio => {
