@@ -291,10 +291,14 @@ async function guardarPersonal() {
         });
 
         if (response.ok) {
-           alert('Sesión creada con éxito');
-            
-            // Aquí cierra el modal
-            $('modalAgregarPersonal').modal('hide');
+                alert('Sesión guardada correctamente.'); // Mensaje de éxito
+
+                // Limpia los campos del formulario
+                document.getElementById('formAgregarPersonal').reset(); // Limpia todos los campos
+
+                // Cierra el modal
+                const modal = document.getElementById('modalAgregarPersonal');
+                modal.style.display = 'none'; // Cierra el modal
             // Puedes añadir más lógica, como cerrar el modal o limpiar el formulario
         } else {
             const errorText = await response.text();
