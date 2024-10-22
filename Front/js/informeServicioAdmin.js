@@ -127,9 +127,17 @@ async function generarInforme() {
     abrirModal();
 }
 
+let pdfBlob; // Variable para almacenar el blob del PDF generado
+
 function descargarInforme() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF('p', 'pt', 'a4');
-    
-    doc.save("Informe_Servicios.pdf");  // Esto descarga el archivo PDF con el nombre especificado
+    if (pdfBlob) {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(pdfBlob);
+        link.download = 'Informe_Servicios.pdf'; // Nombre del archivo que se descargará
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        alert('Por favor, genera el informe antes de intentar descargarlo.');
+    }
 }
