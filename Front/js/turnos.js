@@ -241,3 +241,64 @@ function seleccionarServicio() {
         select.style.display = 'none'; // Ocultar la lista después de seleccionar
     }
 }
+unction agregarTurno() {
+            // Muestra el modal al hacer clic en "Agregar Turno"
+            const modal = document.getElementById('modalAgregarPersonal');
+            modal.style.display = 'block';
+             obtenerClientes();
+     obtenerServicios();
+     
+        }
+// Función para guardar la sesión en la base de datos
+async function guardarPersonal() {
+    // Obtener el ID del cliente y servicio seleccionados
+    const clienteSelect = document.getElementById('clienteSelect');
+    const servicioSelect = document.getElementById('servicioSelect');
+    const idCliente = clienteSelect.value;
+    const idServicio = servicioSelect.value;
+
+    // Obtener la fecha y hora seleccionada y el costo
+    const fechaHora = document.getElementById('fechaHora').value; // Esto ya incluye fecha y hora
+    const costo = document.getElementById('costo').value;
+
+    // Verificar si los campos están completos
+    if (!idCliente || !idServicio || !fechaHora || !costo) {
+        alert('Por favor, complete todos los campos.');
+        return;
+    }
+
+    // Formatear la fecha y hora usando la función formatearFecha
+    const fechaFormateada = formatearFecha(fechaHora);
+
+    // Crear el objeto de la nueva sesión
+    const nuevaSesion = {
+        id_Cliente: idCliente,
+        id_Servicio: idServicio,
+        fecha: fechaFormateada, // Usar la fecha formateada
+        costo: parseFloat(costo)
+    };
+
+    try {
+        // Enviar los datos a la API usando POST
+        const response = await fetch('https://spaadministrativo-production-4488.up.railway.app/Sesion/agregarSesionAdmin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer tuTokenAqui' // Añadir el token si es necesario
+            },
+            body: JSON.stringify(nuevaSesion)
+        });
+
+        if (response.ok) {
+            alert('Sesión creada con éxito');
+            // Puedes añadir más lógica, como cerrar el modal o limpiar el formulario
+        } else {
+            const errorText = await response.text();
+            alert('Error al crear la sesión: ' + errorText);
+        }
+    } catch (error) {
+        console.error('Error al crear la sesión:', error);
+        alert('Error al crear la sesión.');
+    }
+}
+
