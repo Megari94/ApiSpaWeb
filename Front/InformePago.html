@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/estilo.css">
     <script src="js/script.js" defer></script>
     <script src="js/scriptAdmin.js" defer></script>
-    /* <script src="js/factura.js" defer></script> */
+   
     <style>
         /* Estilo del formulario */
         .form-container {
@@ -67,6 +67,7 @@
             <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
         </div>
   <!-- Contenido Principal -->
+          <!-- Contenido Principal -->
         <div class="main-content">
             <button id="menuButton" class="open-btn" onclick="toggleMenu()">☰ Menú</button>
 
@@ -91,13 +92,27 @@
     <!-- Modal para vista previa del informe -->
     <div id="previewModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="cerrarModal()">&times;</span>
-            <iframe id="pdfPreview" style="width:100%; height:500px;"></iframe>
             <button onclick="descargarInforme()">Descargar Informe</button>
+      <span class="close" onclick="cerrarModal1()">&times;</span>
+            <iframe id="pdfPreview" style="width:100%; height:500px;"></iframe>
+           
         </div>
     </div>
 
     <script>
+    // Función para cerrar el modal
+function cerrarModal1() {
+        const previewModal1 = document.getElementById('previewModal1');
+        previewModal.style.display = 'none';
+    }
+
+    // Función para manejar el clic fuera del modal y cerrarlo
+    window.onclick = function(event) {
+        const previewModal1 = document.getElementById('previewModal1');
+        if (event.target === previewModal) {
+            cerrarModal1(); // Cierra el modal si se hace clic fuera de su contenido
+        }
+    }
         let pdfBlobInforme; // Variable global para almacenar el blob del PDF
 
         async function generarInforme(event) {
@@ -238,18 +253,6 @@ doc.line(30, 135, 580, 135);
             sidebar.style.display = (sidebar.style.display === 'block') ? 'none' : 'block';
         }
 
-   function cerrarModal() {
-        const previewModal = document.getElementById('previewModal');
-        previewModal.style.display = 'none';
-    }
-
-    // Función para manejar el clic fuera del modal y cerrarlo
-    window.onclick = function(event) {
-        const previewModal = document.getElementById('previewModal');
-        if (event.target === previewModal) {
-            cerrarModal(); // Cierra el modal si se hace clic fuera de su contenido
-        }
-    }
     </script>
 </body>
 </html>
