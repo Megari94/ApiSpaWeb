@@ -225,7 +225,7 @@ public ResponseEntity<String> agregarSesion(@RequestBody NewSesionDTO nuevaSesio
         sesion.setServicio(servicio);
         sesion.setFecha(LocalDateTime.parse(nuevaSesion.getFecha()));
         sesion.setCosto(costo);
-        sesion.setAsistencia("SOLICITADO"); // Puedes ajustarlo según la lógica del negocio
+        sesion.setAsistencia("CONFIRMADO"); // Puedes ajustarlo según la lógica del negocio
 
         // Guardamos la sesión
         servis.saveSesion(sesion);
