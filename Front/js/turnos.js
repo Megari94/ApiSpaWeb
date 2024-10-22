@@ -241,7 +241,7 @@ function seleccionarServicio() {
         select.style.display = 'none'; // Ocultar la lista después de seleccionar
     }
 }
-unction agregarTurno() {
+function agregarTurno() {
             // Muestra el modal al hacer clic en "Agregar Turno"
             const modal = document.getElementById('modalAgregarPersonal');
             modal.style.display = 'block';
