@@ -159,6 +159,14 @@
         doc.setFontSize(16);
         doc.setFont("Helvetica", "bold");
         doc.text("Detalle del Informe", 380, 65);
+              const fechaActual = new Date();
+        const dia = fechaActual.getDate().toString().padStart(2, '0');
+        const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
+        const anio = fechaActual.getFullYear();
+        const fechaFormateada = `${dia}/${mes}/${anio}`;
+        doc.setFontSize(12);
+        doc.setFont("Helvetica", "normal");
+        doc.text(`Fecha de Emisión: ${fechaFormateada}`, 380, 80);
             // Añadir los servicios a la tabla
             let yOffset = 150; // Posición inicial para los datos
             let totalCosto = 0; // Variable para almacenar el costo total
@@ -183,7 +191,7 @@
                 // Línea divisoria debajo de cada fila de datos
                 doc.line(30, yOffset - 10, 580, yOffset - 10);
             });   
-
+   doc.line(30, 255, 580, 255);
             // Mostrar el total en el PDF
             doc.setFont("Helvetica", "bold");
             doc.text("Total:", 420, yOffset);
