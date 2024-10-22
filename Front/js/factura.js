@@ -190,17 +190,17 @@ async function generarInforme(event) {
     // Encabezado del informe
     doc.text(`Desde: ${fechaInicio} Hasta: ${fechaFin}`, 70, 100);
 
-    // Configurar la tabla de servicios
+   // Configurar la tabla de servicios
 doc.setFontSize(10);
 doc.setFont("Helvetica", "bold");
 
 // Encabezados de la tabla
 doc.text("ID", 30, 130);
 doc.text("Nombre Completo", 70, 130);
-doc.text("Asistencia", 220, 130);
-doc.text("Fecha", 320, 130);
+doc.text("Asistencia", 200, 130);
+doc.text("Fecha", 300, 130);
 doc.text("Servicio", 420, 130);
-doc.text("Costo", 520, 130, { align: "right" });
+doc.text("Costo", 550, 130, { align: "right" });
 
 // Línea para separar los encabezados de los datos
 doc.line(30, 135, 580, 135);
@@ -213,8 +213,8 @@ servicios.forEach(servicio => {
     // Mostrar los datos en el PDF con el formato proporcionado
     doc.text(servicio.id.toString(), 30, yOffset);
     doc.text(servicio.nombre_completo, 70, yOffset);
-    doc.text(servicio.asistencia, 220, yOffset);
-    doc.text(servicio.fecha, 320, yOffset);
+    doc.text(servicio.asistencia, 200, yOffset);
+    doc.text(servicio.fecha, 300, yOffset);
     doc.text(servicio.nombre_servicio, 420, yOffset);
     doc.text(servicio.costo.toFixed(2), 570, yOffset, { align: "right" });
 
@@ -224,6 +224,7 @@ servicios.forEach(servicio => {
     // Línea divisoria debajo de cada fila de datos
     doc.line(30, yOffset - 10, 580, yOffset - 10);
 });
+
 
     // Convertir el PDF a Blob para descarga
     const pdfBlobInforme = doc.output('blob');
