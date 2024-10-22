@@ -153,9 +153,7 @@
 doc.line(30, 135, 580, 135);
             // Línea para separar los encabezados de los datos
            doc.rect(30, 30, 550, 750);
-        doc.rect(30, 30, 550, 120);
-        doc.rect(30, 660, 550, 50);
-
+        
              // Detalles del informe
         doc.setFontSize(16);
         doc.setFont("Helvetica", "bold");
@@ -245,9 +243,18 @@ doc.line(30, 135, 580, 135);
             sidebar.style.display = (sidebar.style.display === 'block') ? 'none' : 'block';
         }
 
-      function cerrarModal() {
-            document.getElementById('modalPreview').style.display = 'none';
+   function cerrarModal() {
+        const previewModal = document.getElementById('previewModal');
+        previewModal.style.display = 'none';
+    }
+
+    // Función para manejar el clic fuera del modal y cerrarlo
+    window.onclick = function(event) {
+        const previewModal = document.getElementById('previewModal');
+        if (event.target === previewModal) {
+            cerrarModal(); // Cierra el modal si se hace clic fuera de su contenido
         }
+    }
     </script>
 </body>
 </html>
