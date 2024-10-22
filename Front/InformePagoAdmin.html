@@ -129,85 +129,74 @@
             const doc = new jsPDF('p', 'pt', 'a4');
 
             // Título y encabezado del informe
-        async function generarInforme(event) {
-    event.preventDefault(); // Evita el envío del formulario
+            doc.setFontSize(14);
+            doc.setFont("Helvetica", "bold");
+            doc.text("Informe de Pagos", 70, 75);
+            doc.setFontSize(12);
+            doc.setFont("Helvetica", "normal");
 
-    const fechaInicio = document.getElementById('fechaInicio').value;
-    const fechaFin = document.getElementById('fechaFin').value;
+            // Encabezado del informe
+            doc.text(`Desde: ${fechaInicio} Hasta: ${fechaFin}`, 70, 100);
 
-    let servicios = [];
-    try {
-        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/informe-pago?startDate=${fechaInicio}T00:00:00&endDate=${fechaFin}T23:59:59`);
-        servicios = await response.json();
-    } catch (error) {
-        console.error('Error fetching services:', error);
-        alert('No se pudieron obtener los servicios. Intente nuevamente más tarde.');
-        return;
-    }
+            // Configurar la tabla de servicios
+            doc.setFontSize(10);
+            doc.setFont("Helvetica", "bold");
 
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF('p', 'pt', 'a4');
+            // Encabezados de la tabla
+            doc.text("ID", 30, 130);
+            doc.text("Nombre Completo", 70, 130);
+            doc.text("Asistencia", 180, 130);
+            doc.text("Fecha", 280, 130);
+            doc.text("Servicio", 420, 130);
+            doc.text("Costo", 550, 130, { align: "right" });
+        
+doc.line(30, 135, 580, 135);
+            // Línea para separar los encabezados de los datos
+           doc.rect(30, 30, 550, 750);
+        doc.rect(30, 30, 550, 120);
+        doc.rect(30, 660, 550, 50);
 
-    // Título y encabezado del informe
-    doc.setFontSize(14);
-    doc.setFont("Helvetica", "bold");
-    doc.text("Informe de Pagos", 70, 75);
-    doc.setFontSize(12);
-    doc.setFont("Helvetica", "normal");
-    doc.text(`Desde: ${fechaInicio} Hasta: ${fechaFin}`, 70, 100);
-
-    // Encabezado de la tabla
-    doc.setFontSize(10);
-    doc.setFont("Helvetica", "bold");
-    doc.text("ID", 40, 130);
-    doc.text("Nombre Completo", 80, 130);
-    doc.text("Asistencia", 180, 130);
-    doc.text("Fecha", 280, 130);
-    doc.text("Servicio", 420, 130);
-    doc.text("Costo", 550, 130, { align: "right" });
-
-    // Línea divisoria para separar encabezados
-    doc.line(30, 140, 570, 140);
-
-    // Añadir los servicios a la tabla
-    let yOffset = 150; // Posición inicial para los datos
-    let totalCosto = 0; // Acumulador para el costo total
-
-    servicios.forEach(servicio => {
+             // Detalles del informe
+        doc.setFontSize(16);
+        doc.setFont("Helvetica", "bold");
+        doc.text("Detalle del Informe", 380, 65);
+              const fechaActual = new Date();
+        const dia = fechaActual.getDate().toString().padStart(2, '0');
+        const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
+        const anio = fechaActual.getFullYear();
+        const fechaFormateada = `${dia}/${mes}/${anio}`;
+        doc.setFontSize(12);
         doc.setFont("Helvetica", "normal");
+        doc.text(`Fecha de Emisión: ${fechaFormateada}`, 380, 80);
+            // Añadir los servicios a la tabla
+            let yOffset = 150; // Posición inicial para los datos
+            let totalCosto = 0; // Variable para almacenar el costo total
 
-        // Dividir texto si es muy largo
-        const nombreCompleto = doc.splitTextToSize(servicio.nombre_completo, 100);
-        const servicioNombre = doc.splitTextToSize(servicio.nombre_servicio, 100);
+            servicios.forEach(servicio => {
+                doc.setFont("Helvetica", "normal");
 
-        // Mostrar los datos
-        doc.text(servicio.id.toString(), 40, yOffset);
-        doc.text(nombreCompleto, 80, yOffset);
-        doc.text(servicio.asistencia, 180, yOffset);
-        doc.text(servicio.fecha, 280, yOffset);
-        doc.text(servicioNombre, 420, yOffset);
-        doc.text(servicio.costo.toFixed(2), 550, yOffset, { align: "right" });
+                // Mostrar los datos en el PDF con el formato proporcionado
+                doc.text(servicio.id.toString(), 30, yOffset);
+                doc.text(servicio.nombre_completo, 70, yOffset);
+                doc.text(servicio.asistencia, 180, yOffset);
+                doc.text(servicio.fecha, 280, yOffset);
+                doc.text(servicio.nombre_servicio, 420, yOffset);
+                doc.text(servicio.costo.toFixed(2), 570, yOffset, { align: "right" });
 
-        // Calcular espacio vertical según el número de líneas ocupadas
-        const maxLines = Math.max(nombreCompleto.length, servicioNombre.length);
-        yOffset += maxLines * 12 + 10; // Ajusta el incremento vertical según las líneas ocupadas
+                // Acumular el costo total
+                totalCosto += servicio.costo;
 
-        totalCosto += servicio.costo;
+                // Incrementar el yOffset para la siguiente fila
+                yOffset += 20;
 
-        // Línea divisoria debajo de cada fila
-        doc.line(30, yOffset - 5, 570, yOffset - 5);
-    });
-
-    // Mostrar el total en el PDF
-    yOffset += 20; // Agregar espacio antes de mostrar el total
-    doc.setFont("Helvetica", "bold");
-    doc.text("Total:", 420, yOffset);
-    doc.text(totalCosto.toFixed(2), 550, yOffset, { align: "right" });
-
-    // Línea final
-    doc.line(30, yOffset + 5, 570, yOffset + 5);
-
-  
+                // Línea divisoria debajo de cada fila de datos
+                doc.line(30, yOffset - 10, 580, yOffset - 10);
+            });   
+   doc.line(30, 255, 580, 255);
+            // Mostrar el total en el PDF
+            doc.setFont("Helvetica", "bold");
+            doc.text("Total:", 420, yOffset);
+            doc.text(totalCosto.toFixed(2), 570, yOffset, { align: "right" });
 
             // Convertir el PDF a Blob para descarga
             pdfBlobInforme = doc.output('blob');
@@ -261,5 +250,3 @@
     </script>
 </body>
 </html>
-
-  
