@@ -153,7 +153,7 @@ public void editSesion(Long id_sesion, Servicio servicio, Cliente cliente, Local
     }
 
     @Override
-    public List<ClientexDiaDTO> findClientsByDate(LocalDateTime fecha) {
+    public List<ClientexDiaDTO> findClientsByDate(LocalDate fecha) {
     return sesionrepo.findClientsByDate(fecha);
     }
 
