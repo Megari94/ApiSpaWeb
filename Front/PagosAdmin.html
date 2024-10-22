@@ -176,14 +176,6 @@ async function rechazarSolicitud(id_sesion, boton) {
         console.error('Error al cancelar el turno:', error);
     }
 }
-function filtrarTurnos() {
-    const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Obtener el valor del input
-    const turnosFiltrados = sesionesGlobal.filter(turno => 
-        turno.nombre_completo.toLowerCase().includes(searchInput) // Filtrar por nombre completo
-    );
-
-   displaySessions(turnosFiltrados); // Mostrar los turnos filtrados
-}
         
     </script>
 </body>
