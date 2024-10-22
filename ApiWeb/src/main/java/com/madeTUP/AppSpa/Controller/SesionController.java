@@ -239,4 +239,16 @@ public ResponseEntity<String> agregarSesionAdmin(@RequestBody NewSesionDTO nueva
 
 }
  
-    
+    @PutMapping("/Sesion/edtitarCosto/{id_sesion}")
+public ResponseEntity<String> editarCostoSesion(@PathVariable Long id_sesion, @RequestParam(required = false) Double nuevoCosto) {
+    try {
+        // Llama al método editSesion para actualizar el estado de asistencia a "CANCELADO"
+        servis.editSesion(id_sesion, null, null, null, nuevoCosto, "CONFIRMADO");
+        return ResponseEntity.ok("Precio Agregado");
+    } catch (EntityNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sesión no encontrada");
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+    }
+}
+
