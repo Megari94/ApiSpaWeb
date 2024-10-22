@@ -4,6 +4,7 @@
  */
 package com.madeTUP.AppSpa.Repository;
 
+import com.madeTUP.AppSpa.DTO.ClientexDiaDTO;
 import com.madeTUP.AppSpa.DTO.SesionAdminDTO;
 import com.madeTUP.AppSpa.Model.Sesion;
 import java.time.LocalDateTime;
@@ -27,4 +28,19 @@ public interface ISesionRepository extends JpaRepository<Sesion,Long>{
            "WHERE s.fecha BETWEEN :startDate AND :endDate AND s.asistencia = 'CONFIRMADO'")
     List<SesionAdminDTO> findConfirmedSessionsBetweenDates(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
+    @Query("SELECT new com.madeTUP.AppSpa.DTO.ClientexDiaDTO(s.id, s.fecha, c.nombre, se.nombreServicio, p.nombre) " +
+           "FROM Sesion s " +
+           "JOIN s.cliente c " +
+           "JOIN s.servicio se " +
+           "JOIN se.personal p " +
+           "WHERE DATE(s.fecha) = :fecha")
+    List<ClientexDiaDTO> findClientsByDate(@Param("fecha") LocalDateTime fecha);
+    
+    @Query("SELECT new com.tu.paquete.ClientexDiaDTO(s.id, s.fecha, c.nombre, se.nombreServicio, p.nombre) " +
+           "FROM Sesion s " +
+           "JOIN s.cliente c " +
+           "JOIN s.servicio se " +
+           "JOIN se.personal p " +
+           "WHERE p.id = :personalId")
+    List<ClientexDiaDTO> findClientsByPersonal(@Param("personalId") Long personalId);
 }
