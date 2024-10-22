@@ -1,4 +1,4 @@
-tengo este html "<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -168,32 +168,5 @@ let filaIdGlobal = null;
 
 
     </script>
-</body>" y eta api "https://spaadministrativo-production-4488.up.railway.app/Sesion/editarCosto/{id_sesion}" QUIERO QUE CUANDO SE PRECIONE EL BOTON DE GUARDAR EN EL MODAL "modalPrecio" SE ACTUALICE EN LA BASE DE DATOS EL NUEVO PRECIO 
-ChatGPT Plus
-ChatGPT
-Para que al presionar el botón "Guardar" en el modal modalPrecio se actualice el precio en la base de datos utilizando la API proporcionada, debes realizar una solicitud HTTP a la URL que has mencionado (https://spaadministrativo-production-4488.up.railway.app/Sesion/editarCosto/{id_sesion}). Aquí te muestro cómo puedes implementar esto en tu código.
-
-Paso 1: Actualizar la función guardarPrecio
-Modificaremos la función guardarPrecio() para incluir la llamada a la API y actualizar el costo. Aquí está la versión actualizada de la función:
-
-javascript
-Copiar código
-function guardarPrecio() {
-    const precio = document.getElementById('precio').value;
-
-    if (precio) {
-        // Generar factura con el precio ingresado
-        generarFactura(nombreClienteGlobal, servicioGlobal, precio);
-
-        // Actualizar el estado de la solicitud
-        actualizarEstado(filaIdGlobal, 'Aceptado');
-
-        // Actualizar el precio en la base de datos
-        actualizarPrecioEnBD(filaIdGlobal, precio);
-
-        // Cerrar modal
-        cerrarModal('modalPrecio');
-    } else {
-        alert("Por favor, ingrese un precio válido.");
-    }
-}
+</body>
+</html>
