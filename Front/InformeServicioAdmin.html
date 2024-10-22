@@ -73,9 +73,14 @@
             alert("Por favor, seleccione un personal.");
             return;
         }
-        
+
+        // Definir las fechas de inicio y fin para la consulta (puedes ajustarlas según tus necesidades)
+        const startDate = new Date(); // Por ejemplo, fecha de inicio
+        const endDate = new Date(); // Por ejemplo, fecha de fin
+        endDate.setDate(endDate.getDate() + 1); // Un día después de la fecha de inicio
+
         // Obtener los detalles del personal seleccionado desde la API
-        await fetch(`https://spaadministrativo-production-4488.up.railway.app/Personal/${personalId}/personalInfo`)
+        await fetch(`https://spaadministrativo-production-4488.up.railway.app/Personal/personalInfo/${personalId}`)
             .then(response => response.json())
             .then(data => {
                 personalSeleccionado = data; // Guardar los datos del personal
@@ -128,8 +133,8 @@
         // Dibujar una línea para el encabezado
         doc.line(30, 305, 580, 305);
     
-        // Obtener las sesiones del personal (suponiendo que ya tienes un endpoint para esto)
-        const sesiones = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesiones/personal/${personalId}`)
+        // Obtener las sesiones del personal usando el nuevo endpoint
+        const sesiones = await fetch(`https://spaadministrativo-production-4488.up.railway.app/personalInfoServicios?personalId=${personalId}&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`)
             .then(response => response.json())
             .catch(error => {
                 console.error("Error al obtener las sesiones del personal:", error);
@@ -177,7 +182,7 @@
         link.click();
     }
 </script>
-   <script>
+  <script>
     document.addEventListener("DOMContentLoaded", function() {
         cargarPersonal(); // Llama a la función para cargar el personal al cargar la página
     });
