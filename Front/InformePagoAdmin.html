@@ -207,12 +207,7 @@
     // Línea final
     doc.line(30, yOffset + 5, 570, yOffset + 5);
 
-    // Convertir a PDF Blob para previsualizar o descargar
-    pdfBlobInforme = doc.output('blob');
-    const pdfUrl = URL.createObjectURL(pdfBlobInforme);
-    document.getElementById('pdfPreview').src = pdfUrl;
-}
-
+  
 
             // Convertir el PDF a Blob para descarga
             pdfBlobInforme = doc.output('blob');
@@ -267,6 +262,4 @@
 </body>
 </html>
 
-    </script>
-</body>
-</html>
+  
