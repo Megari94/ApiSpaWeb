@@ -182,7 +182,7 @@ async function generarInforme(event) {
     // Llamada a la API para obtener los servicios
     let servicios = [];
     try {
-        const response = await fetch(`https://api.example.com/servicios?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/servicios?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
         servicios = await response.json();
     } catch (error) {
         console.error('Error fetching services:', error);
