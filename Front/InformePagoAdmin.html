@@ -136,14 +136,14 @@
             doc.setFont("Helvetica", "normal");
 
             // Encabezado del informe
-            doc.text(`Desde: ${fechaInicio} Hasta: ${fechaFin}`, 70, 100);
+            doc.text(`Desde: ${fechaInicio}   Hasta: ${fechaFin}`, 70, 100);
 
             // Configurar la tabla de servicios
             doc.setFontSize(10);
             doc.setFont("Helvetica", "bold");
 
             // Encabezados de la tabla
-            doc.text("ID", 30, 130);
+            doc.text("ID", 35, 130);
             doc.text("Nombre Completo", 70, 130);
             doc.text("Asistencia", 180, 130);
             doc.text("Fecha", 280, 130);
