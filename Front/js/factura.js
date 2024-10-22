@@ -190,35 +190,40 @@ async function generarInforme(event) {
     // Encabezado del informe
     doc.text(`Desde: ${fechaInicio} Hasta: ${fechaFin}`, 70, 100);
 
-    // Crear la tabla de servicios
-    doc.setFontSize(10);
-    doc.setFont("Helvetica", "bold");
-    doc.text("ID", 30, 130);
-    doc.text("Nombre Completo", 50, 130);
-    doc.text("Asistencia", 250, 130);
-    doc.text("Fecha", 350, 130);
-    doc.text("Servicio", 470, 130);
-    doc.text("Costo", 570, 130, { align: "right" });
+    // Configurar la tabla de servicios
+doc.setFontSize(10);
+doc.setFont("Helvetica", "bold");
 
-    // Dibujar línea para el encabezado
-    doc.line(30, 135, 580, 135);
+// Encabezados de la tabla
+doc.text("ID", 30, 130);
+doc.text("Nombre Completo", 70, 130);
+doc.text("Asistencia", 220, 130);
+doc.text("Fecha", 320, 130);
+doc.text("Servicio", 420, 130);
+doc.text("Costo", 520, 130, { align: "right" });
 
-    // Añadir servicios a la tabla
-    let yOffset = 150;
-    servicios.forEach(servicio => {
-        doc.setFont("Helvetica", "normal");
+// Línea para separar los encabezados de los datos
+doc.line(30, 135, 580, 135);
 
-        // Mostrar los datos en el PDF utilizando el formato JSON que proporcionaste
-        doc.text(servicio.id.toString(), 30, yOffset);
-        doc.text(servicio.nombre_completo, 50, yOffset);
-        doc.text(servicio.asistencia, 200, yOffset);
-        doc.text(servicio.fecha, 300, yOffset);
-        doc.text(servicio.nombre_servicio, 400, yOffset);
-        doc.text(servicio.costo.toFixed(2), 500, yOffset, { align: "right" });
+// Añadir los servicios a la tabla
+let yOffset = 150; // Posición inicial para los datos
+servicios.forEach(servicio => {
+    doc.setFont("Helvetica", "normal");
 
-        yOffset += 20; // Espaciado entre filas
-        doc.line(5, yOffset - 5, 580, yOffset - 5); // Línea debajo de la fila
-    });
+    // Mostrar los datos en el PDF con el formato proporcionado
+    doc.text(servicio.id.toString(), 30, yOffset);
+    doc.text(servicio.nombre_completo, 70, yOffset);
+    doc.text(servicio.asistencia, 220, yOffset);
+    doc.text(servicio.fecha, 320, yOffset);
+    doc.text(servicio.nombre_servicio, 420, yOffset);
+    doc.text(servicio.costo.toFixed(2), 570, yOffset, { align: "right" });
+
+    // Incrementar el yOffset para la siguiente fila
+    yOffset += 20;
+
+    // Línea divisoria debajo de cada fila de datos
+    doc.line(30, yOffset - 10, 580, yOffset - 10);
+});
 
     // Convertir el PDF a Blob para descarga
     const pdfBlobInforme = doc.output('blob');
