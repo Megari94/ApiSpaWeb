@@ -49,7 +49,7 @@ async function generarInforme() {
         doc.rect(30, 660, 550, 50);
 
         // Detalles del informe
-        doc.setFontSize(16);
+        doc.setFontSize(14);
         doc.setFont("Helvetica", "bold");
         doc.text("Detalle del Informe", 380, 65);
 
@@ -69,7 +69,7 @@ async function generarInforme() {
         doc.text(`Correo: ${personalSeleccionado.correo}`, 40, 210);
 
         // Encabezado de la tabla
-        doc.setFontSize(10);
+        doc.setFontSize(12);
         doc.setFont("Helvetica", "bold");
         doc.text("ID", 50, 250);
         doc.text("Asistencia", 80, 250); // Reducción de espacio
@@ -87,7 +87,7 @@ async function generarInforme() {
         const serviciosPrestados = await sesionesResponse.json();
 
         // Listar los servicios en el PDF
-        let yPosition = 270; // Posición vertical inicial
+        let yPosition = 300; // Posición vertical inicial
         let totalCosto = 0; // Variable para calcular el total de costos
         for (const servicio of serviciosPrestados) {
             doc.setFontSize(10);
@@ -100,13 +100,13 @@ async function generarInforme() {
             doc.text(servicio.nombre_servicio, 480, yPosition); // Nombre servicio
 
             totalCosto += servicio.costo; // Sumar al total
-            yPosition += 15; // Espaciado entre filas reducido
+            yPosition += 40; // Espaciado entre filas reducido
         }
 
         // Añadir la suma total de costos al final
         doc.setFontSize(12);
         doc.setFont("Helvetica", "bold");
-        doc.text(`Total Costo: $${totalCosto.toFixed(2)}`, 410, yPosition + 40); // Posición para mostrar el total
+        doc.text(`Total Costo: $${totalCosto.toFixed(2)}`, 610, yPosition + 40); // Posición para mostrar el total
 
         // Generar Blob
         pdfBlob = doc.output('blob');
