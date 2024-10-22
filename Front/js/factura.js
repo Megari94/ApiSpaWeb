@@ -171,7 +171,13 @@ async function generarFactura() {
     document.getElementById('servicesContainer').innerHTML = '';
 }
 
-//________________INFORME TIPO PAGO__________________________   
+// Establecer la fecha actual en el campo de fecha
+window.onload = function() {
+    const today = new Date().toISOString().split('T')[0]; // Obtener la fecha actual en formato YYYY-MM-DD
+    document.getElementById('invoiceDate').value = today; // Asignar la fecha actual al campo de entrada
+};
+
+//________________INFORME TIPO PAGO__________________________
 async function generarInforme(event) {
     event.preventDefault(); // Evita el envío del formulario
 
@@ -179,10 +185,10 @@ async function generarInforme(event) {
     const fechaInicio = document.getElementById('fechaInicio').value;
     const fechaFin = document.getElementById('fechaFin').value;
 
-    // Llamada a la API para obtener los servicios
+    // Llamada a la API para obtener los servicios en formato JSON
     let servicios = [];
     try {
-        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/servicios?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/informe-pago?startDate=${fechaInicio}T00:00:00&endDate=${fechaFin}T23:59:59`);
         servicios = await response.json();
     } catch (error) {
         console.error('Error fetching services:', error);
@@ -190,37 +196,46 @@ async function generarInforme(event) {
         return;
     }
 
+    // Si los servicios fueron obtenidos correctamente, generar el PDF
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('p', 'pt', 'a4');
 
     // Título y encabezado del informe
     doc.setFontSize(14);
     doc.setFont("Helvetica", "bold");
-    doc.text("Informe de Servicios", 70, 75);
+    doc.text("Informe de Pagos", 70, 75);
     doc.setFontSize(12);
     doc.setFont("Helvetica", "normal");
-    
+
     // Encabezado del informe
     doc.text(`Desde: ${fechaInicio} Hasta: ${fechaFin}`, 70, 100);
-    
+
     // Crear la tabla de servicios
     doc.setFontSize(10);
     doc.setFont("Helvetica", "bold");
-    doc.text("ID Servicio", 50, 130);
-    doc.text("Nombre del Servicio", 150, 130);
-    doc.text("Costo", 500, 130, { align: "right" });
-    
+    doc.text("ID", 50, 130);
+    doc.text("Nombre Completo", 100, 130);
+    doc.text("Asistencia", 270, 130);
+    doc.text("Fecha", 370, 130);
+    doc.text("Servicio", 470, 130);
+    doc.text("Costo", 570, 130, { align: "right" });
+
     // Dibujar línea para el encabezado
     doc.line(30, 135, 580, 135);
-    
+
     // Añadir servicios a la tabla
     let yOffset = 150;
     servicios.forEach(servicio => {
         doc.setFont("Helvetica", "normal");
-        doc.text(servicio.id, 50, yOffset);
-        doc.text(servicio.nombre, 150, yOffset);
-        doc.text(servicio.costo.toString(), 500, yOffset, { align: "right" });
-        
+
+        // Mostrar los datos en el PDF utilizando el formato JSON que proporcionaste
+        doc.text(servicio.id.toString(), 50, yOffset);
+        doc.text(servicio.nombre_completo, 100, yOffset);
+        doc.text(servicio.asistencia, 270, yOffset);
+        doc.text(servicio.fecha, 370, yOffset);
+        doc.text(servicio.nombre_servicio, 470, yOffset);
+        doc.text(servicio.costo.toFixed(2), 570, yOffset, { align: "right" });
+
         yOffset += 20; // Espaciado entre filas
         doc.line(30, yOffset - 5, 580, yOffset - 5); // Línea debajo de la fila
     });
@@ -231,7 +246,7 @@ async function generarInforme(event) {
     // Descargar automáticamente el informe
     const link = document.createElement('a');
     link.href = URL.createObjectURL(pdfBlobInforme);
-    link.download = "informe_servicios.pdf";
+    link.download = "informe_pagos.pdf";
     link.click();
 }
 
