@@ -16,6 +16,7 @@ import com.madeTUP.AppSpa.Service.IClienteService;
 import com.madeTUP.AppSpa.Service.IServicioService;
 import com.madeTUP.AppSpa.Service.ISesionService;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 
@@ -259,10 +260,11 @@ public ResponseEntity<String> editarCostoSesion(@PathVariable Long id_sesion, @R
         return ResponseEntity.ok(informe);
     }
    @GetMapping("/clientesPorFecha")
-    public List<ClientexDiaDTO> getClientsByDate(@RequestParam String fecha) {
-        LocalDateTime date = LocalDateTime.parse(fecha); // Asegúrate de que el formato de fecha sea correcto
-        return servis.findClientsByDate(date);
-    }
+public List<ClientexDiaDTO> getClientsByDate(@RequestParam String fecha) {
+    LocalDate date = LocalDate.parse(fecha); // Parsear la fecha a LocalDate
+    return servis.findClientsByDate(date);
+}
+
     @GetMapping("/clientesPorPersonal/{personalId}")
     public List<ClientexDiaDTO> getClientsByPersonal(@PathVariable Long personalId) {
         return servis.findClientsByPersonal(personalId);
