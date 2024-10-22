@@ -1,4 +1,4 @@
-// Establecer la fecha actual en el campo de fecha 
+// Establecer la fecha actual en el campo de fecha
 window.onload = function() {
     const today = new Date().toISOString().split('T')[0]; // Obtener la fecha actual en formato YYYY-MM-DD
     document.getElementById('invoiceDate').value = today; // Asignar la fecha actual al campo de entrada
@@ -74,25 +74,11 @@ async function generarFactura() {
     doc.text("C", cX + 13, cY + 30); // Centra la "C" dentro del rectángulo
     doc.setFontSize(12);
 
-    // Dibuja líneas verticales
-    const lineX = cX + (cWidth / 2);
-    const lineStartY = cY + cHeight;
-    const lineEndY = lineStartY + 60;
-    doc.line(lineX, lineStartY, lineX, lineEndY); // Línea debajo
-    const lineStartYAbove = cY;
-    const lineEndYAbove = lineStartYAbove - 20;
-    doc.line(lineX, lineStartYAbove, lineX, lineEndYAbove); // Línea encima
-
     // Detalles de la factura a la derecha
     doc.setFontSize(16);
     doc.setFont("Helvetica", "bold");
     doc.text("Detalle de Factura", 380, 65);
 
-    // Detalle de la factura
-    doc.setFontSize(12);
-    doc.setFont("Helvetica", "normal");
-    doc.text("N°: 00001", 380, 80);
-    
     // Obtener la fecha actual
     const fechaActual = new Date();
     const dia = fechaActual.getDate().toString().padStart(2, '0');
@@ -100,7 +86,7 @@ async function generarFactura() {
     const anio = fechaActual.getFullYear();
     const fechaFormateada = `${dia}/${mes}/${anio}`;
     doc.text("Fecha de Emisión: " + fechaFormateada, 380, 95);
-    
+
     doc.text("CUIT: 27316471566", 380, 110);
     doc.text("Ingresos Brutos: EXENTO", 380, 125);
     doc.text("Fecha de Inicio de Actividades: ", 380, 140);
@@ -121,9 +107,7 @@ async function generarFactura() {
     doc.text("Código", 50, 330);
     doc.text("Producto / Servicio", 160, 330);
     doc.text("Precio Unit.", 550, 330, { align: "right" });
-
-    // Dibujar una línea para el encabezado
-    doc.line(30, 335, 580, 335);
+    doc.line(30, 335, 580, 335); // Línea para el encabezado
 
     // Añadir los datos del servicio/producto
     const serviceRows = document.querySelectorAll('.service-row');
@@ -131,7 +115,7 @@ async function generarFactura() {
     serviceRows.forEach((row) => {
         const serviceId = row.querySelector('.service-id').value;
         const serviceName = row.querySelector('.service-name').value;
-        const serviceCost = parseFloat(row.querySelector('.service-cost').value).toFixed(2);
+        const serviceCost = row.querySelector('.service-cost').value;
 
         doc.setFont("Helvetica", "normal");
         doc.text(serviceId, 60, yOffset);
@@ -144,15 +128,12 @@ async function generarFactura() {
         yOffset += 20;
     });
 
-    // Separador
-    doc.line(30, yOffset, 580, yOffset); 
-    yOffset += 10; // Espacio antes del total
-
-    // Sumar total de servicios
+    // Subtotal y total
     doc.setFontSize(12);
     doc.setFont("Helvetica", "bold");
-    doc.text("Importe Total: $" + totalAmount, 400, yOffset);
-    yOffset += 30; // Espacio después del total
+    doc.text("Importe Total: $" + totalAmount, 400, 727);
+    doc.line(30, 735, 580, 735); // Línea final estilo footer
+    doc.text("Total de servicios: $" + totalAmount, 40, 750);
 
     // Convertir PDF a Blob para descarga
     pdfBlob = doc.output('blob');
@@ -162,9 +143,6 @@ async function generarFactura() {
     link.href = URL.createObjectURL(pdfBlob);
     link.download = "factura.pdf";
     link.click();
-    
-    // Recargar la página
-    location.reload();
 
     // Limpiar formulario después de generar la factura
     document.getElementById('invoiceDate').value = today;
@@ -184,65 +162,69 @@ async function generarInforme(event) {
     // Llamada a la API para obtener los servicios en formato JSON
     let servicios = [];
     try {
-        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/informe-tipo-pago?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/informe-pago?startDate=${fechaInicio}T00:00:00&endDate=${fechaFin}T23:59:59`);
         servicios = await response.json();
     } catch (error) {
-        console.error("Error al obtener servicios:", error);
-        return; // Termina la ejecución si hay un error
+        console.error('Error fetching services:', error);
+        alert('No se pudieron obtener los servicios. Intente nuevamente más tarde.');
+        return;
     }
 
-    // Crea un nuevo documento PDF
+    // Si los servicios fueron obtenidos correctamente, generar el PDF
+    const { jsPDF } = window.jspdf;
     const doc = new jsPDF('p', 'pt', 'a4');
 
-    // Título del informe
+    // Título y encabezado del informe
     doc.setFontSize(14);
     doc.setFont("Helvetica", "bold");
-    doc.text("Informe Tipo de Pago", 210, 50);
-
-    // Encabezados
+    doc.text("Informe de Pagos", 70, 75);
     doc.setFontSize(12);
     doc.setFont("Helvetica", "normal");
-    doc.text(`Desde: ${fechaInicio}`, 40, 80);
-    doc.text(`Hasta: ${fechaFin}`, 40, 95);
 
-    // Tabla de servicios
+    // Encabezado del informe
+    doc.text(`Desde: ${fechaInicio} Hasta: ${fechaFin}`, 70, 100);
+
+    // Crear la tabla de servicios
     doc.setFontSize(10);
     doc.setFont("Helvetica", "bold");
-    doc.text("ID", 40, 120);
-    doc.text("Servicio", 120, 120);
-    doc.text("Costo", 400, 120);
+    doc.text("ID", 50, 130);
+    doc.text("Nombre Completo", 100, 130);
+    doc.text("Asistencia", 270, 130);
+    doc.text("Fecha", 370, 130);
+    doc.text("Servicio", 470, 130);
+    doc.text("Costo", 570, 130, { align: "right" });
 
-    // Línea de separación
-    doc.line(30, 125, 570, 125);
+    // Dibujar línea para el encabezado
+    doc.line(30, 135, 580, 135);
 
-    // Agregar servicios a la tabla
-    let yOffset = 140;
+    // Añadir servicios a la tabla
+    let yOffset = 150;
     servicios.forEach(servicio => {
         doc.setFont("Helvetica", "normal");
-        doc.text(servicio.id, 40, yOffset);
-        doc.text(servicio.nombre, 120, yOffset);
-        doc.text(servicio.costo.toFixed(2), 400, yOffset);
-        yOffset += 15; // Espaciado entre filas
+
+        // Mostrar los datos en el PDF utilizando el formato JSON que proporcionaste
+        doc.text(servicio.id.toString(), 50, yOffset);
+        doc.text(servicio.nombre_completo, 100, yOffset);
+        doc.text(servicio.asistencia, 270, yOffset);
+        doc.text(servicio.fecha, 370, yOffset);
+        doc.text(servicio.nombre_servicio, 470, yOffset);
+        doc.text(servicio.costo.toFixed(2), 570, yOffset, { align: "right" });
+
+        yOffset += 20; // Espaciado entre filas
+        doc.line(30, yOffset - 5, 580, yOffset - 5); // Línea debajo de la fila
     });
 
-    // Línea final
-    doc.line(30, yOffset, 570, yOffset);
+    // Convertir el PDF a Blob para descarga
+    const pdfBlobInforme = doc.output('blob');
 
-    // Cálculo del total
-    const total = servicios.reduce((sum, servicio) => sum + servicio.costo, 0);
-    yOffset += 10;
-    doc.setFont("Helvetica", "bold");
-    doc.text(`Total: $${total.toFixed(2)}`, 400, yOffset);
-
-    // Generar el PDF
-    const pdfBlob = doc.output('blob');
-
-    // Descargar el PDF
+    // Descargar automáticamente el informe
     const link = document.createElement('a');
-    link.href = URL.createObjectURL(pdfBlob);
-    link.download = "informe_tipo_pago.pdf";
+    link.href = URL.createObjectURL(pdfBlobInforme);
+    link.download = "informe_pagos.pdf";
     link.click();
-    
-    // Recargar la página
-    location.reload();
 }
+// Recargar la página
+    location.reload();
+
+// Añadir evento para generar informe
+document.getElementById('informeForm').addEventListener('submit', generarInforme);
