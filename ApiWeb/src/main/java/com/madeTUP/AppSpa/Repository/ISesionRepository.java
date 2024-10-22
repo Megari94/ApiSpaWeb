@@ -4,12 +4,15 @@
  */
 package com.madeTUP.AppSpa.Repository;
 
+import com.madeTUP.AppSpa.DTO.SesionAdminDTO;
 import com.madeTUP.AppSpa.Model.Sesion;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.List;
 
 /**
  *
@@ -17,5 +20,11 @@ import java.util.List;
  */
 @Repository
 public interface ISesionRepository extends JpaRepository<Sesion,Long>{
+@Query("SELECT new com.tu.paquete.SesionAdminDTO(s.id, s.asistencia, s.costo, s.fecha, CONCAT(c.nombre, ' ', c.apellido), se.nombre) " +
+           "FROM Sesion s " +
+           "JOIN s.cliente c " +
+           "JOIN s.servicio se " +
+           "WHERE s.fecha BETWEEN :startDate AND :endDate AND s.asistencia = 'CONFIRMADO'")
+    List<SesionAdminDTO> findConfirmedSessionsBetweenDates(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
 }
