@@ -8,6 +8,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="css/estilo.css">
     <script src="js/script.js" defer></script>
+    <script src="js/scriptAdmin.js" defer></script>
+    <script src="js/factura.js" defer></script>
     <style>
         /* Estilo del formulario */
         .form-container {
@@ -37,8 +39,8 @@
             <button id="menuButton" class="open-btn" onclick="toggleMenu()">☰ Menú</button>
 
             <!-- Formulario para el Informe de Ingresos -->
-            <div class="form-container">
-                <h2>Informe de Ingresos</h2>
+           <div class="form-container">
+                <h2>Informe de Pagos</h2>
                 <form id="informeForm" onsubmit="generarInforme(event)">
                     <div class="form-group">
                         <label for="fechaInicio">Fecha de Inicio:</label>
@@ -48,34 +50,22 @@
                         <label for="fechaFin">Fecha de Fin:</label>
                         <input type="date" id="fechaFin" required>
                     </div>
-                    <div class="form-group">
-                        <label for="tipoPago">Tipo de Pago:</label>
-                        <select id="tipoPago" required>
-                            <option value="">Seleccione un tipo de pago</option>
-                            <option value="Efectivo">Efectivo</option>
-                            <option value="Tarjeta">Tarjeta</option>
-                            <option value="Transferencia">Transferencia</option>
-                        </select>
-                    </div>
-                    <button id="generateInvoice">Generar Informe</button>
+                    
+                    <button type="submit">Generar Informe</button>
                 </form>
             </div>
         </div>
     </div>
 
+    <!-- Contenedor para vista previa del PDF -->
+    <div id="previewContainer" style="display:none;">
+        <iframe id="pdfPreview" style="width:100%; height:500px;"></iframe>
+        <button onclick="descargarInforme()">Descargar Informe</button>
+    </div>
+
     <script>
-        function generarInforme(event) {
-            event.preventDefault(); // Evita el envío del formulario
-
-            // Obtiene los valores ingresados
-            const fechaInicio = document.getElementById('fechaInicio').value;
-            const fechaFin = document.getElementById('fechaFin').value;
-            const tipoPago = document.getElementById('tipoPago').value;
-
-            // Aquí puedes implementar la lógica para generar el informe
-            alert(`Generando informe de ingresos desde ${fechaInicio} hasta ${fechaFin} para el tipo de pago: ${tipoPago}`);
-        }
+       
     </script>
+    
 </body>
 </html>
-
