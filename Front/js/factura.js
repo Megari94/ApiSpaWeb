@@ -193,10 +193,10 @@ async function generarInforme(event) {
     // Crear la tabla de servicios
     doc.setFontSize(10);
     doc.setFont("Helvetica", "bold");
-    doc.text("ID", 50, 130);
-    doc.text("Nombre Completo", 100, 130);
-    doc.text("Asistencia", 270, 130);
-    doc.text("Fecha", 370, 130);
+    doc.text("ID", 30, 130);
+    doc.text("Nombre Completo", 50, 130);
+    doc.text("Asistencia", 250, 130);
+    doc.text("Fecha", 350, 130);
     doc.text("Servicio", 470, 130);
     doc.text("Costo", 570, 130, { align: "right" });
 
@@ -216,8 +216,8 @@ async function generarInforme(event) {
         doc.text(servicio.nombre_servicio, 400, yOffset);
         doc.text(servicio.costo.toFixed(2), 500, yOffset, { align: "right" });
 
-        yOffset += 10; // Espaciado entre filas
-        doc.line(30, yOffset - 5, 580, yOffset - 5); // Línea debajo de la fila
+        yOffset += 20; // Espaciado entre filas
+        doc.line(5, yOffset - 5, 580, yOffset - 5); // Línea debajo de la fila
     });
 
     // Convertir el PDF a Blob para descarga
