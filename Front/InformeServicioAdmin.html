@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="css/estilo.css">
+   <script src="js/informeServicioAdmin.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -34,9 +35,8 @@
                 <h3>Informe de Servicios Realizados</h3>
                 <label for="apellidoPersonal">Nombre del Personal:</label>
                 <select id="apellidoPersonal">
-                    <option value="">Seleccione un personal</option>
+                    <option value="">Seleccione un personal</option> <!-- Opción por defecto -->
                 </select>
-
                 <label for="fechaInicio">Fecha de Inicio:</label>
                 <input type="date" id="startDate" required>
                 <label for="fechaFin">Fecha de Fin:</label>
