@@ -1,4 +1,4 @@
-// Establecer la fecha actual en el campo de fecha
+// Establecer la fecha actual en el campo de fecha 
 window.onload = function() {
     const today = new Date().toISOString().split('T')[0]; // Obtener la fecha actual en formato YYYY-MM-DD
     document.getElementById('invoiceDate').value = today; // Asignar la fecha actual al campo de entrada
@@ -79,7 +79,7 @@ async function generarFactura() {
     doc.setFont("Helvetica", "bold");
     doc.text("Detalle de Factura", 380, 65);
 
-    // Obtener la fecha actual
+    // Obtener la fecha actual y formatearla
     const fechaActual = new Date();
     const dia = fechaActual.getDate().toString().padStart(2, '0');
     const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
@@ -112,28 +112,31 @@ async function generarFactura() {
     // Añadir los datos del servicio/producto
     const serviceRows = document.querySelectorAll('.service-row');
     let yOffset = 350;
+    let totalServicios = 0;
     serviceRows.forEach((row) => {
         const serviceId = row.querySelector('.service-id').value;
         const serviceName = row.querySelector('.service-name').value;
-        const serviceCost = row.querySelector('.service-cost').value;
+        const serviceCost = parseFloat(row.querySelector('.service-cost').value) || 0;
 
         doc.setFont("Helvetica", "normal");
         doc.text(serviceId, 60, yOffset);
         const productoDividido = doc.splitTextToSize(serviceName, 180);
         doc.text(productoDividido, 160, yOffset);
-        doc.text(serviceCost, 550, yOffset, { align: "right" });
+        doc.text(serviceCost.toFixed(2), 550, yOffset, { align: "right" });
 
         yOffset += 20;
         doc.line(30, yOffset, 580, yOffset); // Línea debajo de la fila de producto
         yOffset += 20;
+
+        totalServicios += serviceCost;
     });
 
     // Subtotal y total
     doc.setFontSize(12);
     doc.setFont("Helvetica", "bold");
-    doc.text("Importe Total: $" + totalAmount, 400, 727);
+    doc.text("Importe Total: $" + totalServicios.toFixed(2), 400, 727);
     doc.line(30, 735, 580, 735); // Línea final estilo footer
-    doc.text("Total de servicios: $" + totalAmount, 40, 750);
+    doc.text("Total de servicios: $" + totalServicios.toFixed(2), 40, 750);
 
     // Convertir PDF a Blob para descarga
     pdfBlob = doc.output('blob');
@@ -144,15 +147,15 @@ async function generarFactura() {
     link.download = "factura.pdf";
     link.click();
 
-    // Esperar a que el archivo PDF se descargue y luego limpiar el formulario
+    // Limpiar el formulario después de generar la factura
     setTimeout(() => {
-        // Limpiar formulario después de generar la factura
         document.getElementById('invoiceDate').value = today;
         document.getElementById('clientName').value = '';
         document.getElementById('totalAmount').value = '0.00';
         document.getElementById('servicesContainer').innerHTML = '';
-    }, 1000); // Esperar 1 segundo antes de limpiar el formulario
+    }, 1000);
 }
+
 
 //________________INFORME TIPO PAGO__________________________
 async function generarInforme(event) {
