@@ -243,7 +243,7 @@
     // Función para cargar los profesionales en el select
     async function cargarProfesionales() {
         try {
-            const response = await fetch('https://spaadministrativo-production-4488.up.railway.app/clientesPorPersonal/{personalId}');
+            const response = await fetch('https://spaadministrativo-production-4488.up.railway.app/Personal/PersonalDTO');
             if (!response.ok) throw new Error('Error al cargar profesionales');
 
             profesionalesData = await response.json(); // Guardar datos en la variable
@@ -265,7 +265,7 @@
     // Función para cargar los turnos por día
     async function cargarTurnosPorDia(fecha) {
         try {
-            const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Personal/PersonalDTO`);
+            const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/clientesPorFecha?fecha=${fecha}`);
             if (!response.ok) throw new Error('Error al cargar turnos por día');
 
             const data = await response.json();
