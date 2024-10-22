@@ -125,15 +125,59 @@ async function cancelarTurno(turnoId, boton) {
 
 // Llamar a la función para obtener los turnos al cargar la página
 document.addEventListener('DOMContentLoaded', obtenerTurnos);
+async function agregarTurno() {
+    // Obtener los valores del formulario
+    const clienteInput = document.getElementById('nombreUsuario').value;
+    const servicioInput = document.getElementById('servicioInput').value;
+    const fechaHoraInput = document.getElementById('fechaHora').value;
+    const costoInput = document.getElementById('costo').value;
 
- function agregarTurno() {
-            // Muestra el modal al hacer clic en "Agregar Turno"
-            const modal = document.getElementById('modalAgregarPersonal');
-            modal.style.display = 'block';
-             obtenerClientes();
-     obtenerServicios();
-     
+    // Obtener el ID del cliente seleccionado
+    const clienteSelect = document.getElementById('clienteSelect');
+    const clienteId = clienteSelect.value;
+
+    // Obtener el ID del servicio seleccionado
+    const servicioSelect = document.getElementById('servicioSelect');
+    const servicioId = servicioSelect.value;
+
+    // Validar que se haya seleccionado un cliente y un servicio
+    if (!clienteId || !servicioId) {
+        alert('Por favor selecciona un cliente y un servicio.');
+        return;
+    }
+
+    // Crear objeto con los datos que se enviarán a la API
+    const nuevaSesion = {
+        id_Cliente: clienteId,
+        id_Servicio: servicioId,
+        fecha: fechaHoraInput,
+        costo: parseFloat(costoInput)
+    };
+
+    try {
+        // Enviar la solicitud a la API para agregar la sesión
+        const response = await fetch('https://spaadministrativo-production-4488.up.railway.app/Sesion/agregarSesionAdmin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(nuevaSesion) // Convertir el objeto a JSON
+        });
+
+        if (response.ok) {
+            alert('Sesión agregada exitosamente');
+            document.getElementById('formAgregarPersonal').reset(); // Limpiar el formulario
+            document.getElementById('modalAgregarPersonal').style.display = 'none'; // Cerrar el modal
+        } else {
+            const errorData = await response.json();
+            alert(`Error al agregar la sesión: ${errorData.message}`);
         }
+    } catch (error) {
+        console.error('Error al agregar la sesión:', error);
+        alert('Ocurrió un error al agregar la sesión. Inténtalo nuevamente.');
+    }
+}
+
 
         function cerrarModalAlHacerClickFuera(event, modalId) {
             const modal = document.getElementById(modalId);
