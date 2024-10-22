@@ -63,11 +63,15 @@ public class ServicioController {
     public Servicio findServicio(@PathVariable Long id_servicio){
         return servis.findServicio(id_servicio);
     }
-    @DeleteMapping("/Servicio/eliminar/{id_servicio}")
-     public String deleteServicio(@PathVariable Long id_servicio){
-       servis.deleteServicio(id_servicio);
-       return "Servicio eliminado";
-    }
+   @DeleteMapping("/Servicio/eliminar/{id_servicio}")
+public ResponseEntity<Map<String, String>> deleteServicio(@PathVariable Long id_servicio) {
+    servis.deleteServicio(id_servicio);
+    
+    Map<String, String> response = new HashMap<>();
+    response.put("message", "Servicio eliminado");
+    
+    return new ResponseEntity<>(response, HttpStatus.OK);
+}
 //     @PutMapping("/Servicio/editar/{id_servicio}")
 //     public Servicio editServicio(@PathVariable Long id_servicio,
 //             @RequestParam(required=false,name="nombre_servicio")String newname,
