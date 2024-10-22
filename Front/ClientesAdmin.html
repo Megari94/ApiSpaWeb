@@ -380,13 +380,28 @@ function mostrarFormularioDia() {
 }
 
 // Función para mostrar el buscador por profesional
+// Función para mostrar el buscador por profesional
 function mostrarBuscadorProfesional() {
     cargarProfesionales(); // Cargar los profesionales en el select
     document.getElementById('buscadorProfesional').style.display = 'block';
     document.getElementById('buscadorClientes').style.display = 'none';
     document.getElementById('formularioDia').style.display = 'none';
     mostrarSeccion('turnosContent');
+
+    // Agregar un event listener al select de profesionales
+    const selectProfesional = document.getElementById('profesional');
+    selectProfesional.addEventListener('change', (event) => {
+        const selectedId = event.target.value; // Obtener el ID del profesional seleccionado
+        if (selectedId) {
+            cargarTurnosPorPersonal(selectedId); // Cargar turnos para el profesional seleccionado
+        } else {
+            // Si no hay selección, puedes optar por limpiar la tabla o mostrar todos los turnos
+            const tableBody = document.getElementById('turnosTableBody');
+            tableBody.innerHTML = ''; // Limpiar la tabla si no hay selección
+        }
+    });
 }
+
 
 // Mostrar la sección correspondiente
 function mostrarSeccion(sectionId) {
