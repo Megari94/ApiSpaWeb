@@ -32,6 +32,6 @@ public interface ISesionService {
 public List<SesionAdminDTO> sesionesAdmin();
     public List<SesionPersonalDTO> getSesionFecha(LocalDateTime localDate);
     public List<SesionAdminDTO> getInformePago(LocalDateTime startDate, LocalDateTime endDate);
-    List<ClientexDiaDTO> findClientsByDate(@Param("fecha") LocalDateTime fecha);
+    List<ClientexDiaDTO> findClientsByDate(@Param("fecha") LocalDate fecha);
     List<ClientexDiaDTO> findClientsByPersonal(@Param("personalId") Long personalId);
 }
