@@ -179,11 +179,14 @@
                 <input type="text" id="buscadorApellido" name="buscadorApellido" placeholder="Ingresa el apellido..." oninput="buscarPorApellido()">
             </div>
 
-            <!-- Buscador por profesional -->
+                        <!-- Buscador por profesional -->
             <div id="buscadorProfesional" class="form-container">
                 <label for="profesional">Profesional:</label>
-                <input type="text" id="profesional" name="profesional" placeholder="Ingresa el nombre del profesional..." oninput="buscarPorProfesional()">
+                <select id="profesional" name="profesional">
+                    <option value="">Seleccione un profesional</option> <!-- Opción por defecto -->
+                </select>
             </div>
+
 
             <!-- Tabla de Clientes (contenedor desplazable) -->
             <div id="clientesContent" class="tabla-contenido">
