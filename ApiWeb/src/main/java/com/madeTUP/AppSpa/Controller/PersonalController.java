@@ -13,11 +13,15 @@ import com.madeTUP.AppSpa.Model.Sesion;
 import com.madeTUP.AppSpa.Service.IPersonalService;
 import com.madeTUP.AppSpa.Service.ISesionService;
 import com.madeTUP.AppSpa.DTO.PersonalServicioDTO;
+import com.madeTUP.AppSpa.DTO.SesionAdminDTO;
+import com.madeTUP.AppSpa.DTO.UsuarioDTO;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -114,5 +118,23 @@ public Personal editPersonal(@PathVariable Long id_personal,
         }
         return listadto;
     }
-
+@GetMapping("/personalInfomeServicios")
+    public List<SesionAdminDTO> getSesionesPorPersonalEntreFechas(@RequestParam("personalId") Long personalId,
+                                                                  @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                                                                  @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+        return servis.findConfirmedSessionsByPersonalBetweenDates(personalId, startDate, endDate);
+    }
+    @GetMapping("/Personal/personalInfo/${personalId}")
+    public UsuarioDTO findPersonalInforme(@PathVariable Long id_personal){
+       Personal p= servis.findPersonal(id_personal);
+       UsuarioDTO UDTO= new UsuarioDTO();
+       UDTO.setId(id_personal);
+       UDTO.setNombre(p.getNombre());
+       UDTO.setApellido(p.getApellido());
+       UDTO.setNombre_usuario(p.getNombre_usuario());
+       UDTO.setCorreo(p.getCorreo());
+       UDTO.setContrasenia(p.getContrasenia());
+       UDTO.setTipoUsuario(p.getTipoUsuario());
+       return UDTO;
+    }
 }
