@@ -59,106 +59,117 @@
     </div>
     
 
-  <script>
+ <script>
     let pdfBlob; // Variable global para almacenar el Blob del PDF
+    let personalSeleccionado = null; // Variable para almacenar los datos del personal seleccionado
 
     async function generarInforme() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF('p', 'pt', 'a4');
-
-        // Obtener el ID del personal seleccionado y las fechas
-        const personalId = document.getElementById('apellidoPersonal').value;
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
-
-        if (!personalId || !startDate || !endDate) {
-            alert("Por favor, selecciona un personal y un rango de fechas válido.");
+        
+        // Verificar si se ha seleccionado un personal
+        const personalId = document.getElementById("apellidoPersonal").value;
+        if (!personalId) {
+            alert("Por favor, seleccione un personal.");
             return;
         }
-
-        try {
-            // Obtener información del personal
-            const personalResponse = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Personal/personalInfo/${personalId}`);
-            if (!personalResponse.ok) throw new Error("Error al obtener información del personal");
-            const personal = await personalResponse.json();
-
-            // Obtener las sesiones del personal entre las fechas
-            const sesionesResponse = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/sesionesAdminDTO?personalId=${personalId}&startDate=${startDate}&endDate=${endDate}`);
-            if (!sesionesResponse.ok) throw new Error("Error al obtener sesiones");
-            const sesiones = await sesionesResponse.json();
-
-            // Título y encabezado del informe
-            doc.setFontSize(14);
-            doc.setFont("Helvetica", "bold");
-            doc.text("SERVICIOS PRESTADOS", 70, 75);
-            doc.setFontSize(12);
-            doc.setFont("Helvetica", "normal");
-
-            // Bordes para la estructura del informe
-            doc.rect(30, 30, 550, 750); // Borde general
-            doc.rect(30, 30, 550, 120); // Borde encabezado
-            doc.rect(30, 660, 550, 50); // Borde subtotal y total
-
-            // Información general del personal
-            doc.setFontSize(12);
-            doc.setFont("Helvetica", "normal");
-            doc.text(`Nombre del Personal: ${personal.nombre} ${personal.apellido}`, 40, 170);
-            doc.text(`DNI: ${personal.dni}`, 350, 170);
-            doc.text(`Domicilio: ${personal.domicilio}`, 40, 190);
-            doc.text(`Localidad: ${personal.localidad}`, 40, 210);
-            doc.text(`Provincia: ${personal.provincia}`, 350, 210);
-
-            // Encabezado de la tabla
-            doc.setFontSize(10);
-            doc.setFont("Helvetica", "bold");
-            doc.text("Código", 50, 300);
-            doc.text("Descripción del Servicio", 160, 300);
-            doc.text("Costo", 550, 300, { align: "right" });
-
-            // Dibujar una línea para el encabezado
-            doc.line(30, 305, 580, 305);
-
-            // Datos dinámicos de las sesiones obtenidas del backend
-            let yPosition = 320;
-            sesiones.forEach(sesion => {
-                doc.setFont("Helvetica", "normal");
-                doc.text(sesion.codigo, 50, yPosition);
-
-                const descripcionDividida = doc.splitTextToSize(sesion.descripcion, 180);
-                doc.text(descripcionDividida, 160, yPosition);
-
-                doc.text(sesion.costo.toFixed(2), 550, yPosition, { align: "right" });
-
-                yPosition += 20; // Ajuste para la próxima fila
-                doc.line(30, yPosition + 5, 580, yPosition + 5); // Línea debajo de cada fila
+        
+        // Obtener los detalles del personal seleccionado desde la API
+        await fetch(`https://spaadministrativo-production-4488.up.railway.app/Personal/${personalId}/personalInfo`)
+            .then(response => response.json())
+            .then(data => {
+                personalSeleccionado = data; // Guardar los datos del personal
+            })
+            .catch(error => {
+                console.error("Error al obtener los detalles del personal:", error);
+                alert("No se puede obtener los detalles del personal en este momento.");
+                return;
             });
 
-            // Total
-            const total = sesiones.reduce((acc, sesion) => acc + sesion.costo, 0);
-            doc.setFontSize(12);
-            doc.setFont("Helvetica", "bold");
-            doc.text(`Total: $${total.toFixed(2)}`, 400, 680);
-
-            // Convertir PDF a Blob para vista previa
-            pdfBlob = doc.output('blob');
-            const pdfUrl = URL.createObjectURL(pdfBlob);
-
-            // Mostrar vista previa
-            document.getElementById('pdfPreview').src = pdfUrl;
-            document.getElementById('previewContainer').style.display = 'block';
-
-        } catch (error) {
-            console.error("Error al generar el informe:", error.message);
-            alert("Hubo un problema al generar el informe.");
-        }
+        // Título y encabezado del informe
+        doc.setFontSize(14);
+        doc.setFont("Helvetica", "bold");
+        doc.text("SERVICIOS PRESTADOS", 70, 75);
+        doc.setFontSize(12);
+        doc.setFont("Helvetica", "normal");
+    
+        // Bordes para la estructura del informe
+        doc.rect(30, 30, 550, 750); // Borde general
+        doc.rect(30, 30, 550, 120); // Borde encabezado
+        doc.rect(30, 660, 550, 50); // Borde subtotal y total
+    
+        // Detalles del informe
+        doc.setFontSize(16);
+        doc.setFont("Helvetica", "bold");
+        doc.text("Detalle del Informe", 380, 65);
+    
+        // Fecha actual
+        const fechaActual = new Date();
+        const dia = fechaActual.getDate().toString().padStart(2, '0');
+        const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
+        const anio = fechaActual.getFullYear();
+        const fechaFormateada = dia + '/' + mes + '/' + anio;
+        doc.setFontSize(12);
+        doc.setFont("Helvetica", "normal");
+        doc.text("Fecha de Emisión: " + fechaFormateada, 380, 80);
+    
+        // Información general del servicio (datos del personal)
+        doc.text(`Nombre del Personal: ${personalSeleccionado.nombre} ${personalSeleccionado.apellido}`, 40, 170);
+        doc.text(`Nombre de Usuario: ${personalSeleccionado.nombre_usuario}`, 40, 190);
+        doc.text(`Correo: ${personalSeleccionado.correo}`, 40, 210);
+    
+        // Encabezado de la tabla
+        doc.setFontSize(10);
+        doc.setFont("Helvetica", "bold");
+        doc.text("Código", 50, 300);
+        doc.text("Descripción del Servicio", 160, 300);
+        doc.text("Costo", 550, 300, { align: "right" });
+    
+        // Dibujar una línea para el encabezado
+        doc.line(30, 305, 580, 305);
+    
+        // Obtener las sesiones del personal (suponiendo que ya tienes un endpoint para esto)
+        const sesiones = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesiones/personal/${personalId}`)
+            .then(response => response.json())
+            .catch(error => {
+                console.error("Error al obtener las sesiones del personal:", error);
+                alert("No se puede obtener las sesiones del personal en este momento.");
+                return [];
+            });
+    
+        // Mostrar las sesiones en el PDF
+        let yPosition = 320;
+        sesiones.forEach(sesion => {
+            doc.setFont("Helvetica", "normal");
+            doc.text(sesion.codigo.toString(), 50, yPosition); // Ejemplo: código de la sesión
+            doc.text(doc.splitTextToSize(sesion.descripcion, 180), 160, yPosition); // Ejemplo: descripción de la sesión
+            doc.text(sesion.costo.toFixed(2), 550, yPosition, { align: "right" }); // Ejemplo: costo de la sesión
+        
+            yPosition += 20; // Ajuste para la próxima fila
+            doc.line(30, yPosition + 5, 580, yPosition + 5); // Línea debajo de cada fila
+        });
+    
+        // Total (ejemplo de cálculo sumando los costos de las sesiones)
+        const total = sesiones.reduce((acc, sesion) => acc + sesion.costo, 0);
+        doc.setFontSize(12);
+        doc.setFont("Helvetica", "bold");
+        doc.text(`Total: $${total.toFixed(2)}`, 400, 680);
+    
+        // Convertir PDF a Blob para vista previa
+        pdfBlob = doc.output('blob');
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+    
+        // Mostrar vista previa (si tienes un iframe o contenedor para el PDF)
+        document.getElementById('pdfPreview').src = pdfUrl;
+        document.getElementById('previewContainer').style.display = 'block';
     }
-
+    
     async function descargarInforme() {
         if (!pdfBlob) {
             alert("Por favor, genera el informe primero.");
             return;
         }
-
+    
         // Descargar el PDF generado
         const link = document.createElement('a');
         link.href = URL.createObjectURL(pdfBlob);
@@ -166,7 +177,7 @@
         link.click();
     }
 </script>
-    <script>
+   <script>
     document.addEventListener("DOMContentLoaded", function() {
         cargarPersonal(); // Llama a la función para cargar el personal al cargar la página
     });
