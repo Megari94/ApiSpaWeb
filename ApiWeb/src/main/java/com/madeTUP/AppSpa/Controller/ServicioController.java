@@ -7,6 +7,8 @@ package com.madeTUP.AppSpa.Controller;
 import com.madeTUP.AppSpa.DTO.ServicioAdminDTO;
 import com.madeTUP.AppSpa.DTO.ServicioAdministradorDTO;
 import com.madeTUP.AppSpa.DTO.ServicioDTO;
+import com.madeTUP.AppSpa.Service.ISesionService;
+import com.madeTUP.AppSpa.Model.Sesion;
 import com.madeTUP.AppSpa.Model.Personal;
 import com.madeTUP.AppSpa.Model.Servicio;
 import com.madeTUP.AppSpa.Service.IPersonalService;
@@ -63,15 +65,25 @@ public class ServicioController {
     public Servicio findServicio(@PathVariable Long id_servicio){
         return servis.findServicio(id_servicio);
     }
-   @DeleteMapping("/Servicio/eliminar/{id_servicio}")
+ @DeleteMapping("/Servicio/eliminar/{id_servicio}")
 public ResponseEntity<Map<String, String>> deleteServicio(@PathVariable Long id_servicio) {
-    servis.deleteServicio(id_servicio);
+    // Buscar el servicio a eliminar
+    Servicio servi = servis.findServicio(id_servicio);
     
-    Map<String, String> response = new HashMap<>();
-    response.put("message", "Servicio eliminado");
-    
-    return new ResponseEntity<>(response, HttpStatus.OK);
-}
+    // Comprobar si el servicio existe
+    if (servi == null) {
+        return new ResponseEntity<>(Map.of("message", "Servicio no encontrado"), HttpStatus.NOT_FOUND);
+    }
+
+    // Obtener todas las sesiones relacionadas
+    List<Sesion> listaSesiones = servisS.getServicio(); // Asegúrate de que esto obtiene todas las sesiones
+
+    // Eliminar las sesiones asociadas al servicio
+    for (Sesion s : listaSesiones) {
+        if (s.getId_Servicio().equals(servi)) { // Asegúrate de comparar el ID correctamente
+            servisS.deleteSesion(s.getId());
+        }
+    }
 //     @PutMapping("/Servicio/editar/{id_servicio}")
 //     public Servicio editServicio(@PathVariable Long id_servicio,
 //             @RequestParam(required=false,name="nombre_servicio")String newname,
