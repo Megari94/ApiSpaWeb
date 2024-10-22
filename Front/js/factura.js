@@ -144,11 +144,14 @@ async function generarFactura() {
     link.download = "factura.pdf";
     link.click();
 
-    // Limpiar formulario después de generar la factura
-    document.getElementById('invoiceDate').value = today;
-    document.getElementById('clientName').value = '';
-    document.getElementById('totalAmount').value = '0.00';
-    document.getElementById('servicesContainer').innerHTML = '';
+    // Esperar a que el archivo PDF se descargue y luego limpiar el formulario
+    setTimeout(() => {
+        // Limpiar formulario después de generar la factura
+        document.getElementById('invoiceDate').value = today;
+        document.getElementById('clientName').value = '';
+        document.getElementById('totalAmount').value = '0.00';
+        document.getElementById('servicesContainer').innerHTML = '';
+    }, 1000); // Esperar 1 segundo antes de limpiar el formulario
 }
 
 //________________INFORME TIPO PAGO__________________________
