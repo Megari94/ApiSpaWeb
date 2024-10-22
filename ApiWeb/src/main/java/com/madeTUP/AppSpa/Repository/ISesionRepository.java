@@ -36,7 +36,7 @@ public interface ISesionRepository extends JpaRepository<Sesion,Long>{
            "WHERE DATE(s.fecha) = :fecha")
     List<ClientexDiaDTO> findClientsByDate(@Param("fecha") LocalDateTime fecha);
     
-    @Query("SELECT new com.tu.paquete.ClientexDiaDTO(s.id, s.fecha, c.nombre, se.nombreServicio, p.nombre) " +
+    @Query("SELECT new com.madeTUP.AppSpa.DTO.ClientexDiaDTO(s.id, s.fecha, c.nombre, se.nombreServicio, p.nombre) " +
            "FROM Sesion s " +
            "JOIN s.cliente c " +
            "JOIN s.servicio se " +
