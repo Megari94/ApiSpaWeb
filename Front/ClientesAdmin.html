@@ -194,6 +194,7 @@
                         <tr>
                             <th>ID Cliente</th>
                             <th>Nombre</th>
+                            <th>Apellido</th>
                             <th>Correo Electrónico</th>
                         </tr>
                     </thead>
@@ -222,145 +223,127 @@
                 </table>
             </div>
 
-            <script>
-                const turnosData = [
-                    { id: 1, fecha: '2024-10-14', hora: '10:00', cliente: 'Juan Pérez', servicio: 'Masajes', profesional: 'María Gómez' },
-                    { id: 2, fecha: '2024-10-15', hora: '12:00', cliente: 'Ana García', servicio: 'Manicura', profesional: 'Laura Martínez' },
-                    { id: 3, fecha: '2024-10-16', hora: '15:00', cliente: 'Carlos Rodríguez', servicio: 'Depilación', profesional: 'María Gómez' },
-                    { id: 3, fecha: '2024-10-16', hora: '15:00', cliente: 'Carlos Rodríguez', servicio: 'Depilación', profesional: 'María Gómez' },
-                    // 更多数据...
-                    // 更多数据...
-                ];
-
-                const clientesData = [
-                    { id: 1, nombre: 'Juan Pérez', apellido: 'Pérez', correo: 'juan.perez@example.com' },
-                    { id: 2, nombre: 'Ana García', apellido: 'García', correo: 'ana.garcia@example.com' },
-                    { id: 3, nombre: 'Carlos Rodríguez', apellido: 'Rodríguez', correo: 'carlos.rodriguez@example.com' },
-                    { id: 3, nombre: 'Carlos Rodríguez', apellido: 'Rodríguez', correo: 'carlos.rodriguez@example.com' }
-                ];
-
+                        <script>
+                async function cargarTurnosPorDia(fecha) {
+                    try {
+                        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/clientesPorFecha?fecha=${fecha}`);
+                        if (!response.ok) throw new Error('Error al cargar turnos por día');
+            
+                        const data = await response.json();
+                        cargarTurnos(data);
+                    } catch (error) {
+                        console.error(error);
+                        alert('No se pudo cargar la información de turnos.');
+                    }
+                }
+            
+                async function cargarClientes() {
+                    try {
+                        const response = await fetch('https://spaadministrativo-production-4488.up.railway.app/clientes/traerClientesADMIN');
+                        if (!response.ok) throw new Error('Error al cargar clientes');
+            
+                        const data = await response.json();
+                        cargarClientesTabla(data);
+                    } catch (error) {
+                        console.error(error);
+                        alert('No se pudo cargar la información de clientes.');
+                    }
+                }
+            
+                async function cargarTurnosPorPersonal(personalId) {
+                    try {
+                        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/clientesPorPersonal/${personalId}`);
+                        if (!response.ok) throw new Error('Error al cargar turnos por personal');
+            
+                        const data = await response.json();
+                        cargarTurnos(data);
+                    } catch (error) {
+                        console.error(error);
+                        alert('No se pudo cargar la información de turnos.');
+                    }
+                }
+            
                 function cargarTurnos(data) {
                     const tableBody = document.getElementById('turnosTableBody');
-                    tableBody.innerHTML = ''; 
-
+                    tableBody.innerHTML = '';
+            
                     data.forEach(turno => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${turno.id}</td>
-                            <td>${turno.fecha}</td>
-                            <td>${turno.hora}</td>
-                            <td>${turno.cliente}</td>
-                            <td>${turno.servicio}</td>
-                            <td>${turno.profesional}</td>
-
-                        `;
+                        const row = crearFilaTurno(turno);
                         tableBody.appendChild(row);
                     });
                 }
-
-                function cargarClientes(data) {
+            
+                function cargarClientesTabla(data) {
                     const tableBody = document.getElementById('clientesTableBody');
-                    tableBody.innerHTML = ''; 
-
+                    tableBody.innerHTML = '';
+            
                     data.forEach(cliente => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${cliente.id}</td>
-                            <td>${cliente.nombre}</td>
-                            <td>${cliente.correo}</td>
-                        `;
+                        const row = crearFilaCliente(cliente);
                         tableBody.appendChild(row);
                     });
                 }
-
+            
+                function crearFilaTurno(turno) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${turno.id}</td>
+                        <td>${turno.Fecha}</td>
+                        <td>${turno.hora}</td>
+                        <td>${turno.Cliente}</td>
+                        <td>${turno.Servicio}</td>
+                        <td>${turno.Profesional}</td>
+                    `;
+                    return row;
+                }
+            
+                function crearFilaCliente(cliente) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${cliente.id}</td>
+                        <td>${cliente.nombre}</td>
+                        <td>${cliente.apellido}</td>
+                        <td>${cliente.correo}</td>
+                    `;
+                    return row;
+                }
+            
                 function mostrarListadoClientes() {
-                    cargarClientes(clientesData);
+                    cargarClientes();
                     mostrarSeccion('clientesContent');
                     document.getElementById('buscadorClientes').style.display = 'block'; // Mostrar buscador de clientes
                     document.getElementById('formularioDia').style.display = 'none'; // Ocultar formulario por día
                     document.getElementById('buscadorProfesional').style.display = 'none'; // Ocultar buscador por profesional
                 }
-
-                function mostrarFormularioDia() {
-                    document.getElementById('formularioDia').style.display = 'block';
+            
+                function mostrarTurnosPorDia() {
+                    const fecha = document.getElementById('fecha').value; // Obteniendo la fecha del input
+                    cargarTurnosPorDia(fecha); // Llamando a la función para cargar turnos
                     mostrarSeccion('turnosContent');
-                    document.getElementById('buscadorClientes').style.display = 'none'; // Ocultar buscador de clientes
-                    document.getElementById('buscadorProfesional').style.display = 'none'; // Ocultar buscador por profesional
                 }
-
+            
                 function mostrarBuscadorProfesional() {
                     document.getElementById('buscadorProfesional').style.display = 'block';
                     mostrarSeccion('turnosContent');
                     document.getElementById('buscadorClientes').style.display = 'none'; // Ocultar buscador de clientes
                     document.getElementById('formularioDia').style.display = 'none'; // Ocultar formulario por día
                 }
-
-               function buscarPorDia() {
-    const fecha = document.getElementById('fecha').value;
-    const hora = document.getElementById('hora').value;
-    const servicio = document.getElementById('servicio').value.trim().toLowerCase(); // 获取服务输入并转为小写
-
-    // 根据日期、小时和服务过滤数据
-    const filteredData = turnosData.filter(turno =>
-        turno.fecha === fecha && 
-        (hora === '' || turno.hora === hora) && 
-        (servicio === '' || turno.servicio.toLowerCase().includes(servicio)) // 根据服务过滤
-    );
-
-    cargarTurnosModal(filteredData);
-    abrirModal();
-}
-
-                
-                
-
-                function cargarTurnosModal(data) {
-                    const tableBody = document.getElementById('modalTurnosTableBody');
-                    tableBody.innerHTML = ''; 
-
-                    data.forEach(turno => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${turno.id}</td>
-                            <td>${turno.fecha}</td>
-                            <td>${turno.hora}</td>
-                            <td>${turno.cliente}</td>
-                            <td>${turno.servicio}</td>
-                            <td>${turno.profesional}</td>
-                        `;
-                        tableBody.appendChild(row);
-                    });
+            
+                function buscarTurnosPorPersonal() {
+                    const personalId = document.getElementById('personalId').value; // Asumir que tienes un input con ID personalId
+                    cargarTurnosPorPersonal(personalId); // Cargar turnos por personal
                 }
-
-                function abrirModal() {
-                    document.getElementById('myModal').style.display = 'block';
-                }
-
-                function cerrarModal() {
-                    document.getElementById('myModal').style.display = 'none';
-                }
-
-                function buscarPorApellido() {
-                    const apellido = document.getElementById('buscadorApellido').value.toLowerCase();
-
-                    const filteredData = clientesData.filter(cliente =>
-                        cliente.apellido.toLowerCase().includes(apellido)
-                    );
-
-                    cargarClientes(filteredData);
-                }
-
+            
                 function mostrarSeccion(seccionId) {
                     document.getElementById('clientesContent').style.display = 'none';
                     document.getElementById('turnosContent').style.display = 'none';
-
                     document.getElementById(seccionId).style.display = 'block';
                 }
-
+            
                 window.onload = () => {
-                    cargarTurnos(turnosData);
+                    cargarClientes(); // Cargar clientes al iniciar
                 };
             </script>
+
         </div>
     </div>
 </body>
