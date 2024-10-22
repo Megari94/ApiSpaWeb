@@ -228,11 +228,7 @@ async function generarInforme(event) {
 
         // Línea divisoria debajo de cada fila de datos
         doc.line(30, yOffset - 10, 580, yOffset - 10);
-    });
-
-    // Dibujar una línea separadora para el total
-    doc.line(30, yOffset, 580, yOffset);
-    yOffset += 20;
+    });   
 
     // Mostrar el total en el PDF
     doc.setFont("Helvetica", "bold");
