@@ -155,6 +155,27 @@ async function actualizarCostoSesion(idSesion, nuevoCosto) {
     }
 }
 
+async function rechazarSolicitud(id_sesion, boton) {
+    try {
+        // Actualizar el estado del turno en la base de datos
+        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/rechazar/{id_sesion}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ estado: 'Rechazado' }) // Mandar el estado actualizado
+        });
+
+        if (response.ok) {
+            boton.remove(); // Eliminar el botón de cancelar
+            obtenerTurnos(); // Volver a obtener y mostrar los turnos
+        } else {
+            alert('Error al cancelar el turno.');
+        }
+    } catch (error) {
+        console.error('Error al cancelar el turno:', error);
+    }
+}
 
         
     </script>
