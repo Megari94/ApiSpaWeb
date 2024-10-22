@@ -35,6 +35,8 @@ public class ServicioController {
     private IServicioService servis;
     @Autowired
     private IPersonalService servisP;
+    @Autowired
+    private ISesionService servisS;
     
     @GetMapping("/traerServicioAdmin")
     public ResponseEntity<List<ServicioAdminDTO>> obtenerServiciosAdmin() {
