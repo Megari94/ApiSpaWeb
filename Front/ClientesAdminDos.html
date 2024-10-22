@@ -280,7 +280,7 @@ function modalEditarCliente(id) {
 }
 
 // Función para guardar los cambios realizados en el cliente
-async function guardarEdicionCliente() {
+/*async function guardarEdicionCliente() {
     const nombre = document.getElementById('nombreEditar').value;
     const apellido = document.getElementById('apellidoEditar').value;
     const correo = document.getElementById('correoEditar').value;
@@ -327,7 +327,7 @@ async function guardarEdicionCliente() {
 // Función para cerrar el modal
 function cerrarModal(modalId) {
     document.getElementById(modalId).style.display = 'none'; // Ocultar el modal
-}
+}*/
 
     // Función para dar de baja al cliente
     async function darDeBajaCliente() {
@@ -484,9 +484,7 @@ function crearFilaCliente(cliente) {
         <td>${cliente.correo}</td>
         <td>${cliente.contrasenia}</td>
         <td>${cliente.nombre_usuario}</td>
-        <td class="action-buttons">
-                <button onclick="modalEditarCliente(${cliente.id})">Editar</button>
-                <button onclick="mostrarConfirmacion(${cliente.id})">Dar de Baja</button>
+        
             </td>
             
 <!-- Modal de confirmación -->
