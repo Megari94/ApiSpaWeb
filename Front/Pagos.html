@@ -46,11 +46,11 @@
                 <a href="#" id="pagosLink"><i class="fas fa-chart-pie"></i>Turnos Solicitados</a>
                 <a href="#" id="facturaLink"><i class="fas fa-receipt"></i>Factura</a>
             </div>
-            <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
+           <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
         </div>
 
         <!-- Contenido Principal -->
-       <div class="main-content">
+        <div class="main-content">
             <button id="menuButton" class="open-btn" onclick="toggleMenu()">☰ Menú</button>
             <h2>Solicitud de Turnos</h2>
 
@@ -90,6 +90,7 @@
                     
                     <button type="button" onclick="guardarPrecio()">Guardar</button>
                     <button type="button" onclick="cerrarModal('modalPrecio')">Cancelar</button>
+                    <button type="button" id="generateInvoice" onclick="generarFactura()">Generar Factura</button>
                 </form>
             </div>
         </div>
@@ -172,7 +173,7 @@ async function rechazarSolicitud(id_sesion, boton) {
         console.error('Error al cancelar el turno:', error);
     }
 }
-        
+    
     </script>
 </body>
 </html>
