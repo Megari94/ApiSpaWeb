@@ -251,18 +251,6 @@ doc.line(30, 135, 580, 135);
             sidebar.style.display = (sidebar.style.display === 'block') ? 'none' : 'block';
         }
 
-   function cerrarModal() {
-        const previewModal = document.getElementById('previewModal');
-        previewModal.style.display = 'none';
-    }
-
-    // Función para manejar el clic fuera del modal y cerrarlo
-    window.onclick = function(event) {
-        const previewModal = document.getElementById('previewModal');
-        if (event.target === previewModal) {
-            cerrarModal(); // Cierra el modal si se hace clic fuera de su contenido
-        }
-    }
     </script>
 </body>
 </html>
