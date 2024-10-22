@@ -65,7 +65,7 @@ public class ServicioController {
     public Servicio findServicio(@PathVariable Long id_servicio){
         return servis.findServicio(id_servicio);
     }
- @DeleteMapping("/Servicio/eliminar/{id_servicio}")
+   @DeleteMapping("/Servicio/eliminar/{id_servicio}")
 public ResponseEntity<Map<String, String>> deleteServicio(@PathVariable Long id_servicio) {
     // Buscar el servicio a eliminar
     Servicio servi = servis.findServicio(id_servicio);
@@ -84,6 +84,13 @@ public ResponseEntity<Map<String, String>> deleteServicio(@PathVariable Long id_
             servisS.deleteSesion(s.getId());
         }
     }
+
+    // Eliminar el servicio
+    servis.deleteServicio(id_servicio);
+    
+    // Retornar respuesta en formato JSON
+    return new ResponseEntity<>(Map.of("message", "Servicio y sesiones eliminadas"), HttpStatus.OK);
+}
 //     @PutMapping("/Servicio/editar/{id_servicio}")
 //     public Servicio editServicio(@PathVariable Long id_servicio,
 //             @RequestParam(required=false,name="nombre_servicio")String newname,
