@@ -117,6 +117,7 @@
             try {
                 const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/informe-pago?startDate=${fechaInicio}T00:00:00&endDate=${fechaFin}T23:59:59`);
                 servicios = await response.json();
+                
             } catch (error) {
                 console.error('Error fetching services:', error);
                 alert('No se pudieron obtener los servicios. Intente nuevamente más tarde.');
@@ -150,8 +151,14 @@
             doc.text("Costo", 550, 130, { align: "right" });
 
             // Línea para separar los encabezados de los datos
-            doc.line(30, 135, 580, 135);
+           doc.rect(30, 30, 550, 750);
+        doc.rect(30, 30, 550, 120);
+        doc.rect(30, 660, 550, 50);
 
+             // Detalles del informe
+        doc.setFontSize(16);
+        doc.setFont("Helvetica", "bold");
+        doc.text("Detalle del Informe", 380, 65);
             // Añadir los servicios a la tabla
             let yOffset = 150; // Posición inicial para los datos
             let totalCosto = 0; // Variable para almacenar el costo total
