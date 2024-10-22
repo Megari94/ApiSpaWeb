@@ -11,33 +11,7 @@
     <script src="js/scriptAdmin.js" defer></script>
     <script src="js/cargarPersonalAdmin.js" defer></script>
     <script src="js/informeServicioAdmin.js" defer></script>
-    <script>
-        function abrirModal() {
-            document.getElementById('modalPreview').style.display = 'block';
-        }
-
-        function cerrarModal() {
-            document.getElementById('modalPreview').style.display = 'none';
-        }
-
-        async function generarInforme() {
-            // Tu código para generar el informe y el PDF.
-            // Aquí deberías tener algo como:
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            // Suponiendo que ya generaste el contenido del PDF,
-            // obtienes el Blob y la URL del PDF
-            const pdfBlob = doc.output('blob');
-            const pdfUrl = URL.createObjectURL(pdfBlob);
-
-            // Estableces la URL en el iframe del modal
-            document.getElementById('pdfPreview').src = pdfUrl;
-
-            // Abres el modal para mostrar la vista previa
-            abrirModal();
-        }
-    </script>
+   
 
     <style>
         .modal {
