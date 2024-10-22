@@ -124,7 +124,7 @@ public Personal editPersonal(@PathVariable Long id_personal,
                                                                   @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
         return servis.findConfirmedSessionsByPersonalBetweenDates(personalId, startDate, endDate);
     }
-    @GetMapping("/Personal/personalInfo/${personalId}")
+    @GetMapping("/Personal/personalInfo/${id_personal}")
     public UsuarioDTO findPersonalInforme(@PathVariable Long id_personal){
        Personal p= servis.findPersonal(id_personal);
        UsuarioDTO UDTO= new UsuarioDTO();
