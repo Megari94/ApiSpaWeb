@@ -291,7 +291,8 @@ async function guardarPersonal() {
         });
 
         if (response.ok) {
-            alert('Sesión creada con éxito');
+            modal.style.display = 'none'; // Oculta el modal
+            
             // Puedes añadir más lógica, como cerrar el modal o limpiar el formulario
         } else {
             const errorText = await response.text();
