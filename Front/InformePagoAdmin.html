@@ -97,7 +97,7 @@
     <div id="previewModal" class="modal">
         <div class="modal-content">
             <button onclick="descargarInforme()">Descargar Informe</button>
-          <button type="button" onclick="cerrarModal('modalPrecio')">Cerrar</button>
+        <button type="button" onclick="cerrarModal()">Cerrar</button>
             <iframe id="pdfPreview" style="width:100%; height:500px;"></iframe>
            
         </div>
@@ -105,10 +105,16 @@
 
     <script>
     // Función para cerrar el modal
-    function cerrarModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.style.display = 'none'; // Oculta el modal
+    function cerrarModal() {
+        const previewModal = document.getElementById('previewModal');
+        if (previewModal) {
+            previewModal.style.display = 'none'; // Oculta el modal
+        }
+    }
+window.onclick = function(event) {
+        const previewModal = document.getElementById('previewModal');
+        if (event.target === previewModal) {
+            cerrarModal();
         }
     }
         let pdfBlobInforme; // Variable global para almacenar el blob del PDF
