@@ -206,7 +206,7 @@ async function generarInforme(event) {
     doc.line(30, 135, 580, 135);
 
     // Añadir los servicios a la tabla
-    let yOffset = 150; // Posición inicial para los datos
+    let yOffset = 200; // Posición inicial para los datos
     let totalCosto = 0; // Variable para almacenar el costo total
 
     servicios.forEach(servicio => {
