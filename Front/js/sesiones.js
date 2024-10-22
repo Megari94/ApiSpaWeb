@@ -1,3 +1,4 @@
+  let sesionesGlobal = []; 
 async function loadSessionsAdmin() {
     try {
         // 1. Obtener todas las sesiones desde el nuevo endpoint
@@ -9,7 +10,7 @@ async function loadSessionsAdmin() {
             console.error('Error al obtener las sesiones:', responseSesiones.statusText);
             return;
         }
-
+        sesionesGlobal = sesiones; 
         const sesiones = await responseSesiones.json();
 
         // 2. Mostrar la tabla con los datos obtenidos
