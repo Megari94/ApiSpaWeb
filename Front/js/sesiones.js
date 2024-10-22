@@ -40,7 +40,7 @@ function displaySessions(sesiones) {
             <td>
                 <div class="button-group">
                     <button class="btn-aceptar" onclick="aceptarSolicitud('${sesion.id}', '${sesion.nombre_completo}', '${sesion.nombre_servicio}', ${sesion.costo})">Aceptar</button>
-                    <button class="btn-rechazar" onclick="rechazarSolicitud('${sesion.id}')">Denegar</button>
+                    <button class="btn-rechazar" onclick="rechazarSolicitud('${sesion.id}',this)">Denegar</button>
                 </div>
             </td>
         `;
