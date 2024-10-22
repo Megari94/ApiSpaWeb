@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Virginia
  */
 @RestController
+@CrossOrigin(origins = "https://apispaweb-production.up.railway.app")
 public class ClienteController {
     @Autowired
     private IClienteService servis;
