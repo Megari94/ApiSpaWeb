@@ -4,8 +4,6 @@ window.onload = function() {
     document.getElementById('invoiceDate').value = today; // Asignar la fecha actual al campo de entrada
 };
 
-let pdfBlob; // Variable global para almacenar el Blob del PDF
-
 // Función para agregar servicios
 function addService() {
     const container = document.getElementById('servicesContainer');
@@ -47,90 +45,57 @@ async function generarFactura() {
     const clientName = document.getElementById('clientName').value;
     const totalAmount = document.getElementById('totalAmount').value;
 
+    // Validar que todos los campos necesarios estén completos
     if (!invoiceDate || !clientName || totalAmount === '0.00') {
         alert("Por favor complete todos los campos.");
         return;
     }
 
-    // Título y encabezado
+    // Título y encabezado de la factura
     doc.setFontSize(14);
     doc.setFont("Helvetica", "bold");
     doc.text("SENTIRSE BIEN", 70, 75);
     doc.setFontSize(12);
     doc.setFont("Helvetica", "normal");
 
-    // Bordes para la estructura de la factura
+    // Dibujar bordes para la factura
     doc.rect(30, 30, 550, 750); // Borde general
     doc.rect(30, 30, 550, 120); // Borde encabezado
     doc.rect(30, 700, 550, 50); // Borde subtotal y total
 
-    // Dibuja un rectángulo alrededor de la "C"
-    const cX = 290;
-    const cY = 50;
-    const cWidth = 40;
-    const cHeight = 40;
-    doc.rect(cX, cY, cWidth, cHeight); // Dibuja el rectángulo
-    doc.setFontSize(30);
-    doc.text("C", cX + 13, cY + 30); // Centra la "C" dentro del rectángulo
-    doc.setFontSize(12);
-
-    // Dibuja líneas verticales
-    const lineX = cX + (cWidth / 2);
-    const lineStartY = cY + cHeight;
-    const lineEndY = lineStartY + 60;
-    doc.line(lineX, lineStartY, lineX, lineEndY); // Línea debajo
-    const lineStartYAbove = cY;
-    const lineEndYAbove = lineStartYAbove - 20;
-    doc.line(lineX, lineStartYAbove, lineX, lineEndYAbove); // Línea encima
-
-    // Detalles de la factura a la derecha
-    doc.setFontSize(16);
-    doc.setFont("Helvetica", "bold");
-    doc.text("Detalle de Factura", 380, 65);
-
     // Detalle de la factura
+    doc.setFontSize(16);
+    doc.text("Detalle de Factura", 380, 65);
     doc.setFontSize(12);
-    doc.setFont("Helvetica", "normal");
     doc.text("N°: 00001", 380, 80);
 
-    // Obtener la fecha actual
-    var fechaActual = new Date();
-
-    // Formatear la fecha en el formato dd/mm/yyyy
-    var dia = fechaActual.getDate().toString().padStart(2, '0');
-    var mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0'); // Los meses en JS son de 0 a 11
-    var anio = fechaActual.getFullYear();
-
-    // Concatenar la fecha en el formato deseado
-    var fechaFormateada = dia + '/' + mes + '/' + anio;
-
-    // Incluir la fecha en el texto del documento
+    // Formatear la fecha actual en formato dd/mm/yyyy
+    const fechaActual = new Date();
+    const dia = fechaActual.getDate().toString().padStart(2, '0');
+    const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
+    const anio = fechaActual.getFullYear();
+    const fechaFormateada = `${dia}/${mes}/${anio}`;
     doc.text("Fecha de Emisión: " + fechaFormateada, 380, 95);
-    
     doc.text("CUIT: 27316471566", 380, 110);
     doc.text("Ingresos Brutos: EXENTO", 380, 125);
     doc.text("Fecha de Inicio de Actividades: ", 380, 140);
 
-    // Datos de recibo
+    // Datos del cliente
     doc.text("Recibí de: " + clientName, 40, 170);
     doc.text("DNI: ", 350, 170);
     doc.text("Domicilio: ", 40, 190);
     doc.text("Localidad:", 40, 210);
     doc.text("Provincia: ", 350, 210);
-    doc.text("Tipo de Ingreso: PRODUCIDOS PROPIOS ", 40, 240);
-    doc.text("Concepto ", 40, 280);
 
-    // Encabezado de la tabla
+    // Encabezado de la tabla de productos/servicios
     doc.setFontSize(10);
     doc.setFont("Helvetica", "bold");
     doc.text("Código", 50, 330);
     doc.text("Producto / Servicio", 160, 330);
     doc.text("Precio Unit.", 550, 330, { align: "right" });
+    doc.line(30, 335, 580, 335); // Línea para el encabezado de la tabla
 
-    // Dibujar una línea para el encabezado
-    doc.line(30, 335, 580, 335);
-
-    // Añadir los datos del servicio/producto
+    // Añadir productos/servicios al PDF
     const serviceRows = document.querySelectorAll('.service-row');
     let yOffset = 350;
     serviceRows.forEach((row) => {
@@ -140,8 +105,7 @@ async function generarFactura() {
 
         doc.setFont("Helvetica", "normal");
         doc.text(serviceId, 60, yOffset);
-        const productoDividido = doc.splitTextToSize(serviceName, 180);
-        doc.text(productoDividido, 160, yOffset);
+        doc.text(doc.splitTextToSize(serviceName, 180), 160, yOffset);
         doc.text(serviceCost, 550, yOffset, { align: "right" });
 
         yOffset += 20;
@@ -149,39 +113,21 @@ async function generarFactura() {
         yOffset += 20;
     });
 
-    // Subtotal y total
+    // Total de la factura
     doc.setFontSize(12);
     doc.setFont("Helvetica", "bold");
     doc.text("Importe Total: $" + totalAmount, 400, 727);
 
-    // Convertir PDF a Blob para descarga
-    pdfBlob = doc.output('blob');
-
-    // Descargar automáticamente el PDF
+    // Generar el PDF y descargarlo automáticamente
+    const pdfBlob = doc.output('blob');
     const link = document.createElement('a');
     link.href = URL.createObjectURL(pdfBlob);
     link.download = "factura.pdf";
     link.click();
-    
-    // Limpiar formulario después de generar la factura
-    const today = new Date().toISOString().split('T')[0]; // Obtener la fecha actual en formato YYYY-MM-DD
-    document.getElementById('invoiceDate').value = today;
+
+    // Limpiar el formulario después de generar la factura
+    document.getElementById('invoiceDate').value = new Date().toISOString().split('T')[0];
     document.getElementById('clientName').value = '';
     document.getElementById('totalAmount').value = '0.00';
     document.getElementById('servicesContainer').innerHTML = '';
-}
-    // Descargar el PDF con el nombre personalizado por tipo de pago
-    const nombreArchivo = `informe_${tipoPago}_${fechaInicio}_${fechaFin}.pdf`;
-    const pdfBlob = doc.output('blob');
-
-    // Crear un enlace temporal para descargar el archivo
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(pdfBlob);
-    link.download = nombreArchivo;
-    link.click();
-
-    // Limpiar el formulario después de generar el informe
-    document.getElementById('fechaInicio').value = '';
-    document.getElementById('fechaFin').value = '';
-    document.getElementById('tipoPago').value = '';
 }
