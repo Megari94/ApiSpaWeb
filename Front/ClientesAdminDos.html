@@ -249,6 +249,15 @@
                     </tbody>
                 </table>
             </div>
+                        
+<!-- Modal de confirmación -->
+<div id="confirmacionModal" class="modal">
+    <div class="modal-content">
+        <h2>¿Está seguro de que desea dar de baja al cliente?</h2>
+        <button id="confirmarBtn">Sí</button>
+        <button onclick="cerrarModal()">Cancelar</button>
+    </div>
+</div>
 <script>
 
         // Variable para almacenar el ID del cliente seleccionado
@@ -419,15 +428,7 @@ function crearFilaCliente(cliente) {
                 <button onclick="abrirModalEditarCliente(${cliente.id})">Editar</button>
                 <button onclick="mostrarConfirmacion(${cliente.id})">Dar de Baja</button>
             </td>
-            
-<!-- Modal de confirmación -->
-<div id="confirmacionModal" class="modal">
-    <div class="modal-content">
-        <h2>¿Está seguro de que desea dar de baja al cliente?</h2>
-        <button id="confirmarBtn">Sí</button>
-        <button onclick="cerrarModal()">Cancelar</button>
-    </div>
-</div>
+
     `;
     return row;
 }
