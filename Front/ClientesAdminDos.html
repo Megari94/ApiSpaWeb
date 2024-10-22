@@ -250,6 +250,52 @@
                 </table>
             </div>
 <script>
+
+        // Variable para almacenar el ID del cliente seleccionado
+    let clienteIdSeleccionado;
+
+    // Función para mostrar el modal de confirmación
+    function mostrarConfirmacion(clienteId) {
+        clienteIdSeleccionado = clienteId;
+        const modal = document.getElementById('confirmacionModal');
+        modal.style.display = 'block'; // Muestra el modal
+    }
+
+
+
+    // Función para dar de baja al cliente
+    async function darDeBajaCliente() {
+        try {
+            // Llamada a la API para eliminar el cliente
+            const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/eliminar/${clienteIdSeleccionado}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                alert('Cliente eliminado correctamente');
+                cerrarModal(); // Cerrar el modal
+                // Actualiza la página o elimina el cliente de la tabla visualmente
+            } else {
+                alert('Error al eliminar el cliente');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al eliminar el cliente');
+        }
+    }
+
+    // Asocia la función de confirmación al botón de "Sí"
+    document.getElementById('confirmarBtn').onclick = function() {
+        darDeBajaCliente();
+    };
+
+    // Cierra el modal al hacer clic fuera de él
+    window.onclick = function(event) {
+        const modal = document.getElementById('confirmacionModal');
+        if (event.target === modal) {
+            cerrarModal();
+        }
+    };
     let clientesData = []; // Variable para almacenar los datos de clientes
 let profesionalesData = []; // Variable para almacenar los datos de profesionales
 
@@ -370,8 +416,17 @@ function crearFilaCliente(cliente) {
         <td>${cliente.nombre_usuario}</td>
         <td class="action-buttons">
                 <button onclick="abrirModalEditarCliente(${cliente.id})">Editar</button>
-                <button onclick="darDeBaja(${cliente.id})">Dar de Baja</button>
+                <button onclick="mostrarConfirmacion(${cliente.id})">Dar de Baja</button>
             </td>
+            
+<!-- Modal de confirmación -->
+<div id="confirmacionModal" class="modal">
+    <div class="modal-content">
+        <h2>¿Está seguro de que desea dar de baja al cliente?</h2>
+        <button id="confirmarBtn">Sí</button>
+        <button onclick="cerrarModal()">Cancelar</button>
+    </div>
+</div>
     `;
     return row;
 }
