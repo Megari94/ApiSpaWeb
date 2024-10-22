@@ -4,11 +4,13 @@
  */
 package com.madeTUP.AppSpa.Service;
 
+import com.madeTUP.AppSpa.DTO.SesionAdminDTO;
 import com.madeTUP.AppSpa.DTO.SesionPersonalDTO;
 import com.madeTUP.AppSpa.Model.Personal;
 import com.madeTUP.AppSpa.Model.Servicio;
 import com.madeTUP.AppSpa.Model.Sesion;
 import com.madeTUP.AppSpa.Repository.IPersonalRepository;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,5 +78,10 @@ public List<SesionPersonalDTO> listaSesiones(Long idPersonal) {
     List<SesionPersonalDTO> listaSesionesDos = personalrepo.findSesionesByPersonalId(idPersonal);
     return listaSesionesDos; // Devuelve la lista de sesiones obtenida
 }
+
+    @Override
+    public List<SesionAdminDTO> findConfirmedSessionsByPersonalBetweenDates(Long personalId, LocalDateTime startDate, LocalDateTime endDate) {
+        return personalrepo.findConfirmedSessionsByPersonalBetweenDates(personalId, startDate, endDate);
+    }
 
 }
