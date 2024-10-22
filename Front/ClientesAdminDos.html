@@ -7,9 +7,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="css/estilo.css">
+    <script src="js/scriptAdmin.js" defer></script>
+    <script src="js/script.js" defer></script>
+    <script src="js/modalClienteAdmin.js" defer></script>
 
-    
-    
     <style>
         .form-container {
             border-radius: 10px;
@@ -21,7 +22,7 @@
             margin: 0 auto;
             width: 50%; /* 减小宽度 */
             margin-bottom: 20px;
-          
+
         }
 
         .button-container button {
@@ -47,14 +48,14 @@
             text-align: left;
         }
 
-     
+
         .main-content1 {
             text-align: center;
             margin-left: 250px;
             padding: 20px;
             transition: margin-left 0.3s;
             width: 100%;
-           
+
             justify-content: center;
             align-items: center;
             flex-direction: column;
@@ -74,7 +75,7 @@
 
         /* 模态框样式 */
         .modal {
-            
+
             display: none; /* 隐藏模态框 */
             position: fixed;
             z-index: 1000;
@@ -87,7 +88,7 @@
         }
 
         .modal-content {
-           
+
             margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
@@ -110,9 +111,6 @@
     </style>
 </head>
 <body>
-     <script src="js/scriptAdmin.js" defer></script>
-    <script src="js/script.js" defer></script>
-    <script src="js/modalClienteAdmin.js" defer></script>
     <div class="container">
         <!-- Barra de Menú Lateral -->
         <div id="sidebar" class="sidebar">
@@ -216,21 +214,21 @@
                     <h2>Editar Cliente</h2>
                     <label for="nombreEditar">Nombre:</label>
                     <input type="text" id="nombreEditar" />
-                    
+
                     <label for="apellidoEditar">Apellido:</label>
                     <input type="text" id="apellidoEditar" />
-                    
+
                     <label for="correoEditar">Correo Electrónico:</label>
                     <input type="text" id="correoEditar" />
-                    
+
                     <label for="contrasenaEditar">Contraseña:</label>
                     <input type="password" id="contrasenaEditar" />
-                    
+
                     <label for="nombreUsuarioEditar">Nombre de Usuario:</label>
                     <input type="text" id="nombreUsuarioEditar" />
-                    
+
                     <button onclick="guardarEdicionCliente()">Guardar Cambios</button>
-                </div>
+                </div>
             </div>
 
             <!-- Tabla para mostrar los turnos -->
@@ -251,18 +249,8 @@
                     </tbody>
                 </table>
             </div>
-                        
-<!-- Modal de confirmación -->
-<div id="confirmacionModal" class="modal">
-    <div class="modal-content">
-        <h2>¿Está seguro de que desea dar de baja al cliente?</h2>
-        <button id="confirmarBtn">Sí</button>
-        <button onclick="cerrarModal()">Cancelar</button>
-    </div>
-</div>
-           
-
 <script>
+
         // Variable para almacenar el ID del cliente seleccionado
       let clientesData = []; // Variable para almacenar los datos de clientes
 let profesionalesData = []; // Variable para almacenar los datos de profesionales
@@ -285,10 +273,10 @@ let profesionalesData = []; // Variable para almacenar los datos de profesionale
                 method: 'DELETE'
             });
 
-              const filaCliente = document.getElementById(`cliente-${clienteIdSeleccionado}`);
-                if (filaCliente) {
-                    filaCliente.remove(); // Elimina la fila del DOM
-                }
+            if (response.ok) {
+                alert('Cliente eliminado correctamente');
+                cerrarModal(); // Cerrar el modal
+                // Actualiza la página o elimina el cliente de la tabla visualmente
             } else {
                 alert('Error al eliminar el cliente');
             }
@@ -310,6 +298,8 @@ let profesionalesData = []; // Variable para almacenar los datos de profesionale
             cerrarModal();
         }
     };
+    let clientesData = []; // Variable para almacenar los datos de clientes
+let profesionalesData = []; // Variable para almacenar los datos de profesionales
   
 
 // Función para cargar los clientes
@@ -431,7 +421,15 @@ function crearFilaCliente(cliente) {
                 <button onclick="abrirModalEditarCliente(${cliente.id})">Editar</button>
                 <button onclick="mostrarConfirmacion(${cliente.id})">Dar de Baja</button>
             </td>
-
+            
+<!-- Modal de confirmación -->
+<div id="confirmacionModal" class="modal">
+    <div class="modal-content">
+        <h2>¿Está seguro de que desea dar de baja al cliente?</h2>
+        <button id="confirmarBtn">Sí</button>
+        <button onclick="cerrarModal()">Cancelar</button>
+    </div>
+</div>
     `;
     return row;
 }
@@ -504,5 +502,10 @@ function mostrarSeccion(sectionId) {
 }
 
 </script>
+
+
+
+        </div>
+    </div>
 </body>
 </html>
