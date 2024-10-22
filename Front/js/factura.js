@@ -12,9 +12,9 @@ function addService() {
     const serviceRow = document.createElement('div');
     serviceRow.classList.add('service-row');
     serviceRow.innerHTML = `
-        <input type="text" placeholder="ID Servicio" class="service-id">
-        <input type="text" placeholder="Nombre del Servicio" class="service-name">
-        <input type="number" placeholder="Costo" class="service-cost" step="0.01" min="0" oninput="calculateTotal()">
+        <input type="text" placeholder="ID Servicio" class="service-id" required>
+        <input type="text" placeholder="Nombre del Servicio" class="service-name" required>
+        <input type="number" placeholder="Costo" class="service-cost" step="0.01" min="0" required oninput="calculateTotal()">
         <button onclick="removeService(this)">Eliminar</button>
     `;
     container.appendChild(serviceRow);
@@ -46,6 +46,7 @@ async function generarFactura() {
     const clientName = document.getElementById('clientName').value;
     const totalAmount = document.getElementById('totalAmount').value;
 
+    // Validar campos obligatorios
     if (!invoiceDate || !clientName || totalAmount === '0.00') {
         alert("Por favor complete todos los campos.");
         return;
@@ -93,15 +94,15 @@ async function generarFactura() {
     doc.text("N°: 00001", 380, 80);
     
     // Obtener la fecha actual
-    var fechaActual = new Date();
+    const fechaActual = new Date();
 
     // Formatear la fecha en el formato dd/mm/yyyy
-    var dia = fechaActual.getDate().toString().padStart(2, '0');
-    var mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0'); // Los meses en JS son de 0 a 11
-    var anio = fechaActual.getFullYear();
+    const dia = fechaActual.getDate().toString().padStart(2, '0');
+    const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0'); // Los meses en JS son de 0 a 11
+    const anio = fechaActual.getFullYear();
 
     // Concatenar la fecha en el formato deseado
-    var fechaFormateada = dia + '/' + mes + '/' + anio;
+    const fechaFormateada = `${dia}/${mes}/${anio}`;
 
     // Incluir la fecha en el texto del documento
     doc.text("Fecha de Emisión: " + fechaFormateada, 380, 95);
@@ -164,13 +165,11 @@ async function generarFactura() {
     link.click();
     
     // Limpiar formulario después de generar la factura
-    const today = new Date().toISOString().split('T')[0]; // Obtener la fecha actual en formato YYYY-MM-DD
     document.getElementById('invoiceDate').value = today;
     document.getElementById('clientName').value = '';
     document.getElementById('totalAmount').value = '0.00';
     document.getElementById('servicesContainer').innerHTML = '';
 }
-
 
 //________________INFORME TIPO PAGO__________________________   
 async function generarInforme(event) {
@@ -197,81 +196,44 @@ async function generarInforme(event) {
     // Título y encabezado del informe
     doc.setFontSize(14);
     doc.setFont("Helvetica", "bold");
-    doc.text("INFORME DE INGRESO", 70, 75);
+    doc.text("Informe de Servicios", 70, 75);
     doc.setFontSize(12);
     doc.setFont("Helvetica", "normal");
-
-    // Bordes para la estructura del informe
-    doc.rect(30, 30, 550, 750); // Borde general
-    doc.rect(30, 30, 550, 120); // Borde encabezado
-    doc.rect(30, 660, 550, 50); // Borde subtotal y total
-    doc.rect(30, 150, 550, 30); // Borde encabezado
-
-    // Fecha actual
-    const fechaActual = new Date();
-    const dia = fechaActual.getDate().toString().padStart(2, '0');
-    const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
-    const anio = fechaActual.getFullYear();
-    const fechaFormateada = `${dia}/${mes}/${anio}`;
-    doc.setFontSize(12);
-    doc.setFont("Helvetica", "normal");
-    doc.text("Fecha de Emisión: " + fechaFormateada, 380, 80);
-
-    // Datos ingresados del formulario
-    doc.text("Fecha de Inicio: " + fechaInicio, 380, 100);
-    doc.text("Fecha de Fin: " + fechaFin, 380, 115);
-    doc.text("Tipo de Pago: " + tipoPago, 40, 170);
-
-    // Encabezado de la tabla
+    
+    // Encabezado del informe
+    doc.text(`Desde: ${fechaInicio} Hasta: ${fechaFin}`, 70, 100);
+    
+    // Crear la tabla de servicios
     doc.setFontSize(10);
     doc.setFont("Helvetica", "bold");
-    doc.text("Fecha:", 170, 210);
-    doc.text("Código", 50, 210);
-    doc.text("Servicio", 300, 210);
-    doc.text("Costo", 550, 210, { align: "right" });
+    doc.text("ID Servicio", 50, 130);
+    doc.text("Nombre del Servicio", 150, 130);
+    doc.text("Costo", 500, 130, { align: "right" });
+    
+    // Dibujar línea para el encabezado
+    doc.line(30, 135, 580, 135);
+    
+    // Añadir servicios a la tabla
+    let yOffset = 150;
+    servicios.forEach(servicio => {
+        doc.setFont("Helvetica", "normal");
+        doc.text(servicio.id, 50, yOffset);
+        doc.text(servicio.nombre, 150, yOffset);
+        doc.text(servicio.costo.toString(), 500, yOffset, { align: "right" });
+        
+        yOffset += 20; // Espaciado entre filas
+        doc.line(30, yOffset - 5, 580, yOffset - 5); // Línea debajo de la fila
+    });
 
-    doc.line(30, 220, 580, 220); // Línea para el encabezado
+    // Convertir el PDF a Blob para descarga
+    const pdfBlobInforme = doc.output('blob');
 
-    // Variables para acumular el total
-    let total = 0;
-    let yPosition = 240;
-
-    // Verifica si hay servicios obtenidos
-    if (servicios.length > 0) {
-        // Recorre los servicios obtenidos de la API y agrégalos al PDF
-        servicios.forEach(servicio => {
-            doc.setFont("Helvetica", "normal");
-            doc.text(servicio.codigo.toString(), 50, yPosition);
-            doc.text(servicio.fecha, 170, yPosition);
-            const descripcionServicio = servicio.descripcion;
-            const servicioDividido = doc.splitTextToSize(descripcionServicio, 180);
-            doc.text(servicioDividido, 300, yPosition);
-            doc.text(servicio.costo.toFixed(2), 550, yPosition, { align: "right" });
-
-            yPosition += 20; // Mueve la posición vertical para la próxima fila
-            total += servicio.costo; // Suma el costo al total
-
-            // Dibuja línea después de cada fila
-            doc.line(30, yPosition, 580, yPosition);
-            yPosition += 10; // Espacio entre filas
-        });
-    } else {
-        // Si no hay servicios, muestra un mensaje
-        doc.setFont("Helvetica", "italic");
-        doc.text("No se encontraron servicios para los parámetros seleccionados.", 50, yPosition);
-    }
-
-    // Total
-    doc.setFontSize(12);
-    doc.setFont("Helvetica", "bold");
-    doc.text("Total: $" + total.toFixed(2), 400, 680);
-
-    // Descargar el PDF con el nombre personalizado por tipo de pago
-    doc.save(`informePor_${tipoPago}.pdf`);
-    // Limpiar los campos del formulario
-document.getElementById('fechaInicio').value = '';
-document.getElementById('fechaFin').value = '';
-document.getElementById('tipoPago').value = '';
-
-
+    // Descargar automáticamente el informe
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(pdfBlobInforme);
+    link.download = "informe_servicios.pdf";
+    link.click();
 }
+
+// Añadir evento para generar informe
+document.getElementById('informeForm').addEventListener('submit', generarInforme);
