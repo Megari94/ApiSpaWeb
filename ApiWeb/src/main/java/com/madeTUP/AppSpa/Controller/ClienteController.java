@@ -5,6 +5,7 @@
 package com.madeTUP.AppSpa.Controller;
 
 import com.madeTUP.AppSpa.DTO.ClienteLoginDTO;
+import com.madeTUP.AppSpa.DTO.ClienteAdminDTO;
 import com.madeTUP.AppSpa.DTO.ClientePerfilDTO;
 import com.madeTUP.AppSpa.DTO.ClienteDTO;
 import com.madeTUP.AppSpa.DTO.SesionDTO;
@@ -180,6 +181,7 @@ public ResponseEntity<List<ClienteDTO>> getClientesD() {
     
     return new ResponseEntity<>(clienteDTOs, HttpStatus.OK);
 }
+    
 
 
 @GetMapping("/clientes/traerClientesAdmin")
@@ -200,4 +202,16 @@ public ResponseEntity<List<ClientePerfilDTO>> getClientesAdmin() {
     return new ResponseEntity<>(clienteDTOs, HttpStatus.OK);
 }
 
+}
+@GetMapping("/clientes/traerClientesADMIN")
+public ResponseEntity<List<ClienteAdminDTO>> getClientesH() {
+    List<Cliente> clientes = servis.getClientes();
+    List<ClienteAdminDTO> clienteDTOs = new ArrayList<>();
+    
+    for (Cliente cliente : clientes) {
+        ClienteAdminDTO clienteDTO = new ClienteAdminDTO(cliente.getId(), cliente.getNombre(),cliente.getCorreo());
+        clienteDTOs.add(ClienteAdminDTO);
+    }
+    
+    return new ResponseEntity<>(clienteDTOs, HttpStatus.OK);
 }
