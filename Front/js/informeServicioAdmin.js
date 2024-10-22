@@ -66,10 +66,10 @@ async function generarInforme() {
         doc.setFont("Helvetica", "bold");
         doc.text("ID", 50, 250);
         doc.text("Asistencia", 100, 250); // Reducción de espacio
-        doc.text("Costo", 230, 250); // Reducción de espacio
-        doc.text("Fecha", 330, 250); // Reducción de espacio
-        doc.text("Nombre Completo", 430, 250); // Reducción de espacio
-        doc.text("Nombre Servicio", 520, 250); // Reducción de espacio
+        doc.text("Costo", 180, 250); // Reducción de espacio
+        doc.text("Fecha", 280, 250); // Reducción de espacio
+        doc.text("Nombre Completo", 405, 250); // Reducción de espacio
+        doc.text("Nombre Servicio", 500, 250); // Reducción de espacio
 
         // Dibujar una línea para el encabezado
         doc.line(30, 255, 580, 255);
@@ -87,10 +87,10 @@ async function generarInforme() {
             doc.setFont("Helvetica", "normal");
             doc.text(servicio.id.toString(), 50, yPosition); // ID
             doc.text(servicio.asistencia, 100, yPosition); // Asistencia
-            doc.text(servicio.costo.toFixed(2).toString(), 230, yPosition); // Costo
-            doc.text(servicio.fecha ? new Date(servicio.fecha).toLocaleString() : '', 330, yPosition); // Fecha
-            doc.text(servicio.nombre_completo, 430, yPosition); // Nombre completo
-            doc.text(servicio.nombre_servicio, 520, yPosition); // Nombre servicio
+            doc.text(servicio.costo.toFixed(2).toString(), 180, yPosition); // Costo
+            doc.text(servicio.fecha ? new Date(servicio.fecha).toLocaleString() : '', 280, yPosition); // Fecha
+            doc.text(servicio.nombre_completo, 405, yPosition); // Nombre completo
+            doc.text(servicio.nombre_servicio, 500, yPosition); // Nombre servicio
 
             totalCosto += servicio.costo; // Sumar al total
             yPosition += 15; // Espaciado entre filas reducido
@@ -99,7 +99,7 @@ async function generarInforme() {
         // Añadir la suma total de costos al final
         doc.setFontSize(12);
         doc.setFont("Helvetica", "bold");
-        doc.text(`Total Costo: $${totalCosto.toFixed(2)}`, 480, yPosition + 20); // Posición para mostrar el total
+        doc.text(`Total Costo: $${totalCosto.toFixed(2)}`, 410, yPosition + 20); // Posición para mostrar el total
 
         // Generar Blob
         pdfBlob = doc.output('blob');
