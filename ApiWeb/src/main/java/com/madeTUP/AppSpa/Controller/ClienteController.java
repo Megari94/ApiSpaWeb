@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Virginia
  */
 @RestController
-@CrossOrigin(origins = "https://apispaweb-production.up.railway.app")
+
 public class ClienteController {
     @Autowired
     private IClienteService servis;
@@ -206,7 +206,7 @@ public ResponseEntity<List<ClienteAdminDTO>> getClientesH(){
     List<ClienteAdminDTO> clienteDTOs = new ArrayList<>();
     
     for (Cliente cliente : clientes) {
-        ClienteAdminDTO clienteDTO = new ClienteAdminDTO(cliente.getId(), cliente.getNombre(),cliente.getApellido(),cliente.getCorreo());
+        ClienteAdminDTO clienteDTO = new ClienteAdminDTO(cliente.getId(), cliente.getNombre(),cliente.getApellido(),cliente.getCorreo(),cliente.getContrasenia(),cliente.getNombre_usuario());
         clienteDTOs.add(clienteDTO);
     }
     
