@@ -338,9 +338,14 @@ function cerrarModal(modalId) {
             });
 
             if (response.ok) {
-                alert('Cliente eliminado correctamente');
+                  alert('Cliente eliminado correctamente');
                 cerrarModal(); // Cerrar el modal
-                // Actualiza la página o elimina el cliente de la tabla visualmente
+
+                // Eliminar la fila de la tabla
+                const filaCliente = document.getElementById(`cliente-${clienteIdSeleccionado}`);
+                if (filaCliente) {
+                    filaCliente.remove(); // Elimina la fila del DOM
+                }
             } else {
                 alert('Error al eliminar el cliente');
             }
