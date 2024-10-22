@@ -119,7 +119,6 @@ public class ClienteController {
          return "Consulta Agregada";
      }
      
- @CrossOrigin(origins = "*")
 @PostMapping("/Cliente/login")
 public ResponseEntity<Map<String, Object>> loginCliente(@RequestBody ClienteLoginDTO clienteDTO) {
     List<Cliente> listaClientes = servis.getClientes();
