@@ -206,7 +206,7 @@ async function generarInforme(event) {
     doc.line(30, 135, 580, 135);
 
     // Añadir los servicios a la tabla
-    let yOffset = 400; // Posición inicial para los datos
+    let yOffset = 150; // Posición inicial para los datos (ajustada para estar debajo del encabezado)
     let totalCosto = 0; // Variable para almacenar el costo total
 
     servicios.forEach(servicio => {
@@ -224,10 +224,7 @@ async function generarInforme(event) {
         totalCosto += servicio.costo;
 
         // Incrementar el yOffset para la siguiente fila
-        yOffset += 20;
-
-        // Línea divisoria debajo de cada fila de datos
-        doc.line(30, yOffset - 10, 580, yOffset - 10);
+        yOffset += 20; // Espacio entre filas (puedes ajustar este valor si es necesario)
     });   
 
     // Mostrar el total en el PDF
@@ -262,4 +259,3 @@ function descargarInforme() {
         alert('Por favor, genera el informe antes de intentar descargarlo.');
     }
 }
-
