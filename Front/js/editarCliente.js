@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    console.log("Página cargada con data-page:", document.body.dataset.page);
     const token = localStorage.getItem('token');
     const idCliente = localStorage.getItem('idCliente');
 
