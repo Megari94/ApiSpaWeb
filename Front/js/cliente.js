@@ -57,8 +57,8 @@ function cargarTurnos(idCliente, token) {
                 <td>${sesion.servicio}</td>
                 <td> 
            
-            <button class="btn-editar" onclick="editarSesion(${sesion.id})">Editar</button>
-            <button class="btn-baja" onclick="darDeBajaSesion(${sesion.id})">Dar de baja</button>
+            <button class="btn-editar" onclick="editarSesion(${sesion.id})">Pagar</button>
+            <button class="btn-baja" onclick="darDeBajaSesion(${sesion.id})">Registrar operacion</button>
         </td>
                
             `;
