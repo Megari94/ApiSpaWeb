@@ -97,6 +97,19 @@
         <button onclick="confirmarRegistro()">Confirmar Registro</button>
     </div>
 </div>
+<script>function mostrarCamposPago(opcion) {
+        document.getElementById('tarjetaFields').style.display = (opcion === 'tarjeta') ? 'block' : 'none';
+        document.getElementById('transferenciaFields').style.display = (opcion === 'transferencia') ? 'block' : 'none';
+    }
 
+    // Redirigir para pago con transferencia
+    function redireccionarTransferencia() {
+        window.location.href = "https://www.tubanco.com/pago-transferencia"; // Cambia esto por la URL de la transferencia
+    }
+
+    // Función para confirmar el pago
+    function confirmarPago() {
+        alert("Pago confirmado");
+    }</script>
 </body>
 </html>
