@@ -74,9 +74,7 @@ function manejarEdicionCliente(idCliente, token) {
             correo: document.getElementById('email').value, // Cambiar 'email' a 'correo'
             contrasenia: document.getElementById('password').value, // Cambiar 'password' a 'contrasenia'
             nombre_usuario: document.getElementById('username').value, // Cambiar 'username' a 'nombre_usuario'
-            listaSesiones: [],   // Enviar como lista vacía
-            listaConsultas: [],  // Enviar como lista vacía
-            listaServicio: []     // Enviar como lista vacía
+     
         };
 
         console.log('Datos a enviar:', updatedData); // Para verificar los datos
