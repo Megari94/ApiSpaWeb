@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Función para cargar la información del cliente
 function cargarInformacionCliente(idCliente, token) {
-    fetch(`https://api.example.com/clientes/${idCliente}`, {
+    fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/encontrarClienteDTO/${idCliente}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -58,7 +58,7 @@ function manejarEdicionCliente(idCliente, token) {
             password: document.getElementById('password').value
         };
 
-        fetch(`https://api.example.com/clientes/${idCliente}`, {
+        fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/editar/${idCliente}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
