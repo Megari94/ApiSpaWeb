@@ -9,9 +9,30 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'Login.html';
     }
 
-    // Manejar la edición de la información del cliente
-    manejarEdicionCliente(idCliente, token);
+    if (document.body.dataset.page === 'EditarInfoCliente') {
+        cargarInformacionCliente(idCliente, token);
+        manejarEdicionCliente(idCliente, token);
+    }
 });
+
+// Cargar información del cliente en el formulario de edición
+function cargarInformacionCliente(idCliente, token) {
+    fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/encontrarClienteDTO/${idCliente}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(cliente => {
+        document.getElementById('firstName').value = cliente.nombre;
+        document.getElementById('lastName').value = cliente.apellido;
+        document.getElementById('username').value = cliente.nombre_usuario;
+        document.getElementById('email').value = cliente.correo;
+    })
+    .catch(error => console.error('Error al cargar información del cliente:', error));
+}
 
 // Manejar la edición de la información del cliente
 function manejarEdicionCliente(idCliente, token) {
