@@ -68,24 +68,26 @@ function manejarEdicionCliente(idCliente, token) {
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // Usar URLSearchParams para construir los parámetros
-        const updatedData = new URLSearchParams();
-        updatedData.append('nombre', document.getElementById('firstName').value); // Cambiar 'firstName' a 'nombre'
-        updatedData.append('apellido', document.getElementById('lastName').value); // Cambiar 'lastName' a 'apellido'
-        updatedData.append('correo', document.getElementById('email').value); // Cambiar 'email' a 'correo'
-        updatedData.append('contrasenia', document.getElementById('password').value); // Cambiar 'password' a 'contrasenia'
-        updatedData.append('nombre_usuario', document.getElementById('username').value); // Cambiar 'username' a 'nombre_usuario'
-        updatedData.append('listaSesiones', null);   // Enviar como null
-        updatedData.append('listaConsultas', null);  // Enviar como null
-        updatedData.append('listaServicio', null);     // Enviar como null
+        const updatedData = {
+            nombre: document.getElementById('firstName').value, // Cambiar 'firstName' a 'nombre'
+            apellido: document.getElementById('lastName').value, // Cambiar 'lastName' a 'apellido'
+            correo: document.getElementById('email').value, // Cambiar 'email' a 'correo'
+            contrasenia: document.getElementById('password').value, // Cambiar 'password' a 'contrasenia'
+            nombre_usuario: document.getElementById('username').value, // Cambiar 'username' a 'nombre_usuario'
+            listaSesiones: [],   // Enviar como lista vacía
+            listaConsultas: [],  // Enviar como lista vacía
+            listaServicio: []     // Enviar como lista vacía
+        };
+
+        console.log('Datos a enviar:', updatedData); // Para verificar los datos
 
         fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/editar/${idCliente}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/x-www-form-urlencoded' // Cambiar tipo de contenido
+                'Content-Type': 'application/json'
             },
-            body: updatedData.toString() // Convertir a string para enviar
+            body: JSON.stringify(updatedData)
         })
         .then(response => {
             if (!response.ok) {
@@ -101,3 +103,4 @@ function manejarEdicionCliente(idCliente, token) {
         });
     });
 }
+
