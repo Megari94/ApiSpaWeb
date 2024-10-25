@@ -100,7 +100,21 @@
         
         <!-- Campos de pago según la opción seleccionada -->
         <div id="tarjetaFields" style="display: none;">
-            <h4>Pago con Tarjeta</h4>
+            
+        <button type="button" onclick="redireccionarTransferencia()">Ir a la Página de Transferencia</button>
+     
+   
+        </div>
+        
+        <!-- Botón para realizar el pago -->
+        <button onclick="confirmarPago()">Realizar Pago</button>
+    </div>
+</div>
+
+<!-- Modal para Registrar operación -->
+<div id="modalRegistrar" class="modal">
+    <div class="modal-content">
+        <h4>Pago con Tarjeta</h4>
             <form>
                 <label for="cardNumber">Número de Tarjeta:</label>
                 <input type="text" id="cardNumber" placeholder="Número de Tarjeta">
@@ -126,7 +140,7 @@
         </div>
         
         <div>
-            <label for="numeroCuenta">Número de accion</label>
+            <label for="numeroCuenta">Número de operacion</label>
             <input type="text" id="numeroCuenta" name="numeroCuenta" required>
         </div>
         
@@ -139,25 +153,7 @@
             <label for="montoTransferencia">Hora</label>
             <input type="number" id="montoTransferencia" name="montoTransferencia" required>
         </div>
-        
-        <button type="button" onclick="redireccionarTransferencia()">Ir a la Página de Transferencia</button>
-        <button type="submit">Enviar</button>
-    </form>
-        </div>
-        
-        <!-- Botón para realizar el pago -->
-        <button onclick="confirmarPago()">Realizar Pago</button>
-    </div>
-</div>
-
-<!-- Modal para Registrar operación -->
-<div id="modalRegistrar" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="cerrarModal('modalRegistrar')">&times;</span>
-        <h2>Registrar operación</h2>
-        <p>Ingrese los detalles de la operación.</p>
-        <!-- Aquí puedes agregar un formulario de registro -->
-        <button onclick="confirmarRegistro()">Confirmar Registro</button>
+           <button type="submit">Enviar</button>
     </div>
 </div>
 <script>function mostrarCamposPago(opcion) {
