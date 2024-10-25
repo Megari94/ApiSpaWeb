@@ -177,7 +177,7 @@
     // Redirigir para pago con transferencia
     function redireccionarTransferencia() {
         window.open("https://www.mercadopago.com.ar/", "_blank");
-         window.location.reload();
+        window.location.href = window.location.href;
     }
     // Función para confirmar el pago
     function confirmarPago() {
