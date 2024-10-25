@@ -212,4 +212,16 @@ public ResponseEntity<List<ClienteAdminDTO>> getClientesH(){
     
     return new ResponseEntity<>(clienteDTOs, HttpStatus.OK);
 }
+  @GetMapping("/clientes/encontrarClienteDTO/{id_cliente}")
+    public ClienteAdminDTO findClienteDTO(@PathVariable Long id_cliente){
+        Cliente cliente=this.findCliente(id_cliente);
+        ClienteAdminDTO Clientedto = new ClienteAdminDTO();
+       Clientedto.setId(id_cliente);
+       Clientedto.setNombre(cliente.getNombre());
+       Clientedto.setApellido(cliente.getApellido());
+       Clientedto.setCorreo(cliente.getCorreo());
+       Clientedto.setContrasenia(cliente.getContrasenia());
+       Clientedto.setNombre_usuario(cliente.getNombre_usuario());
+       return Clientedto;
+    }
 }
