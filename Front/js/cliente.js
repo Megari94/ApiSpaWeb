@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
     } else if (page === 'SolTurnoCliente') {
         cargarServicios(token);
         manejarSolicitudTurno(token, idCliente);
+    }else if (page === 'EditarInfoCliente') {
+        cargarInformacionCliente(idCliente, token);
+        manejarEdicionCliente(idCliente, token);
     }
 
     // Función para cerrar sesión
@@ -29,6 +32,63 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleMenu();
     });
 });
+// Cargar información del cliente en el formulario de edición
+function cargarInformacionCliente(idCliente, token) {
+    fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/${idCliente}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(cliente => {
+        document.getElementById('firstName').value = cliente.nombre;
+        document.getElementById('lastName').value = cliente.apellido;
+        document.getElementById('username').value = cliente.nombre_usuario;
+        document.getElementById('email').value = cliente.correo;
+    })
+    .catch(error => console.error('Error al cargar información del cliente:', error));
+}
+
+// Manejar la edición de la información del cliente
+function manejarEdicionCliente(idCliente, token) {
+    document.getElementById('personalInfoForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevenir el envío del formulario por defecto
+
+        // Obtener los nuevos valores del formulario
+        const newNombre = document.getElementById('firstName').value;
+        const newApellido = document.getElementById('lastName').value;
+        const newUsuario = document.getElementById('username').value;
+        const newCorreo = document.getElementById('email').value;
+        const newContrasenia = document.getElementById('password').value;
+
+        // Realizar la solicitud PUT para editar el cliente
+        fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/editar/${idCliente}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nombre: newNombre,
+                apellido: newApellido,
+                nombre_usuario: newUsuario,
+                correo: newCorreo,
+                contrasenia: newContrasenia
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Información del cliente actualizada con éxito');
+                location.reload();
+            } else {
+                alert('Error al actualizar la información del cliente');
+            }
+        })
+        .catch(error => console.error('Error al editar el cliente:', error));
+    });
+}
 
 function cargarTurnos(idCliente, token) {
     fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/sesionCliente/${idCliente}`, {
