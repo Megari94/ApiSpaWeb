@@ -57,8 +57,8 @@ function cargarTurnos(idCliente, token) {
                 <td>${sesion.servicio}</td>
                 <td> 
            
-            <button class="btn-editar" onclick="editarSesion(${sesion.id})">Pagar</button>
-            <button class="btn-baja" onclick="darDeBajaSesion(${sesion.id})">Registrar operacion</button>
+            <button class="btn-editar" onclick="mostrarModal('modalPagar')">Pagar</button>
+            <button class="btn-baja" onclick="mostrarModal('modalRegistrar')">Registrar operacion</button>
         </td>
                
             `;
@@ -67,6 +67,28 @@ function cargarTurnos(idCliente, token) {
         
     })
     .catch(error => console.error('Error al cargar turnos:', error));
+}
+
+
+// Función para mostrar el modal
+function mostrarModal(modalId) {
+    document.getElementById(modalId).style.display = 'flex';
+}
+
+// Función para cerrar el modal
+function cerrarModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+// Funciones de confirmación
+function confirmarPago() {
+    alert('Pago confirmado');
+    cerrarModal('modalPagar');
+}
+
+function confirmarRegistro() {
+    alert('Registro confirmado');
+    cerrarModal('modalRegistrar');
 }
 
 // Función para formatear la fecha
