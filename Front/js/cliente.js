@@ -55,6 +55,10 @@ function cargarTurnos(idCliente, token) {
                 <td>${costo}</td>
                 <td>${fechaFormateada}</td> <!-- Aquí usamos la fecha formateada -->
                 <td>${sesion.servicio}</td>
+                  <td class="action-buttons">
+                <button onclick="abrirModalEditarPersonal(${persona.id})">Editar</button>
+                <button onclick="darDeBaja(${persona.id})">Dar de Baja</button>
+            </td>
             `;
             tableBody.appendChild(row);
         });
