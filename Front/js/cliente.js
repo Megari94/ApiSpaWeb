@@ -185,3 +185,16 @@ function toggleMenu() {
     const sidebar = document.getElementById('sidebar');
     sidebar.classList.toggle('active');
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const paymentMethodSelect = document.getElementById('paymentMethod');
+    const paymentMethods = ["Transferencia", "Efectivo", "Tarjeta"];
+
+    paymentMethods.forEach(method => {
+        const option = document.createElement('option');
+        option.value = method.toLowerCase(); // Asigna el valor en minúsculas
+        option.textContent = method;
+        paymentMethodSelect.appendChild(option);
+    });
+});
+
