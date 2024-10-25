@@ -40,11 +40,12 @@ function cargarInformacionCliente(idCliente, token) {
         const usernameField = document.getElementById('username');
 
         if (firstNameField && lastNameField && emailField && passwordField && usernameField) {
-            firstNameField.value = data.nombre;       // Cambiado de firstName a nombre
-            lastNameField.value = data.apellido;      // Cambiado de lastName a apellido
-            emailField.value = data.correo;           // Cambiado de email a correo
-            passwordField.value = data.contrasenia;   // Cambiado de password a contrasenia
-            usernameField.value = data.nombre_usuario; // Cambiado de username a nombre_usuario
+            // Modificar las asignaciones para que coincidan con tu JSON
+            firstNameField.value = data.nombre; // Cambiar 'firstName' a 'nombre'
+            lastNameField.value = data.apellido; // Cambiar 'lastName' a 'apellido'
+            emailField.value = data.correo; // Cambiar 'email' a 'correo'
+            passwordField.value = data.contrasenia; // Cambiar 'password' a 'contrasenia'
+            usernameField.value = data.nombre_usuario; // Cambiar 'username' a 'nombre_usuario'
         } else {
             console.error('Los campos del formulario no se encontraron en el DOM.');
         }
@@ -68,12 +69,12 @@ function manejarEdicionCliente(idCliente, token) {
         event.preventDefault();
 
         const updatedData = {
-            nombre: document.getElementById('firstName').value,          // Cambiado de firstName a nombre
-            apellido: document.getElementById('lastName').value,        // Cambiado de lastName a apellido
-            correo: document.getElementById('email').value,             // Cambiado de email a correo
-            contrasenia: document.getElementById('password').value,     // Cambiado de password a contrasenia
-            nombre_usuario: document.getElementById('username').value,  // Cambiado de username a nombre_usuario
-            listaSesiones: null,  // Enviar como null
+            nombre: document.getElementById('firstName').value, // Cambiar 'firstName' a 'nombre'
+            apellido: document.getElementById('lastName').value, // Cambiar 'lastName' a 'apellido'
+            correo: document.getElementById('email').value, // Cambiar 'email' a 'correo'
+            contrasenia: document.getElementById('password').value, // Cambiar 'password' a 'contrasenia'
+            nombre_usuario: document.getElementById('username').value, // Cambiar 'username' a 'nombre_usuario'
+            listaSesiones: null,   // Enviar como null
             listaConsultas: null,  // Enviar como null
             listaServicio: null     // Enviar como null
         };
