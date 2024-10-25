@@ -162,7 +162,7 @@
             <input type="text" id="referenciaTransferencia" name="referenciaTransferencia" placeholder="Número de referencia" required>
         </div>
        
-        <button type="submit">Enviar Pago</button>
+        <button type="submit" onclick="enviarPago()">Enviar Pago</button>
     </form>
     </div>
 </div>
@@ -179,7 +179,10 @@
     function confirmarPago() {
         alert("Pago confirmado");
     }
-
+    //Funcion para Recepcionar el pago
+    function enviarPago() {
+        alert("Gracias por confirmar su Pago");
+    }
 </script>
 </body>
 </html>
