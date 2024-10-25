@@ -46,12 +46,19 @@ function cargarTurnos(idCliente, token) {
         data.forEach(sesion => {
             const row = document.createElement('tr');
             const costo = sesion.asistencia === "SOLICITADO" ? "a confirmar" : sesion.costo;
+            // Determinar la clase CSS según el estado
+        let claseEstado = '';
+        if (sesion.asistencia === "RECHAZADO") {
+            claseEstado = 'estado-rechazado'; // Clase para estado rechazado
+        } else if (sesion.asistencia === "CONFIRMADO") {
+            claseEstado = 'estado-confirmado'; // Clase para estado confirmado
+        }
 
             // Formatear la fecha
             const fechaFormateada = formatearFecha(sesion.fecha);
 
             row.innerHTML = `
-                <td>${sesion.asistencia}</td>  <!-- Aquí mostramos el valor tal cual -->
+                <td class="${claseEstado}">${sesion.asistencia}</td> 
                 <td>${costo}</td>
                 <td>${fechaFormateada}</td> <!-- Aquí usamos la fecha formateada -->
                 <td>${sesion.servicio}</td>
