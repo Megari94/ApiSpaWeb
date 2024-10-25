@@ -166,14 +166,18 @@
     </form>
     </div>
 </div>
-<script>function mostrarCamposPago(opcion) {
+<script>
+    function mostrarCamposPago(opcion) {
         document.getElementById('tarjetaFields').style.display = (opcion === 'tarjeta') ? 'block' : 'none';
         document.getElementById('transferenciaFields').style.display = (opcion === 'transferencia') ? 'block' : 'none';
+        // Ocultar el botón de confirmar pago si la opción es transferencia
+        document.getElementById('confirmarPagoButton').style.display = (opcion === 'transferencia') ? 'none' : 'block';
     }
 
     // Redirigir para pago con transferencia
     function redireccionarTransferencia() {
         window.open("https://www.mercadopago.com.ar/", "_blank");
+         window.location.reload();
     }
     // Función para confirmar el pago
     function confirmarPago() {
