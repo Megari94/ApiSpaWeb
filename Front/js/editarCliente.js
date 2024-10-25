@@ -1,5 +1,3 @@
-// editarCliente.js
-
 document.addEventListener('DOMContentLoaded', function() {
     const token = localStorage.getItem('token');
     const idCliente = localStorage.getItem('idCliente');
@@ -7,70 +5,76 @@ document.addEventListener('DOMContentLoaded', function() {
     // Verifica si el usuario está autenticado
     if (!token) {
         window.location.href = 'Login.html';
+        return;
     }
 
+    // Verifica si la página actual es EditarInfoCliente.html
     if (document.body.dataset.page === 'EditarInfoCliente') {
         cargarInformacionCliente(idCliente, token);
         manejarEdicionCliente(idCliente, token);
     }
 });
 
-// Cargar información del cliente en el formulario de edición
+// Función para cargar la información del cliente
 function cargarInformacionCliente(idCliente, token) {
-    fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/encontrarClienteDTO/${idCliente}`, {
+    fetch(`https://api.example.com/clientes/${idCliente}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
         }
     })
-    .then(response => response.json())
-    .then(cliente => {
-        document.getElementById('firstName').value = cliente.nombre;
-        document.getElementById('lastName').value = cliente.apellido;
-        document.getElementById('username').value = cliente.nombre_usuario;
-        document.getElementById('email').value = cliente.correo;
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al cargar la información del cliente');
+        }
+        return response.json();
     })
-    .catch(error => console.error('Error al cargar información del cliente:', error));
+    .then(data => {
+        // Cargar los datos en los campos del formulario
+        document.getElementById('firstName').value = data.firstName;
+        document.getElementById('lastName').value = data.lastName;
+        document.getElementById('username').value = data.username;
+        document.getElementById('email').value = data.email;
+        document.getElementById('password').value = data.password;
+    })
+    .catch(error => {
+        console.error('Error al cargar la información del cliente:', error);
+        alert('No se pudo cargar la información del cliente. Inténtelo de nuevo más tarde.');
+    });
 }
 
-// Manejar la edición de la información del cliente
+// Función para manejar la edición de la información del cliente
 function manejarEdicionCliente(idCliente, token) {
-    document.getElementById('personalInfoForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevenir el envío del formulario por defecto
+    const form = document.getElementById('personalInfoForm');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-        // Obtener los nuevos valores del formulario
-        const newNombre = document.getElementById('firstName').value;
-        const newApellido = document.getElementById('lastName').value;
-        const newUsuario = document.getElementById('username').value;
-        const newCorreo = document.getElementById('email').value;
-        const newContrasenia = document.getElementById('password').value;
+        const updatedData = {
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            username: document.getElementById('username').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value
+        };
 
-        // Crear parámetros de consulta
-        const params = new URLSearchParams({
-            nombre: newNombre,
-            apellido: newApellido,
-            nombre_usuario: newUsuario,
-            correo: newCorreo,
-            contrasenia: newContrasenia
-        });
-
-        // Realizar la solicitud PUT para editar el cliente
-        fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/editar/${idCliente}?${params.toString()}`, {
+        fetch(`https://api.example.com/clientes/${idCliente}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
-            }
+            },
+            body: JSON.stringify(updatedData)
         })
         .then(response => {
-            if (response.ok) {
-                alert('Información del cliente actualizada con éxito');
-                location.reload();
-            } else {
-                alert('Error al actualizar la información del cliente');
+            if (!response.ok) {
+                throw new Error('Error al actualizar la información del cliente');
             }
+            alert('Información actualizada correctamente');
         })
-        .catch(error => console.error('Error al editar el cliente:', error));
+        .catch(error => {
+            console.error('Error al actualizar la información del cliente:', error);
+            alert('No se pudo actualizar la información del cliente. Inténtelo de nuevo más tarde.');
+        });
     });
 }
