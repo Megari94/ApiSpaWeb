@@ -68,24 +68,24 @@ function manejarEdicionCliente(idCliente, token) {
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        const updatedData = {
-            nombre: document.getElementById('firstName').value, // Cambiar 'firstName' a 'nombre'
-            apellido: document.getElementById('lastName').value, // Cambiar 'lastName' a 'apellido'
-            correo: document.getElementById('email').value, // Cambiar 'email' a 'correo'
-            contrasenia: document.getElementById('password').value, // Cambiar 'password' a 'contrasenia'
-            nombre_usuario: document.getElementById('username').value, // Cambiar 'username' a 'nombre_usuario'
-     
-        };
+        // Crear un objeto URLSearchParams para los parámetros de consulta
+        const params = new URLSearchParams();
+        
+        // Agregar los datos al objeto URLSearchParams
+        params.append('nombre', document.getElementById('firstName').value); // Cambiar 'firstName' a 'nombre'
+        params.append('apellido', document.getElementById('lastName').value); // Cambiar 'lastName' a 'apellido'
+        params.append('correo', document.getElementById('email').value); // Cambiar 'email' a 'correo'
+        params.append('contrasenia', document.getElementById('password').value); // Cambiar 'password' a 'contrasenia'
+        params.append('nombre_usuario', document.getElementById('username').value); // Cambiar 'username' a 'nombre_usuario'
 
-        console.log('Datos a enviar:', updatedData); // Para verificar los datos
+        console.log('Datos a enviar:', params.toString()); // Para verificar los datos
 
-        fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/editar/${idCliente}`, {
+        fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/editar/${idCliente}?${params.toString()}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/x-www-form-urlencoded', // Cambiar el tipo de contenido
             },
-            body: JSON.stringify(updatedData)
         })
         .then(response => {
             if (!response.ok) {
@@ -101,4 +101,3 @@ function manejarEdicionCliente(idCliente, token) {
         });
     });
 }
-
