@@ -68,28 +68,30 @@ function manejarEdicionCliente(idCliente, token) {
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        const updatedData = {
-            nombre: document.getElementById('firstName').value, // Cambiar 'firstName' a 'nombre'
-            apellido: document.getElementById('lastName').value, // Cambiar 'lastName' a 'apellido'
-            correo: document.getElementById('email').value, // Cambiar 'email' a 'correo'
-            contrasenia: document.getElementById('password').value, // Cambiar 'password' a 'contrasenia'
-            nombre_usuario: document.getElementById('username').value, // Cambiar 'username' a 'nombre_usuario'
-            listaSesiones: null,   // Enviar como null
-            listaConsultas: null,  // Enviar como null
-            listaServicio: null     // Enviar como null
-        };
+        // Usar URLSearchParams para construir los parámetros
+        const updatedData = new URLSearchParams();
+        updatedData.append('nombre', document.getElementById('firstName').value); // Cambiar 'firstName' a 'nombre'
+        updatedData.append('apellido', document.getElementById('lastName').value); // Cambiar 'lastName' a 'apellido'
+        updatedData.append('correo', document.getElementById('email').value); // Cambiar 'email' a 'correo'
+        updatedData.append('contrasenia', document.getElementById('password').value); // Cambiar 'password' a 'contrasenia'
+        updatedData.append('nombre_usuario', document.getElementById('username').value); // Cambiar 'username' a 'nombre_usuario'
+        updatedData.append('listaSesiones', null);   // Enviar como null
+        updatedData.append('listaConsultas', null);  // Enviar como null
+        updatedData.append('listaServicio', null);     // Enviar como null
 
         fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/editar/${idCliente}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/x-www-form-urlencoded' // Cambiar tipo de contenido
             },
-            body: JSON.stringify(updatedData)
+            body: updatedData.toString() // Convertir a string para enviar
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Error al actualizar la información del cliente');
+                return response.json().then(err => {
+                    throw new Error(err.message || 'Error al actualizar la información del cliente');
+                });
             }
             alert('Información actualizada correctamente');
         })
