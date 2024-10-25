@@ -20,14 +20,18 @@ import org.springframework.stereotype.Repository;
  *
  * @author Virginia
  */
-@Repository
-public interface ISesionRepository extends JpaRepository<Sesion,Long>{
-@Query("SELECT new com.madeTUP.AppSpa.DTO.SesionAdminDTO(s.id, s.asistencia, s.costo, s.fecha, CONCAT(c.nombre, ' ', c.apellido), se.nombreServicio,s.metPago) " +
+public interface ISesionRepository extends JpaRepository<Sesion, Long> {
+
+    @Query("SELECT new com.madeTUP.AppSpa.DTO.SesionAdminDTO(s.id, s.asistencia, s.costo, s.fecha, CONCAT(c.nombre, ' ', c.apellido), se.nombreServicio, s.metPago) " +
            "FROM Sesion s " +
            "JOIN s.cliente c " +
            "JOIN s.servicio se " +
-           "WHERE s.fecha BETWEEN :startDate AND :endDate AND s.asistencia = 'CONFIRMADO'")
-    List<SesionAdminDTO> findConfirmedSessionsBetweenDates(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+           "WHERE s.fecha BETWEEN :startDate AND :endDate AND s.asistencia = 'CONFIRMADO' AND s.metPago = :metodoPago")
+    List<SesionAdminDTO> findConfirmedSessionsBetweenDatesAndPaymentMethod(
+        @Param("startDate") LocalDateTime startDate, 
+        @Param("endDate") LocalDateTime endDate, 
+        @Param("metodoPago")String metodoPago);
+
 
     @Query("SELECT new com.madeTUP.AppSpa.DTO.ClientexDiaDTO(s.id, s.fecha, c.nombre, se.nombreServicio, p.nombre) " +
            "FROM Sesion s " +

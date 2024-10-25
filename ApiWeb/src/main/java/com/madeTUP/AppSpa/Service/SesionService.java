@@ -151,8 +151,8 @@ public void editSesion(Long id_sesion, Servicio servicio, Cliente cliente, Local
         return sesionesAd;
     }
     @Override
-    public List<SesionAdminDTO> getInformePago(LocalDateTime startDate, LocalDateTime endDate) {
-        return sesionrepo.findConfirmedSessionsBetweenDates(startDate, endDate);
+    public List<SesionAdminDTO> getInformePago(LocalDateTime startDate, LocalDateTime endDate,String metodoPago) {
+        return sesionrepo.findConfirmedSessionsBetweenDatesAndPaymentMethod(startDate, endDate, metodoPago);
     }
 
     @Override

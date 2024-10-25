@@ -257,9 +257,10 @@ public ResponseEntity<String> editarCostoSesion(@PathVariable Long id_sesion, @R
 @GetMapping("/informe-pago")
     public ResponseEntity<List<SesionAdminDTO>> getInformePago(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
+            @RequestParam(name="metodoPago") String metodoPago) {
         
-        List<SesionAdminDTO> informe = servis.getInformePago(startDate, endDate);
+        List<SesionAdminDTO> informe = servis.getInformePago(startDate, endDate,metodoPago);
         return ResponseEntity.ok(informe);
     }
    @GetMapping("/clientesPorFecha")
