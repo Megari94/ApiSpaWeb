@@ -38,8 +38,6 @@ function cargarInformacionCliente(idCliente, token) {
         const emailField = document.getElementById('email');
         const passwordField = document.getElementById('password');
         const usernameField = document.getElementById('username');
-        
-        
 
         if (firstNameField && lastNameField && usernameField && emailField && passwordField) {
             firstNameField.value = data.firstName;
@@ -47,8 +45,6 @@ function cargarInformacionCliente(idCliente, token) {
             emailField.value = data.email;
             passwordField.value = data.password;
             usernameField.value = data.username;
-            
-            
         } else {
             console.error('Los campos del formulario no se encontraron en el DOM.');
         }
@@ -75,7 +71,7 @@ function manejarEdicionCliente(idCliente, token) {
             firstName: document.getElementById('firstName').value,
             lastName: document.getElementById('lastName').value,            
             email: document.getElementById('email').value,
-            password: document.getElementById('password').value
+            password: document.getElementById('password').value,
             username: document.getElementById('username').value,
         };
 
