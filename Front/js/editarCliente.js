@@ -31,12 +31,22 @@ function cargarInformacionCliente(idCliente, token) {
         return response.json();
     })
     .then(data => {
-        // Cargar los datos en los campos del formulario
-        document.getElementById('firstName').value = data.firstName;
-        document.getElementById('lastName').value = data.lastName;
-        document.getElementById('username').value = data.username;
-        document.getElementById('email').value = data.email;
-        document.getElementById('password').value = data.password;
+        // Verifica si los campos del formulario están presentes en el DOM
+        const firstNameField = document.getElementById('firstName');
+        const lastNameField = document.getElementById('lastName');
+        const usernameField = document.getElementById('username');
+        const emailField = document.getElementById('email');
+        const passwordField = document.getElementById('password');
+
+        if (firstNameField && lastNameField && usernameField && emailField && passwordField) {
+            firstNameField.value = data.firstName;
+            lastNameField.value = data.lastName;
+            usernameField.value = data.username;
+            emailField.value = data.email;
+            passwordField.value = data.password;
+        } else {
+            console.error('Los campos del formulario no se encontraron en el DOM.');
+        }
     })
     .catch(error => {
         console.error('Error al cargar la información del cliente:', error);
@@ -47,6 +57,12 @@ function cargarInformacionCliente(idCliente, token) {
 // Función para manejar la edición de la información del cliente
 function manejarEdicionCliente(idCliente, token) {
     const form = document.getElementById('personalInfoForm');
+    
+    if (!form) {
+        console.error('El formulario no se encontró en el DOM.');
+        return;
+    }
+
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
