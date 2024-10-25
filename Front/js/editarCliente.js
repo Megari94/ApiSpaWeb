@@ -39,12 +39,12 @@ function cargarInformacionCliente(idCliente, token) {
         const passwordField = document.getElementById('password');
         const usernameField = document.getElementById('username');
 
-        if (firstNameField && lastNameField && usernameField && emailField && passwordField) {
-            firstNameField.value = data.firstName;
-            lastNameField.value = data.lastName;
-            emailField.value = data.email;
-            passwordField.value = data.password;
-            usernameField.value = data.username;
+        if (firstNameField && lastNameField && emailField && passwordField && usernameField) {
+            firstNameField.value = data.nombre;       // Cambiado de firstName a nombre
+            lastNameField.value = data.apellido;      // Cambiado de lastName a apellido
+            emailField.value = data.correo;           // Cambiado de email a correo
+            passwordField.value = data.contrasenia;   // Cambiado de password a contrasenia
+            usernameField.value = data.nombre_usuario; // Cambiado de username a nombre_usuario
         } else {
             console.error('Los campos del formulario no se encontraron en el DOM.');
         }
@@ -68,11 +68,14 @@ function manejarEdicionCliente(idCliente, token) {
         event.preventDefault();
 
         const updatedData = {
-            firstName: document.getElementById('firstName').value,
-            lastName: document.getElementById('lastName').value,            
-            email: document.getElementById('email').value,
-            password: document.getElementById('password').value,
-            username: document.getElementById('username').value,
+            nombre: document.getElementById('firstName').value,          // Cambiado de firstName a nombre
+            apellido: document.getElementById('lastName').value,        // Cambiado de lastName a apellido
+            correo: document.getElementById('email').value,             // Cambiado de email a correo
+            contrasenia: document.getElementById('password').value,     // Cambiado de password a contrasenia
+            nombre_usuario: document.getElementById('username').value,  // Cambiado de username a nombre_usuario
+            listaSesiones: null,  // Enviar como null
+            listaConsultas: null,  // Enviar como null
+            listaServicio: null     // Enviar como null
         };
 
         fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/editar/${idCliente}`, {
