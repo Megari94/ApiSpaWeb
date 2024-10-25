@@ -7,6 +7,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="css/estilo.css">
     <script src="js/cliente.js" defer></script>
+    <style>
+        .payment-options {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .payment-options label {
+        display: flex;
+        align-items: center;
+        gap: 5px; /* Espacio entre el círculo y el texto */
+        font-size: 16px; /* Tamaño de letra */
+        cursor: pointer; /* Cambia el cursor al pasar sobre las opciones */
+    }
+
+    .payment-options input[type="radio"] {
+        margin: 0; /* Elimina el margen por defecto */
+    }</style>
 </head>
 <body data-page="TurnosCliente">
     <div class="container">
