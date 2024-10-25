@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Cargar información del cliente en el formulario de edición
 function cargarInformacionCliente(idCliente, token) {
-    fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/${idCliente}`, {
+    fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/encontrar/${idCliente}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
