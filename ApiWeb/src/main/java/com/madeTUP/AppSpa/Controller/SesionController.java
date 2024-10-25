@@ -93,7 +93,7 @@ public class SesionController {
         sesion.setFecha(fecha);
         sesion.setAsistencia(se.getAsistencia());
        sesion.setCosto(se.getCosto());
-       
+       sesion.setMetPago(se.getMetPago());
         servis.saveSesion(sesion);
         return "Sesion creada";
     }
@@ -112,9 +112,10 @@ public class SesionController {
             @RequestParam(required=false, name="cliente")Cliente cliente,
             @RequestParam(required=false,name="fecha")LocalDateTime fecha,
            @RequestParam(required=false,name="costo")Double costo,
-            @RequestParam(required=false,name="asistencia") String asistencia){
+            @RequestParam(required=false,name="asistencia") String asistencia,
+            @RequestParam(required=false,name="metPago") String metPago){
          
-               servis.editSesion(id_sesion, servicio, cliente, fecha, costo, asistencia);
+               servis.editSesion(id_sesion, servicio, cliente, fecha, costo, asistencia,metPago);
                Sesion c=this.findSesion(id_sesion);
                return c;
 }
@@ -153,6 +154,7 @@ public ResponseEntity<String> agregarSesion(@RequestBody NewSesionDTO nuevaSesio
         sesion.setFecha(LocalDateTime.parse(nuevaSesion.getFecha()));
         sesion.setCosto(0.0);
         sesion.setAsistencia("SOLICITADO"); // Puedes ajustarlo según la lógica del negocio
+        sesion.setMetPago(nuevaSesion.getMetPago());
 
         // Guardamos la sesión
         servis.saveSesion(sesion);
@@ -185,7 +187,7 @@ public ResponseEntity<String> aceptarSesion(@PathVariable Long id) {
 public ResponseEntity<String> rechazarSesion(@PathVariable Long id_sesion) {
     try {
         // Llama al método editSesion para actualizar el estado de asistencia
-        servis.editSesion(id_sesion, null, null, null, null, "RECHAZADO");
+        servis.editSesion(id_sesion, null, null, null, null, "RECHAZADO",null);
         return ResponseEntity.ok("Asistencia rechazada");
     } catch (EntityNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sesión no encontrada");
@@ -198,7 +200,7 @@ public ResponseEntity<String> rechazarSesion(@PathVariable Long id_sesion) {
 public ResponseEntity<String> cancelarSesion(@PathVariable Long id_sesion) {
     try {
         // Llama al método editSesion para actualizar el estado de asistencia a "CANCELADO"
-        servis.editSesion(id_sesion, null, null, null, null, "CANCELADO");
+        servis.editSesion(id_sesion, null, null, null, null, "CANCELADO",null);
         return ResponseEntity.ok("Sesión cancelada");
     } catch (EntityNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sesión no encontrada");
@@ -229,6 +231,7 @@ public ResponseEntity<String> agregarSesionAdmin(@RequestBody NewSesionDTO nueva
         sesion.setFecha(LocalDateTime.parse(nuevaSesion.getFecha()));
         sesion.setCosto(nuevaSesion.getCosto());
         sesion.setAsistencia("CONFIRMADO"); // Puedes ajustarlo según la lógica del negocio
+        sesion.setMetPago(nuevaSesion.getMetPago());
 
         // Guardamos la sesión
         servis.saveSesion(sesion);
@@ -243,7 +246,7 @@ public ResponseEntity<String> agregarSesionAdmin(@RequestBody NewSesionDTO nueva
 public ResponseEntity<String> editarCostoSesion(@PathVariable Long id_sesion, @RequestParam(required = false) Double nuevoCosto) {
     try {
         // Llama al método editSesion para actualizar el estado de asistencia a "CANCELADO"
-        servis.editSesion(id_sesion, null, null, null, nuevoCosto, "CONFIRMADO");
+        servis.editSesion(id_sesion, null, null, null, nuevoCosto, "CONFIRMADO",null);
         return ResponseEntity.ok("Precio Agregado");
     } catch (EntityNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sesión no encontrada");

@@ -160,7 +160,7 @@ public ResponseEntity<Map<String, Object>> loginCliente(@RequestBody ClienteLogi
         List<SesionDTO> listaSesionDTO=new ArrayList<>();
         
         for(Sesion sesion: cliente1.getListaSesiones()){
-           SesionDTO s= new SesionDTO(sesion.getServicio().getNombreServicio(),sesion.getFecha(),sesion.getCosto(),sesion.getAsistencia());
+           SesionDTO s= new SesionDTO(sesion.getServicio().getNombreServicio(),sesion.getFecha(),sesion.getCosto(),sesion.getAsistencia(),sesion.getMetPago());
            listaSesionDTO.add(s);
         }
         perfilDTO.setLista_Sesiones(listaSesionDTO);

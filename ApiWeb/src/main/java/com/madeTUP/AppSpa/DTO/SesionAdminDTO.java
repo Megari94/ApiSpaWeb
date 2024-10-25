@@ -21,18 +21,22 @@ public class SesionAdminDTO {
     private LocalDateTime fecha;
     private String nombre_completo;
     private String nombre_servicio;
+    private String metPago;
 
     public SesionAdminDTO() {
     }
 
-    public SesionAdminDTO(Long id, String asistencia, Double Costo, LocalDateTime fecha, String nombre_completo, String nombre_servicio) {
+    public SesionAdminDTO(Long id, String asistencia, Double Costo, LocalDateTime fecha, String nombre_completo, String nombre_servicio, String metPago) {
         this.id = id;
         this.asistencia = asistencia;
         this.Costo = Costo;
         this.fecha = fecha;
         this.nombre_completo = nombre_completo;
         this.nombre_servicio = nombre_servicio;
+        this.metPago = metPago;
     }
+
+   
    
     
 }

@@ -7,15 +7,15 @@ package com.madeTUP.AppSpa.Controller;
 import com.madeTUP.AppSpa.DTO.ServicioAdminDTO;
 import com.madeTUP.AppSpa.DTO.ServicioAdministradorDTO;
 import com.madeTUP.AppSpa.DTO.ServicioDTO;
-import com.madeTUP.AppSpa.Service.ISesionService;
-import com.madeTUP.AppSpa.Model.Sesion;
 import com.madeTUP.AppSpa.Model.Personal;
 import com.madeTUP.AppSpa.Model.Servicio;
+import com.madeTUP.AppSpa.Model.Sesion;
 import com.madeTUP.AppSpa.Service.IPersonalService;
 import com.madeTUP.AppSpa.Service.IServicioService;
-import java.util.List;
+import com.madeTUP.AppSpa.Service.ISesionService;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -93,6 +93,8 @@ public ResponseEntity<Map<String, String>> deleteServicio(@PathVariable Long id_
     // Retornar respuesta en formato JSON
     return new ResponseEntity<>(Map.of("message", "Servicio y sesiones eliminadas"), HttpStatus.OK);
 }
+
+     
 //     @PutMapping("/Servicio/editar/{id_servicio}")
 //     public Servicio editServicio(@PathVariable Long id_servicio,
 //             @RequestParam(required=false,name="nombre_servicio")String newname,
@@ -110,7 +112,7 @@ public ResponseEntity<Map<String, String>> deleteServicio(@PathVariable Long id_
      }
      
      
-    @PostMapping("/crearAdmin")
+   @PostMapping("/crearAdmin")
 public ResponseEntity<Map<String, Object>> crearServicio(@RequestBody ServicioAdministradorDTO c) {
     Servicio servicio = new Servicio();
     servicio.setNombreServicio(c.getNombreServicio());
@@ -135,7 +137,7 @@ public ResponseEntity<Map<String, Object>> crearServicio(@RequestBody ServicioAd
 }
 
 
-   @PutMapping("/editarAdmin")
+    @PutMapping("/editarAdmin")
 public ResponseEntity<Map<String, String>> editServicioIIAdmin(@RequestBody ServicioAdministradorDTO c) {
     // Buscar el servicio existente
     Servicio servicio = servis.findServicio(c.getId());

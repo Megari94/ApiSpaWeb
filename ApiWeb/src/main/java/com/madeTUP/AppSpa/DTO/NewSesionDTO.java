@@ -20,19 +20,23 @@ public class NewSesionDTO {
      private String fecha; 
     private Double costo;
     private String asistencia;
+    private String metPago;
 
     public NewSesionDTO() {
     }
-    
 
-    public NewSesionDTO(Long id, Long id_Cliente, Long id_Servicio, String fecha, Double costo,String asistencia) {
+    public NewSesionDTO(Long id, Long id_Cliente, Long id_Servicio, String fecha, Double costo, String asistencia, String metPago) {
         this.id = id;
         this.id_Cliente = id_Cliente;
         this.id_Servicio = id_Servicio;
         this.fecha = fecha;
         this.costo = costo;
         this.asistencia = asistencia;
+        this.metPago = metPago;
     }
+    
+
+  
 
 
 

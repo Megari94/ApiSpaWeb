@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IPersonalRepository extends JpaRepository<Personal, Long> {
-@Query("SELECT new com.madeTUP.AppSpa.DTO.SesionPersonalDTO(s.id, c.id, CONCAT(c.nombre, ' ', c.apellido), ser.nombreServicio, s.fecha, s.costo, s.asistencia) " +
+@Query("SELECT new com.madeTUP.AppSpa.DTO.SesionPersonalDTO(s.id, c.id, CONCAT(c.nombre, ' ', c.apellido), ser.nombreServicio, s.fecha, s.costo, s.asistencia,s.metPago) " +
            "FROM Sesion s " +
            "JOIN s.cliente c " +
            "JOIN s.servicio ser " +
@@ -20,7 +20,7 @@ public interface IPersonalRepository extends JpaRepository<Personal, Long> {
            "WHERE p.id = :personalId")
     List<SesionPersonalDTO> findSesionesByPersonalId(@Param("personalId") Long personalId);
 
-    @Query("SELECT new com.madeTUP.AppSpa.DTO.SesionAdminDTO(s.id, s.asistencia, s.costo, s.fecha, CONCAT(c.nombre, ' ', c.apellido), se.nombreServicio) " +
+    @Query("SELECT new com.madeTUP.AppSpa.DTO.SesionAdminDTO(s.id, s.asistencia, s.costo, s.fecha, CONCAT(c.nombre, ' ', c.apellido), se.nombreServicio,s.metPago) " +
            "FROM Sesion s " +
            "JOIN s.cliente c " +
            "JOIN s.servicio se " +

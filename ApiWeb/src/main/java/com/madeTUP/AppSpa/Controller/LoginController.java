@@ -30,16 +30,14 @@ public ResponseEntity<?> login(@RequestBody ClienteLoginDTO loginRequest) {
     if (!usuarioService.verifyPassword(usuario, loginRequest.getPassword())) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña incorrecta");
     }
-    
-   
     Map<String, Object> response = new HashMap<>();
     response.put("success", true);
     response.put("message", "Inicio de sesión exitoso.");
     response.put("rol", usuario.getTipoUsuario()); // Devolver el rol del usuario
-    response.put("Id", usuario.getId());
-    response.put("nombre_usuario", usuario.getNombre_usuario());
+     response.put("Id", usuario.getId());
      String token = "token-appspa-2024"; 
      response.put("token", token); 
+            response.put("nombre_usuario", usuario.getNombre_usuario());
     return ResponseEntity.ok(response);
 }
 

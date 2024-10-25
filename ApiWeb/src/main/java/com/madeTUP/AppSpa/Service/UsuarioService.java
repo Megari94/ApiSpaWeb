@@ -74,7 +74,7 @@ public boolean verifyPassword(Usuario usuario, String password) {
             u.setNombre(usuario.getNombre());
             u.setApellido(usuario.getApellido());
             u.setCorreo(usuario.getCorreo());
-             u.setTipoUsuario(usuario.getTipoUsuario());
+            u.setTipoUsuario(usuario.getTipoUsuario());
             ususAdmin.add(u);
         }
         return ususAdmin;
