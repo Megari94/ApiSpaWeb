@@ -22,19 +22,24 @@ public class SesionPersonalDTO{
     private LocalDateTime fecha; 
     private Double costo;
     private String asistencia;
+    private String metPago;
 
     public SesionPersonalDTO() {
     }
 
-    public SesionPersonalDTO(Long idA,Long idCliente, String nombreCliente, String servicio, LocalDateTime fecha, Double costo, String asistencia) {
-       this.idA=idA;
+    public SesionPersonalDTO(Long idA, Long idCliente, String nombreCliente, String servicio, LocalDateTime fecha, Double costo, String asistencia, String metPago) {
+        this.idA = idA;
         this.idCliente = idCliente;
         this.nombreCliente = nombreCliente;
         this.servicio = servicio;
         this.fecha = fecha;
         this.costo = costo;
         this.asistencia = asistencia;
+        this.metPago = metPago;
     }
+
+   
+    
     public Long getIdSesion(Long idA) {
         return this.idA;
     }

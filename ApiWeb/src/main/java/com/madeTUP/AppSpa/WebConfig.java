@@ -10,9 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://apispaweb-production.up.railway.app") // Especifica tu origen permitido
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*") // Permitir cualquier encabezado
-                .allowCredentials(true); // Permitir el uso de credenciales (cookies, encabezados de autenticación, etc.)
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
     }
+
 }

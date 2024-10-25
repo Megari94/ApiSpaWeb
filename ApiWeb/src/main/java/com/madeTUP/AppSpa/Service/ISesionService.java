@@ -25,7 +25,7 @@ public interface ISesionService {
     public void saveSesion (Sesion sesion);
     public void deleteSesion (Long id);
     public Sesion findSesion (Long id);
-    public void editSesion (Long id,Servicio servicio,Cliente cliente,LocalDateTime fecha,Double costo,String asistencia);
+    public void editSesion (Long id,Servicio servicio,Cliente cliente,LocalDateTime fecha,Double costo,String asistencia,String metPago);
     public void editSesionII (Sesion sesion);
     public boolean cancelarAsistencia(Long id);
     public List<SesionDTO> getSesionCliente(Long id_Cliente);

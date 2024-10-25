@@ -15,7 +15,6 @@ import com.madeTUP.AppSpa.DTO.UsuarioDTO;
 import com.madeTUP.AppSpa.Model.Administrador;
 import com.madeTUP.AppSpa.Model.Personal;
 import com.madeTUP.AppSpa.Model.Secretaria;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import com.madeTUP.AppSpa.Model.Servicio;
 import com.madeTUP.AppSpa.Model.Usuario;
 import com.madeTUP.AppSpa.Service.IAdministradorService;
@@ -29,6 +28,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -204,5 +204,7 @@ public ResponseEntity<String> eliminarPerfilUsuario(@RequestBody UsuarioDTO c) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el perfil: " + e.getMessage());
     }
 }
+
+
 
 }

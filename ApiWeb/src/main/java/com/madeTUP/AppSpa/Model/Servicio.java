@@ -57,7 +57,11 @@ public class Servicio {
     public void setNroEtapas(Long nroEtapas) {
         this.nroEtapas=nroEtapas;
     }
-
+    
+    public Long getNroEtapas(){
+        return nroEtapas;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -70,4 +74,6 @@ public class Servicio {
     public void setNombreServicio(String nombreServicio) {
         this.nombreServicio=nombreServicio;
     }
+
+   
 }

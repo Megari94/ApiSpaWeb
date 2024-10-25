@@ -4,7 +4,6 @@
  */
 package com.madeTUP.AppSpa.DTO;
 
-import com.madeTUP.AppSpa.Model.Sesion;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;

@@ -18,16 +18,21 @@ public class SesionDTO {
     private LocalDateTime fecha; 
     private Double costo;
     private String asistencia;
+    private String metPago;
 
     public SesionDTO() {
     }
 
-    public SesionDTO(String servicio, LocalDateTime fecha, Double costo, String asistencia) {
+    public SesionDTO(String servicio, LocalDateTime fecha, Double costo, String asistencia, String metPago) {
         this.servicio = servicio;
         this.fecha = fecha;
         this.costo = costo;
         this.asistencia = asistencia;
+        this.metPago = metPago;
     }
+
+   
+    
     
     
     

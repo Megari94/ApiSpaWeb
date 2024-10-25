@@ -13,7 +13,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,20 +38,22 @@ public class Sesion {
     private LocalDateTime fecha; 
     private Double costo;
     private String asistencia;
+    private String metPago;
 
     public Sesion() {
     }
 
-    public Sesion(Long id, Servicio servicio, Cliente cliente, LocalDateTime fecha, Double costo, String asistencia) {
+    public Sesion(Long id, Servicio servicio, Cliente cliente, LocalDateTime fecha, Double costo, String asistencia, String metPago) {
         this.id = id;
-        
-      this.servicio = servicio;
+        this.servicio = servicio;
         this.cliente = cliente;
         this.fecha = fecha;
         this.costo = costo;
         this.asistencia = asistencia;
+        this.metPago = metPago;
     }
 
+    
 
     public Long getId() {
         return id;

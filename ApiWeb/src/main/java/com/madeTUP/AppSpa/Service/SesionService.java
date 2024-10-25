@@ -68,7 +68,7 @@ public class SesionService implements ISesionService {
     }
 
     @Override
-public void editSesion(Long id_sesion, Servicio servicio, Cliente cliente, LocalDateTime fecha, Double costo, String asistencia) {
+public void editSesion(Long id_sesion, Servicio servicio, Cliente cliente, LocalDateTime fecha, Double costo, String asistencia,String metPago) {
     // Busca la sesión que deseas editar
     Sesion sesion = sesionrepo.findById(id_sesion)
             .orElseThrow(() -> new EntityNotFoundException("Sesión no encontrada con id: " + id_sesion));
@@ -79,6 +79,7 @@ public void editSesion(Long id_sesion, Servicio servicio, Cliente cliente, Local
     if (fecha != null) sesion.setFecha(fecha);
     if (costo != null) sesion.setCosto(costo);
     if (asistencia != null) sesion.setAsistencia(asistencia);
+    if(metPago!=null)sesion.setMetPago(metPago);
 
     // Guarda los cambios en la base de datos
     sesionrepo.save(sesion);
@@ -108,6 +109,7 @@ public void editSesion(Long id_sesion, Servicio servicio, Cliente cliente, Local
                 n.setFecha(sesion.getFecha());
                 n.setCosto(sesion.getCosto());
                 n.setAsistencia(sesion.getAsistencia());
+                n.setMetPago(sesion.getMetPago());
                 s.add(n);
             }
         }
@@ -124,7 +126,7 @@ public void editSesion(Long id_sesion, Servicio servicio, Cliente cliente, Local
         
         for(Sesion sesion:sesiones){
             SesionDTO ses=new SesionDTO(sesion.getServicio().getNombreServicio(),
-                    sesion.getFecha(),sesion.getCosto(),sesion.getAsistencia());
+                    sesion.getFecha(),sesion.getCosto(),sesion.getAsistencia(),sesion.getMetPago());
                     s.add(ses);
             }
         
@@ -143,6 +145,7 @@ public void editSesion(Long id_sesion, Servicio servicio, Cliente cliente, Local
        s.setFecha(sesion.getFecha());
        s.setNombre_completo(sesion.getCliente().getNombre()+" "+sesion.getCliente().getApellido());
        s.setNombre_servicio(sesion.getServicio().getNombreServicio());
+       s.setMetPago(sesion.getMetPago());
        sesionesAd.add(s);
     }
         return sesionesAd;
