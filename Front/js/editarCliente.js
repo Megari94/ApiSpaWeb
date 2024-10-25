@@ -77,6 +77,11 @@ function manejarEdicionCliente(idCliente, token) {
         params.append('correo', document.getElementById('email').value); // Cambiar 'email' a 'correo'
         params.append('contrasenia', document.getElementById('password').value); // Cambiar 'password' a 'contrasenia'
         params.append('nombre_usuario', document.getElementById('username').value); // Cambiar 'username' a 'nombre_usuario'
+        
+        // Agregar listas vacías como parámetros
+        params.append('listaSesiones', ''); // Lista vacía para sesiones
+        params.append('listaConsultas', ''); // Lista vacía para consultas
+        params.append('listaServicio', ''); // Lista vacía para servicios
 
         console.log('Datos a enviar:', params.toString()); // Para verificar los datos
 
