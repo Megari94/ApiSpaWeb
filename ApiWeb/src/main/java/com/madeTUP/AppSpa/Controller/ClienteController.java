@@ -224,4 +224,21 @@ public ResponseEntity<List<ClienteAdminDTO>> getClientesH(){
        Clientedto.setNombre_usuario(cliente.getNombre_usuario());
        return Clientedto;
     }
+
+    @PutMapping("/clientes/editarConDTO")
+public Cliente editClienteConDTO(@RequestBody ClienteAdminDTO clienteAdminDTO) {
+    Long id = clienteAdminDTO.getId();
+    String nombre = clienteAdminDTO.getNombre();
+    String apellido = clienteAdminDTO.getApellido();
+    String correo = clienteAdminDTO.getCorreo();
+    String contrasenia = clienteAdminDTO.getContrasenia();
+    String nombre_usuario = clienteAdminDTO.getNombre_usuario();
+
+    // Llama al método editCliente con los datos del DTO y null para las listas
+    servis.editCliente(id, nombre, apellido, correo, contrasenia, nombre_usuario, null, null, null);
+    
+    // Retorna el cliente actualizado
+    return this.findCliente(id);
+}
+
 }
