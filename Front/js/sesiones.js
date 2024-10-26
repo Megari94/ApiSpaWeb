@@ -190,25 +190,27 @@ function habilitarAceptar() {
 }
 
 function aceptarSolicitud(id_sesion) {
-    console.log('Función aceptarSolicitud llamada con id_sesion:', id_sesion); // Log para verificar si la función es llamada con el ID correcto
+    console.log("Función aceptarSolicitud llamada con id_sesion:", id_sesion); // Verificar el id que se está pasando
+
+    console.log("Contenido de sesionesGlobal:", sesionesGlobal); // Mostrar el contenido de sesionesGlobal
     const sesion = sesionesGlobal.find(s => s.id === id_sesion);
-    
-    console.log('Sesión encontrada:', sesion); // Verificar si encuentra la sesión
+
     if (!sesion) {
-        console.error('Sesión no encontrada.');
+        console.log("Sesión no encontrada."); // Mostrar si la sesión no fue encontrada
         return;
     }
 
+    console.log("Sesión encontrada:", sesion); // Mostrar la sesión encontrada
+
     if (isNaN(sesion.costo) || sesion.costo <= 0) {
-        console.error('El costo no está definido o es inválido. Costo actual:', sesion.costo);
         alert("Por favor, define primero el costo antes de aceptar el turno.");
         return;
     }
 
-    console.log('Aceptando la solicitud para la sesión:', sesion);
     actualizarEstadoSesion(id_sesion, "CONFIRMADO");
     obtenerTurnos();
 }
+
 
 async function actualizarCostoSesion(idSesion, nuevoCosto) {
     console.log(`Intentando actualizar el costo para la sesión ${idSesion} con el nuevo costo: ${nuevoCosto}`);
