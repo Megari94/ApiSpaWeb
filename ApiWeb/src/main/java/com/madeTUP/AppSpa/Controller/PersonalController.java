@@ -65,22 +65,27 @@ public class PersonalController {
        return "Personal eliminado";
     }
 @PutMapping("/Personal/editar/{id_personal}")
-public Personal editPersonal(@PathVariable Long id_personal,
-                             @RequestParam(required = false, name = "nombre_usuario") String newname,
-                             @RequestParam(required = false, name = "contrasenia") String newcontrasenia,
-                             @RequestParam(required = false, name = "nombre") String newNombre,
-                             @RequestParam(required = false, name = "apellido") String newApellido,
-                             @RequestParam(required = false, name = "correo") String newCorreo,
-                             @RequestParam(required = false, name = "tipoUsuario") String newTipoUsuario,
-                             @RequestParam(required = false, name = "listaServicio") List<Servicio> newListaServicio) {
-    
-    // Llamada al servicio para editar los datos del personal
-    servis.editPersonal(id_personal,newNombre, newApellido, newCorreo, newname, newcontrasenia, newListaServicio,newTipoUsuario);
-    
-    // Obtener el objeto actualizado
-    Personal c = this.findPersonal(id_personal);
-    return c;
+public ResponseEntity<String> editPersonal(@PathVariable Long id_personal,
+                                           @RequestParam(required = false, name = "nombre_usuario") String newname,
+                                           @RequestParam(required = false, name = "contrasenia") String newcontrasenia,
+                                           @RequestParam(required = false, name = "nombre") String newNombre,
+                                           @RequestParam(required = false, name = "apellido") String newApellido,
+                                           @RequestParam(required = false, name = "correo") String newCorreo,
+                                           @RequestParam(required = false, name = "tipoUsuario") String newTipoUsuario,
+                                           @RequestParam(required = false, name = "listaServicio") List<Servicio> newListaServicio) {
+    try {
+        // Llamada al servicio para editar los datos del personal
+        servis.editPersonal(id_personal, newNombre, newApellido, newCorreo, newname, newcontrasenia, newListaServicio, newTipoUsuario);
+        
+        // Devolver un mensaje de éxito
+        return ResponseEntity.ok("Información del personal actualizada correctamente.");
+    } catch (Exception e) {
+        // Manejar errores y devolver un mensaje de error
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("Error al actualizar la información del personal: " + e.getMessage());
+    }
 }
+
 
      @PutMapping("/Personal/editarII")
      public Personal editPersonalII(@RequestBody Personal c)
