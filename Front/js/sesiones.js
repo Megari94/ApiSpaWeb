@@ -175,3 +175,90 @@ function filtrarTurnos() {
 
    displaySessions(turnosFiltrados); // Mostrar los turnos filtrados
 }
+
+//AGREGADO
+
+ let filaIdGlobal = null;
+
+    function abrirModalPrecio(filaId) {
+        filaIdGlobal = filaId;
+        document.getElementById('modalPrecio').style.display = 'block';
+
+        // Desactiva el botón "Aceptar" hasta que se defina el costo
+        document.getElementById('botonAceptar').disabled = true;
+    }
+
+    function guardarPrecio() {
+        const precio = parseFloat(document.getElementById('precio').value);
+
+        if (precio > 0) {
+            actualizarCostoSesion(filaIdGlobal, precio);
+            cerrarModal('modalPrecio');
+            alert("Costo definido correctamente. Ahora puedes aceptar el turno.");
+        } else {
+            alert("Por favor, ingrese un precio válido (mayor a cero).");
+        }
+    }
+
+    function habilitarAceptar() {
+        const precio = parseFloat(document.getElementById('precio').value);
+        // Habilita el botón "Aceptar" solo si el precio es mayor a cero
+        document.getElementById('botonAceptar').disabled = !(precio > 0);
+    }
+
+   function aceptarSolicitud(id_sesion) {
+    // Busca la sesión correspondiente en el array de sesiones
+    const sesion = sesiones.find(s => s.id === id_sesion);
+    
+    // Verifica que el costo haya sido definido
+    if (!sesion || isNaN(sesion.costo) || sesion.costo <= 0) {
+        alert("Por favor, define primero el costo antes de aceptar el turno.");
+        return;
+    }
+
+    // Si el costo está definido, procede con la confirmación del turno
+    actualizarEstadoSesion(id_sesion, "CONFIRMADO");
+    obtenerTurnos(); // Actualizar la tabla o lista de turnos
+}
+
+
+    // Función para actualizar el costo en la base de datos
+    async function actualizarCostoSesion(idSesion, nuevoCosto) {
+        try {
+            const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/editarCosto/${idSesion}?nuevoCosto=${nuevoCosto}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                console.log('Costo actualizado correctamente');
+            } else {
+                console.error('Error al actualizar el costo:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error al conectarse a la API:', error);
+        }
+    }
+    function actualizarEstadoSesion(idSesion, estado) {
+    fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/aceptar/{idSesion}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log(`Turno ${estado} correctamente`);
+        } else {
+            console.error(`Error al ${estado} el turno`);
+        }
+    })
+    .catch(error => console.error(`Error al ${estado} el turno:`, error));
+}
+
+//AGREGADOFIN
+
+
+
