@@ -27,7 +27,6 @@ function cargarInformacionCliente(idCliente, token) {
     })
     .then(response => {
         if (!response.ok) {
-            // Imprimir detalles de la respuesta si hay un error
             return response.json().then(err => {
                 console.error('Error al cargar la información del cliente:', err);
                 throw new Error('Error al cargar la información del cliente: ' + (err.message || 'Error desconocido'));
@@ -44,12 +43,12 @@ function cargarInformacionCliente(idCliente, token) {
         const usernameField = document.getElementById('username');
 
         if (firstNameField && lastNameField && emailField && passwordField && usernameField) {
-            // Modificar las asignaciones para que coincidan con tu JSON
-            firstNameField.value = data.nombre; // Cambiar 'firstName' a 'nombre'
-            lastNameField.value = data.apellido; // Cambiar 'lastName' a 'apellido'
-            emailField.value = data.correo; // Cambiar 'email' a 'correo'
-            passwordField.value = data.contrasenia; // Cambiar 'password' a 'contrasenia'
-            usernameField.value = data.nombre_usuario; // Cambiar 'username' a 'nombre_usuario'
+            // Asignar valores a los campos del formulario
+            firstNameField.value = data.nombre || ''; // Evitar asignaciones nulas
+            lastNameField.value = data.apellido || '';
+            emailField.value = data.correo || '';
+            passwordField.value = data.contrasenia || '';
+            usernameField.value = data.nombre_usuario || '';
         } else {
             console.error('Los campos del formulario no se encontraron en el DOM.');
         }
@@ -74,11 +73,11 @@ function manejarEdicionCliente(idCliente, token) {
 
         // Crear un objeto para enviar
         const data = {
-            nombre: document.getElementById('firstName').value,
-            apellido: document.getElementById('lastName').value,
-            correo: document.getElementById('email').value,
-            contrasenia: document.getElementById('password').value,
-            nombre_usuario: document.getElementById('username').value,
+            nombre: document.getElementById('firstName').value.trim(),
+            apellido: document.getElementById('lastName').value.trim(),
+            correo: document.getElementById('email').value.trim(),
+            contrasenia: document.getElementById('password').value.trim(),
+            nombre_usuario: document.getElementById('username').value.trim(),
             listaSesiones: [], // Enviar como lista vacía
             listaConsultas: [], // Enviar como lista vacía
             listaServicio: [] // Enviar como lista vacía
@@ -90,19 +89,19 @@ function manejarEdicionCliente(idCliente, token) {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json', // Cambiar a application/json
+                'Content-Type': 'application/json', // Asegúrate de que esto es correcto
             },
             body: JSON.stringify(data) // Enviar el objeto como JSON
         })
         .then(response => {
             if (!response.ok) {
-                // Imprimir detalles de la respuesta si hay un error
                 return response.json().then(err => {
                     console.error('Error al actualizar la información del cliente:', err);
                     throw new Error('Error al actualizar la información del cliente: ' + (err.message || 'Error desconocido'));
                 });
             }
             alert('Información actualizada correctamente');
+            // Opcionalmente, puedes redirigir al usuario o cargar nuevamente la información
         })
         .catch(error => {
             console.error('Error al actualizar la información del cliente:', error);
