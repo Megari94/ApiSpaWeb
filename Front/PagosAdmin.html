@@ -138,12 +138,11 @@ function cerrarModal(modalId) {
 // Función para actualizar el costo en la base de datos
 async function actualizarCostoSesion(idSesion, nuevoCosto) {
     try {
-        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/editarCosto/${idSesion}`, {
+        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/editarCosto/${idSesion}?nuevoCosto=${nuevoCosto}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ costo: nuevoCosto })
+            }
         });
 
         if (response.ok) {
