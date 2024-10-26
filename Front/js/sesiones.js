@@ -172,13 +172,27 @@ function abrirModalPrecio(filaId) {
 function guardarPrecio() {
     const precio = parseFloat(document.getElementById('precio').value);
     if (precio > 0) {
-        actualizarCostoSesion(filaIdGlobal, precio);
+        // Actualiza el costo en la sesión global
+        const sesion = sesionesGlobal.find(s => s.id === filaIdGlobal);
+        if (sesion) {
+            sesion.costo = precio; // Actualiza el precio en la lista global
+            actualizarCostoSesion(filaIdGlobal, precio); // Actualiza el costo en el servidor
+        }
+
+        // Actualiza la columna de costo en la tabla sin recargar la página
+        const fila = document.querySelector(`tr td:first-child:contains('${filaIdGlobal}')`).parentElement;
+        if (fila) {
+            const costoCell = fila.querySelector('td:nth-child(3)');
+            costoCell.textContent = precio;
+        }
+
         cerrarModal('modalPrecio');
         alert("Costo definido correctamente. Ahora puedes aceptar el turno.");
     } else {
         alert("Por favor, ingrese un precio válido (mayor a cero).");
     }
 }
+
 
 function habilitarAceptar() {
     const botonAceptar = document.getElementById('botonAceptar');
@@ -195,9 +209,11 @@ function aceptarSolicitud(id_sesion) {
         alert("Por favor, define primero el costo antes de aceptar el turno.");
         return;
     }
+
     actualizarEstadoSesion(id_sesion, "CONFIRMADO");
-    obtenerTurnos();
+    obtenerTurnos(); // Actualiza la lista de turnos después de aceptar
 }
+
 
 async function actualizarCostoSesion(idSesion, nuevoCosto) {
     try {
