@@ -49,8 +49,10 @@ function cargarTurnos(idCliente, token) {
             
             // Determinar la clase CSS según el estado
             let claseEstado = '';
+            let botonesDeshabilitados = false; // Variable para habilitar/deshabilitar botones
             if (sesion.asistencia === "RECHAZADO") {
                 claseEstado = 'estado-rechazado'; // Clase para estado rechazado
+                botonesDeshabilitados = true; // Deshabilitar botones
             } else if (sesion.asistencia === "CONFIRMADO") {
                 claseEstado = 'estado-confirmado'; // Clase para estado confirmado
             }
@@ -58,14 +60,15 @@ function cargarTurnos(idCliente, token) {
             // Formatear la fecha
             const fechaFormateada = formatearFecha(sesion.fecha);
 
+            // Crear contenido de la fila
             row.innerHTML = `
                 <td class="${claseEstado}">${sesion.asistencia}</td> 
                 <td>${costo}</td>
                 <td>${fechaFormateada}</td> <!-- Aquí usamos la fecha formateada -->
                 <td>${sesion.servicio}</td>
                 <td> 
-                    <button class="btn-editar" onclick="mostrarModal('modalPagar')">Pagar</button>
-                    <button class="btn-baja" onclick="mostrarModal('modalRegistrar')">Registrar operacion</button>
+                    <button class="btn-editar" onclick="mostrarModal('modalPagar')" ${botonesDeshabilitados ? 'disabled' : ''}>Pagar</button>
+                    <button class="btn-baja" onclick="mostrarModal('modalRegistrar')" ${botonesDeshabilitados ? 'disabled' : ''}>Registrar operacion</button>
                 </td>
             `;
             tableBody.appendChild(row);
