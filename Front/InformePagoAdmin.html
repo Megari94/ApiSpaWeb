@@ -175,11 +175,19 @@
             let totalCosto = 0;
 
             servicios.forEach(servicio => {
+
+                 // Convertimos la fecha al formato deseado
+    const fecha = new Date(servicio.fecha);
+    const dia = fecha.getDate().toString().padStart(2, '0');
+    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+    const año = fecha.getFullYear();
+    const fechaFormateada = `${dia}/${mes}/${año}`;
+                
                 doc.setFont("Helvetica", "normal");
                 doc.text(servicio.id.toString(), 40, yOffset);
                 doc.text(servicio.nombre_completo, 90, yOffset);
                 doc.text(servicio.asistencia, 180, yOffset);
-                doc.text(servicio.fecha, 280, yOffset);
+                doc.text(fechaFormateada, 280, yOffset);
                 doc.text(servicio.nombre_servicio, 420, yOffset);
                 doc.text(servicio.costo.toFixed(2), 570, yOffset, { align: "right" });
                 totalCosto += servicio.costo;
