@@ -183,15 +183,21 @@ public ResponseEntity<String> aceptarSesion(@PathVariable Long id_sesion) {
     }
 }
 @PutMapping("/Sesion/rechazar/{id_sesion}")
-public ResponseEntity<String> rechazarSesion(@PathVariable Long id_sesion) {
+public ResponseEntity<Map<String, String>> rechazarSesion(@PathVariable Long id_sesion) {
+    Map<String, String> response = new HashMap<>();
     try {
         // Llama al método editSesion para actualizar el estado de asistencia
-        servis.editSesion(id_sesion, null, null, null, null, "RECHAZADO",null);
-        return ResponseEntity.ok("Asistencia rechazada");
+        servis.editSesion(id_sesion, null, null, null, null, "RECHAZADO", null);
+        
+        // Devuelve un mensaje JSON
+        response.put("message", "Asistencia rechazada");
+        return ResponseEntity.ok(response);
     } catch (EntityNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sesión no encontrada");
+        response.put("message", "Sesión no encontrada");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al rechazar la asistencia: " + e.getMessage());
+        response.put("message", "Error al rechazar la asistencia: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }
 
