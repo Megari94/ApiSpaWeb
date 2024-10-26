@@ -154,7 +154,9 @@ function manejarSolicitudTurno(token, idCliente) {
         const formattedDate = `${year}-${month}-${day}T${hour}:${minute}`; // Aquí estamos formateando correctamente
 
         const servicioId = document.getElementById('appointmentService').value;
-
+ // Obtener el método de pago seleccionado
+        const metPago = document.getElementById('paymentMethod').value;
+        
         fetch('https://spaadministrativo-production-4488.up.railway.app/Sesion/agregarSesion', {
             method: 'POST',
             headers: {
@@ -166,7 +168,8 @@ function manejarSolicitudTurno(token, idCliente) {
                 id_Servicio: servicioId,
                 fecha: formattedDate,  // Enviamos la fecha y hora en formato LocalDateTime
                 costo: 0.0,
-                asistencia: "SOLICITADO"
+                asistencia: "SOLICITADO",
+                 metPago: metPago
             })
         })
         .then(response => {
@@ -188,7 +191,7 @@ function toggleMenu() {
 
 document.addEventListener('DOMContentLoaded', () => {
     const paymentMethodSelect = document.getElementById('paymentMethod');
-    const paymentMethods = ["Transferencia", "Efectivo", "Tarjeta"];
+    const paymentMethods = ["TRANSFERENCIA", "EFECTIVO", "TARJETA"];
 
     paymentMethods.forEach(method => {
         const option = document.createElement('option');
