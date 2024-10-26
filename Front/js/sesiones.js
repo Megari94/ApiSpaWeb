@@ -190,16 +190,28 @@ function habilitarAceptar() {
 }
 
 function aceptarSolicitud(id_sesion) {
+    console.log('Función aceptarSolicitud llamada con id_sesion:', id_sesion); // Log para verificar si la función es llamada con el ID correcto
     const sesion = sesionesGlobal.find(s => s.id === id_sesion);
-    if (!sesion || isNaN(sesion.costo) || sesion.costo <= 0) {
+    
+    console.log('Sesión encontrada:', sesion); // Verificar si encuentra la sesión
+    if (!sesion) {
+        console.error('Sesión no encontrada.');
+        return;
+    }
+
+    if (isNaN(sesion.costo) || sesion.costo <= 0) {
+        console.error('El costo no está definido o es inválido. Costo actual:', sesion.costo);
         alert("Por favor, define primero el costo antes de aceptar el turno.");
         return;
     }
+
+    console.log('Aceptando la solicitud para la sesión:', sesion);
     actualizarEstadoSesion(id_sesion, "CONFIRMADO");
     obtenerTurnos();
 }
 
 async function actualizarCostoSesion(idSesion, nuevoCosto) {
+    console.log(`Intentando actualizar el costo para la sesión ${idSesion} con el nuevo costo: ${nuevoCosto}`);
     try {
         const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/editarCosto/${idSesion}?nuevoCosto=${nuevoCosto}`, {
             method: 'PUT',
@@ -209,7 +221,7 @@ async function actualizarCostoSesion(idSesion, nuevoCosto) {
         });
 
         if (response.ok) {
-            console.log('Costo actualizado correctamente');
+            console.log('Costo actualizado correctamente para la sesión', idSesion);
         } else {
             console.error('Error al actualizar el costo:', response.statusText);
         }
@@ -219,6 +231,7 @@ async function actualizarCostoSesion(idSesion, nuevoCosto) {
 }
 
 function actualizarEstadoSesion(idSesion, estado) {
+    console.log(`Actualizando el estado de la sesión ${idSesion} a ${estado}`);
     fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/aceptar/${idSesion}`, {
         method: 'PUT',
         headers: {
@@ -236,6 +249,7 @@ function actualizarEstadoSesion(idSesion, estado) {
         console.error('Error al conectarse a la API:', error);
     });
 }
+
 
 function cerrarModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
