@@ -180,13 +180,13 @@ function filtrarTurnos() {
 
  let filaIdGlobal = null;
 
-    function abrirModalPrecio(filaId) {
-        filaIdGlobal = filaId;
-        document.getElementById('modalPrecio').style.display = 'block';
+   function abrirModalPrecio(filaId) {
+    filaIdGlobal = filaId;
+    document.getElementById('precio').value = ''; // Limpiar el campo de precio
+    habilitarAceptar(); // Asegurarse de que el botón esté deshabilitado al abrir el modal
+    document.getElementById('modalPrecio').style.display = 'block';
+}
 
-        // Desactiva el botón "Aceptar" hasta que se defina el costo
-        document.getElementById('botonAceptar').disabled = true;
-    }
 
     function guardarPrecio() {
         const precio = parseFloat(document.getElementById('precio').value);
@@ -206,9 +206,9 @@ function filtrarTurnos() {
         document.getElementById('botonAceptar').disabled = !(precio > 0);
     }
 
-   function aceptarSolicitud(id_sesion) {
-    // Busca la sesión correspondiente en el array de sesiones
-    const sesion = sesiones.find(s => s.id === id_sesion);
+  function aceptarSolicitud(id_sesion) {
+    // Busca la sesión correspondiente en el array de sesionesGlobal
+    const sesion = sesionesGlobal.find(s => s.id === id_sesion);
     
     // Verifica que el costo haya sido definido
     if (!sesion || isNaN(sesion.costo) || sesion.costo <= 0) {
@@ -220,6 +220,7 @@ function filtrarTurnos() {
     actualizarEstadoSesion(id_sesion, "CONFIRMADO");
     obtenerTurnos(); // Actualizar la tabla o lista de turnos
 }
+
 
 
     // Función para actualizar el costo en la base de datos
