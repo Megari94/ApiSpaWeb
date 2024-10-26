@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar informacion</title>
+    <title>Editar Información del Personal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="css/estilo.css">
 
-    <script src="js/editarPersonal.js" defer></script>
-    <style> 
+    <script src="editarPersonal.js" defer></script>
+    <style>
         #personalInfoForm {
             max-width: 400px;
             margin: 0 auto;
@@ -32,14 +32,13 @@
         }
     </style>
 </head>
-<body data-page="EditarInfoCliente">
+<body data-page="EditarInfoPersonal">
     <div class="container">
         <!-- Barra de Menú Lateral -->
         <div id="sidebar" class="sidebar">
             <div class="link-container">
-                <a href="EditarInfoCliente.html"><i class="fas fa-user-circle"></i>Cuenta</a>
-                <a href="TurnosCliente.html"><i class="fas fa-calendar-alt"></i>Turnos</a>
-                <a href="SolTurnoCliente.html" id="pagosLink"><i class="fas fa-chart-pie"></i>Solicitar Turno</a>
+                <a href="EditarInfoPersonal.html"><i class="fas fa-user-cog"></i>Cuenta del Personal</a>
+               <a href="Turno.html" id="TurnoLink"><i class="fas fa-calendar-alt"></i>Turno</a>
             </div>
             <button class="logout-btn" id="logoutBtn">Salir</button>
         </div>
@@ -48,7 +47,7 @@
         <div class="main-content">
             <button id="menuButton" class="open-btn">☰ Menú</button>
             <div class="form-container">
-                <h2>Informacion</h2>
+                <h2>Información del Personal</h2>
                 <form id="personalInfoForm">
                     <div>
                         <label for="firstName">Nombre:</label>
