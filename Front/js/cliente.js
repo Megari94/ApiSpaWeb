@@ -74,7 +74,6 @@ function cargarTurnos(idCliente, token) {
     .catch(error => console.error('Error al cargar turnos:', error));
 }
 
-
 // Función para mostrar el modal
 function mostrarModal(modalId) {
     document.getElementById(modalId).style.display = 'flex';
@@ -136,25 +135,24 @@ function manejarSolicitudTurno(token, idCliente) {
         event.preventDefault();
 
         // Obtenemos la fecha y hora seleccionadas por el usuario
-        const fechaHoraInput = document.getElementById('appointmentDateTime').value; // Cambiado aquí
+        const fechaHoraInput = document.getElementById('appointmentDateTime').value;
 
         // Crear objeto Date para asegurarse de que la fecha y hora sean válidas
-        const fechaLocal = new Date(fechaHoraInput); // Esto crea la fecha local
+        const fechaLocal = new Date(fechaHoraInput);
 
         // Obtener el año, mes, día, hora y minuto
         const year = fechaLocal.getFullYear();
-        const month = String(fechaLocal.getMonth() + 1).padStart(2, '0'); // Los meses son base 0
+        const month = String(fechaLocal.getMonth() + 1).padStart(2, '0');
         const day = String(fechaLocal.getDate()).padStart(2, '0');
         const hour = String(fechaLocal.getHours()).padStart(2, '0');
         const minute = String(fechaLocal.getMinutes()).padStart(2, '0');
 
         // Formato de fecha LocalDateTime sin 'Z'
-        const formattedDate = `${year}-${month}-${day}T${hour}:${minute}`; // Aquí estamos formateando correctamente
+        const formattedDate = `${year}-${month}-${day}T${hour}:${minute}`;
 
         const servicioId = document.getElementById('appointmentService').value;
- // Obtener el método de pago seleccionado
         const metPago = document.getElementById('paymentMethod').value;
-        
+
         fetch('https://spaadministrativo-production-4488.up.railway.app/Sesion/agregarSesion', {
             method: 'POST',
             headers: {
@@ -164,15 +162,16 @@ function manejarSolicitudTurno(token, idCliente) {
             body: JSON.stringify({
                 id_Cliente: idCliente,
                 id_Servicio: servicioId,
-                fecha: formattedDate,  // Enviamos la fecha y hora en formato LocalDateTime
+                fecha: formattedDate,
                 costo: 0.0,
                 asistencia: "SOLICITADO",
-                 metPago: metPago
+                metPago: metPago
             })
         })
         .then(response => {
             if (response.ok) {
                 alert('Turno guardado con éxito');
+                cerrarModal('modalRegistrar'); // Cerrar modal después de guardar
                 // Redirigir o actualizar la página según sea necesario
             } else {
                 alert('Error al guardar el turno');
@@ -198,4 +197,3 @@ document.addEventListener('DOMContentLoaded', () => {
         paymentMethodSelect.appendChild(option);
     });
 });
-
