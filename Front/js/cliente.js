@@ -195,8 +195,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     paymentMethods.forEach(method => {
         const option = document.createElement('option');
-        option.value = method.toLowerCase(); // Asigna el valor en minúsculas
+        option.value = method; // Asigna el valor en mayúsculas
         option.textContent = method;
         paymentMethodSelect.appendChild(option);
     });
 });
+
