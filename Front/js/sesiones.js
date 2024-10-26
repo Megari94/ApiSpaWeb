@@ -243,7 +243,7 @@ function filtrarTurnos() {
         }
     }
     function actualizarEstadoSesion(idSesion, estado) {
-    fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/aceptar/{idSesion}`, {
+    fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/aceptar/${idSesion}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
