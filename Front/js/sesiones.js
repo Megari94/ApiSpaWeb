@@ -174,6 +174,7 @@ function guardarPrecio() {
         actualizarCostoSesion(filaIdGlobal, precio);
         cerrarModal('modalPrecio');
         alert("Costo definido correctamente. Ahora puedes aceptar el turno.");
+        window.location.reload();
     } else {
         alert("Por favor, ingrese un precio válido (mayor a cero).");
     }
