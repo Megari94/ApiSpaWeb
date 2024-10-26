@@ -10,7 +10,7 @@ async function loadSessionsAdmin() {
             console.error('Error al obtener las sesiones:', responseSesiones.statusText);
             return;
         }
-      
+
         const sesiones = await responseSesiones.json();
         sesionesGlobal = sesiones; 
         console.log('Sesiones cargadas:', sesionesGlobal);
@@ -59,10 +59,11 @@ async function generarFactura() {
     const doc = new jsPDF('p', 'pt', 'a4');
 
     const invoiceDate = new Date().toLocaleDateString();
-    const clientName = nombreClienteGlobal;
+    const clientName = nombreClienteGlobal; // Asegúrate de que estas variables estén definidas
     const serviceName = servicioGlobal;
     const totalAmount = document.getElementById('precio').value;
 
+    // Validar campos antes de generar la factura
     if (!clientName || totalAmount === '0.00') {
         alert("Por favor complete todos los campos.");
         return;
@@ -74,10 +75,12 @@ async function generarFactura() {
     doc.setFontSize(12);
     doc.setFont("Helvetica", "normal");
 
+    // Dibujar bordes
     doc.rect(30, 30, 550, 750);
     doc.rect(30, 30, 550, 120);
     doc.rect(30, 700, 550, 50);
 
+    // Dibujo de la letra 'C'
     const cX = 290, cY = 50, cWidth = 40, cHeight = 40;
     doc.rect(cX, cY, cWidth, cHeight);
     doc.setFontSize(30);
@@ -98,6 +101,7 @@ async function generarFactura() {
     const fechaFormateada = `${dia}/${mes}/${anio}`;
     doc.text("Fecha de Emisión: " + fechaFormateada, 380, 95);
 
+    // Detalles de cliente y pago
     doc.text("Recibí de: " + clientName, 40, 170);
     doc.text("DNI: ", 350, 170);
     doc.text("Domicilio: ", 40, 190);
@@ -107,6 +111,7 @@ async function generarFactura() {
     doc.text("Medio de Pago recibido: TRANSFERENCIA A CTA 10071/08 Nº BNA", 40, 260);
     doc.text("Concepto ", 40, 280);
 
+    // Encabezado de la tabla
     doc.setFontSize(10);
     doc.setFont("Helvetica", "bold");
     doc.text("Código", 50, 330);
@@ -114,6 +119,7 @@ async function generarFactura() {
     doc.text("Precio Unit.", 550, 330, { align: "right" });
     doc.line(30, 335, 580, 335);
 
+    // Detalle de productos
     const yOffset = 350;
     doc.setFont("Helvetica", "normal");
     doc.text("1", 60, yOffset);
@@ -121,6 +127,7 @@ async function generarFactura() {
     doc.text(productoDividido, 160, yOffset);
     doc.text(parseFloat(totalAmount).toFixed(2), 550, yOffset, { align: "right" });
 
+    // Total
     doc.setFontSize(12);
     doc.setFont("Helvetica", "bold");
     doc.text("Importe Total: $" + totalAmount, 400, 727);
@@ -166,7 +173,7 @@ function guardarPrecio() {
         actualizarCostoSesion(filaIdGlobal, precio);
         cerrarModal('modalPrecio');
         alert("Costo definido correctamente. Ahora puedes aceptar el turno.");
-        window.location.reload();
+        window.location.reload(); // Recargar la página para mostrar el nuevo estado
     } else {
         alert("Por favor, ingrese un precio válido (mayor a cero).");
     }
@@ -179,11 +186,11 @@ function habilitarAceptar() {
         return;
     }
     const precio = parseFloat(document.getElementById('precio').value);
-    botonAceptar.disabled = !(precio > 0);
+    botonAceptar.disabled = !(precio > 0); // Habilitar o deshabilitar el botón según el precio
     console.log("Botón Aceptar habilitado:", !botonAceptar.disabled);
 }
 
-function aceptarSolicitud(id_sesion) {
+async function aceptarSolicitud(id_sesion) {
     console.log(`Intentando aceptar solicitud para ID de sesión: ${id_sesion}`);
     const sesion = sesionesGlobal.find(s => s.id === id_sesion);
     if (!sesion) {
@@ -197,79 +204,75 @@ function aceptarSolicitud(id_sesion) {
     }
 
     console.log(`Aceptando sesión: ${JSON.stringify(sesion)}`);
-    
-    actualizarEstadoSesion(id_sesion, "CONFIRMADO").then(() => {
-        obtenerTurnos(); // Llama a obtenerTurnos después de que se confirme el estado
-    }).catch(error => {
-        console.error("Error al aceptar la solicitud:", error);
-    });
+
+    await actualizarEstadoSesion(id_sesion, "CONFIRMADO"); // Cambia a "CONFIRMADO"
+    obtenerTurnos(); // Llama a obtenerTurnos después de que se confirme el estado
 }
 
 async function actualizarCostoSesion(idSesion, nuevoCosto) {
     console.log(`Actualizando costo de la sesión ID: ${idSesion} a ${nuevoCosto}`);
     try {
-        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/editarCosto/${idSesion}?nuevoCosto=${nuevoCosto}`, {
-            method: 'PUT',
+        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/actualizarCosto/${idSesion}`, {
+            method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ costo: nuevoCosto })
         });
 
-        if (response.ok) {
-            console.log('Costo actualizado correctamente');
-            return true;
-        } else {
+        if (!response.ok) {
             console.error('Error al actualizar el costo:', response.statusText);
-            return false;
+            return;
         }
+        const resultado = await response.json();
+        console.log('Costo actualizado correctamente:', resultado);
     } catch (error) {
-        console.error('Error al conectarse a la API:', error);
-        return false;
+        console.error('Error en la conexión al servidor:', error);
     }
 }
 
-async function actualizarEstadoSesion(idSesion, estado) {
-    console.log(`Actualizando estado de la sesión ID: ${idSesion} a ${estado}`);
-    try {
-        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/editarEstado/${idSesion}?estado=${estado}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (response.ok) {
-            console.log('Estado actualizado correctamente');
-            return true;
-        } else {
-            console.error('Error al actualizar el estado:', response.statusText);
-            return false;
-        }
-    } catch (error) {
-        console.error('Error al conectarse a la API:', error);
-        return false;
+async function rechazarSolicitud(idSesion, button) {
+    console.log(`Intentando rechazar solicitud para ID de sesión: ${idSesion}`);
+    if (!confirm("¿Estás seguro de que deseas rechazar esta solicitud?")) {
+        return; // Cancelar si el usuario no confirma
     }
-}
 
-function rechazarSolicitud(id_sesion, boton) {
-    const sesion = sesionesGlobal.find(s => s.id === id_sesion);
+    const sesion = sesionesGlobal.find(s => s.id === idSesion);
     if (!sesion) {
-        console.error(`No se encontró sesión con ID: ${id_sesion}`);
+        console.error(`No se encontró sesión con ID: ${idSesion}`);
         return;
     }
 
-    const confirmacion = confirm(`¿Estás seguro de que deseas rechazar la solicitud de ${sesion.nombre_completo}?`);
-    if (confirmacion) {
-        console.log(`Rechazando sesión: ${JSON.stringify(sesion)}`);
-        actualizarEstadoSesion(id_sesion, "RECHAZADO").then(() => {
-            boton.closest('tr').remove(); // Eliminar la fila de la tabla
-            alert("Solicitud rechazada correctamente.");
-        }).catch(error => {
-            console.error("Error al rechazar la solicitud:", error);
+    console.log(`Rechazando sesión: ${JSON.stringify(sesion)}`);
+
+    await actualizarEstadoSesion(idSesion, "RECHAZADO");
+    button.closest('tr').remove(); // Eliminar la fila de la tabla
+}
+
+async function actualizarEstadoSesion(idSesion, nuevoEstado) {
+    console.log(`Actualizando estado de la sesión ID: ${idSesion} a ${nuevoEstado}`);
+    try {
+        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/actualizarEstado/${idSesion}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ estado: nuevoEstado })
         });
+
+        if (!response.ok) {
+            console.error('Error al actualizar el estado:', response.statusText);
+            return;
+        }
+        const resultado = await response.json();
+        console.log('Estado actualizado correctamente:', resultado);
+    } catch (error) {
+        console.error('Error en la conexión al servidor:', error);
     }
 }
 
 function cerrarModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
 }
+
+
