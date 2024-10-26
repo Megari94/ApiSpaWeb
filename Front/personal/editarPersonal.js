@@ -71,25 +71,32 @@ function manejarEdicionPersonal(idPersonal, token) {
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // Crear un objeto de datos con los valores del formulario
-        const data = {
-            id: idPersonal, // Usar el ID del personal
-            nombre: document.getElementById('firstName').value.trim(),
-            apellido: document.getElementById('lastName').value.trim(),
-            correo: document.getElementById('email').value.trim(),
-            contrasenia: document.getElementById('password').value.trim(),
-            nombre_usuario: document.getElementById('username').value.trim()
-        };
+        // Crear los datos como parámetros de URL
+        const nombre = document.getElementById('firstName').value.trim();
+        const apellido = document.getElementById('lastName').value.trim();
+        const correo = document.getElementById('email').value.trim();
+        const contrasenia = document.getElementById('password').value.trim();
+        const nombre_usuario = document.getElementById('username').value.trim();
+        const tipoUsuario = null;  // o el valor que deseas asignar
+        const listaServicio = null; // o el valor que deseas asignar
 
-        console.log('Datos a enviar:', JSON.stringify(data)); // Para verificar los datos
+        // Construir la URL con los parámetros
+        const url = new URL(`https://spaadministrativo-production-4488.up.railway.app/Personal/editar/${idPersonal}`);
+        if (nombre) url.searchParams.append("nombre", nombre);
+        if (apellido) url.searchParams.append("apellido", apellido);
+        if (correo) url.searchParams.append("correo", correo);
+        if (contrasenia) url.searchParams.append("contrasenia", contrasenia);
+        if (nombre_usuario) url.searchParams.append("nombre_usuario", nombre_usuario);
+        if (tipoUsuario) url.searchParams.append("tipoUsuario", tipoUsuario);
+        if (listaServicio) url.searchParams.append("listaServicio", JSON.stringify(listaServicio));
 
-        fetch(`https://spaadministrativo-production-4488.up.railway.app/Personal/editar/${idPersonal}`, {
+        console.log('URL de solicitud:', url.toString()); // Verificar la URL
+
+        fetch(url.toString(), {
             method: 'PUT',
             headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data) // Enviar el objeto como JSON
+                'Authorization': `Bearer ${token}`
+            }
         })
         .then(response => {
             if (!response.ok) {
@@ -99,6 +106,7 @@ function manejarEdicionPersonal(idPersonal, token) {
                 });
             }
             alert('Información del personal actualizada correctamente');
+            // Opcionalmente, redirigir o cargar nuevamente la información
         })
         .catch(error => {
             console.error('Error al actualizar la información del personal:', error);
@@ -106,4 +114,5 @@ function manejarEdicionPersonal(idPersonal, token) {
         });
     });
 }
+
 
