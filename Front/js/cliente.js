@@ -45,14 +45,15 @@ function cargarTurnos(idCliente, token) {
 
         data.forEach(sesion => {
             const row = document.createElement('tr');
-            const costo = sesion.asistencia === "SOLICITADO" ? "a confirmar" : sesion.costo;
+            const costo = sesion.costo === 0 ? "a confirmar" : sesion.costo;
+            
             // Determinar la clase CSS según el estado
-        let claseEstado = '';
-        if (sesion.asistencia === "RECHAZADO") {
-            claseEstado = 'estado-rechazado'; // Clase para estado rechazado
-        } else if (sesion.asistencia === "CONFIRMADO") {
-            claseEstado = 'estado-confirmado'; // Clase para estado confirmado
-        }
+            let claseEstado = '';
+            if (sesion.asistencia === "RECHAZADO") {
+                claseEstado = 'estado-rechazado'; // Clase para estado rechazado
+            } else if (sesion.asistencia === "CONFIRMADO") {
+                claseEstado = 'estado-confirmado'; // Clase para estado confirmado
+            }
 
             // Formatear la fecha
             const fechaFormateada = formatearFecha(sesion.fecha);
@@ -63,15 +64,12 @@ function cargarTurnos(idCliente, token) {
                 <td>${fechaFormateada}</td> <!-- Aquí usamos la fecha formateada -->
                 <td>${sesion.servicio}</td>
                 <td> 
-           
-            <button class="btn-editar" onclick="mostrarModal('modalPagar')">Pagar</button>
-            <button class="btn-baja" onclick="mostrarModal('modalRegistrar')">Registrar operacion</button>
-        </td>
-               
+                    <button class="btn-editar" onclick="mostrarModal('modalPagar')">Pagar</button>
+                    <button class="btn-baja" onclick="mostrarModal('modalRegistrar')">Registrar operacion</button>
+                </td>
             `;
             tableBody.appendChild(row);
         });
-        
     })
     .catch(error => console.error('Error al cargar turnos:', error));
 }
