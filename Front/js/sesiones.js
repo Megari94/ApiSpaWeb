@@ -2,7 +2,6 @@ let sesionesGlobal = [];
 
 async function loadSessionsAdmin() {
     try {
-        // Obtener todas las sesiones desde el nuevo endpoint
         const responseSesiones = await fetch('https://spaadministrativo-production-4488.up.railway.app/Sesion/traerAdmin', {
             method: 'GET'
         });
@@ -14,8 +13,8 @@ async function loadSessionsAdmin() {
       
         const sesiones = await responseSesiones.json();
         sesionesGlobal = sesiones; 
+        console.log('Sesiones cargadas:', sesionesGlobal);
 
-        // Mostrar la tabla con los datos obtenidos
         displaySessions(sesionesGlobal);
     } catch (error) {
         console.error('Error al conectarse al servidor:', error);
@@ -26,8 +25,8 @@ function displaySessions(sesiones) {
     const tableBody = document.querySelector('tbody');
     tableBody.innerHTML = ''; // Limpiar la tabla
 
-    // Filtrar las sesiones que tienen asistencia igual a "SOLICITADO"
     const sesionesFiltradas = sesiones.filter(sesion => sesion.asistencia === 'SOLICITADO');
+    console.log('Sesiones filtradas:', sesionesFiltradas);
 
     sesionesFiltradas.forEach((sesion) => {
         const row = document.createElement('tr');
@@ -59,7 +58,6 @@ async function generarFactura() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('p', 'pt', 'a4');
 
-    // Datos para la factura
     const invoiceDate = new Date().toLocaleDateString();
     const clientName = nombreClienteGlobal;
     const serviceName = servicioGlobal;
@@ -76,12 +74,10 @@ async function generarFactura() {
     doc.setFontSize(12);
     doc.setFont("Helvetica", "normal");
 
-    // Bordes de la factura
     doc.rect(30, 30, 550, 750);
     doc.rect(30, 30, 550, 120);
     doc.rect(30, 700, 550, 50);
 
-    // Encabezado
     const cX = 290, cY = 50, cWidth = 40, cHeight = 40;
     doc.rect(cX, cY, cWidth, cHeight);
     doc.setFontSize(30);
@@ -95,7 +91,6 @@ async function generarFactura() {
     doc.setFont("Helvetica", "normal");
     doc.text("N°: 00001", 380, 80);
 
-    // Formato de fecha
     const fechaActual = new Date();
     const dia = fechaActual.getDate().toString().padStart(2, '0');
     const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
@@ -103,7 +98,6 @@ async function generarFactura() {
     const fechaFormateada = `${dia}/${mes}/${anio}`;
     doc.text("Fecha de Emisión: " + fechaFormateada, 380, 95);
 
-    // Detalles del cliente
     doc.text("Recibí de: " + clientName, 40, 170);
     doc.text("DNI: ", 350, 170);
     doc.text("Domicilio: ", 40, 190);
@@ -113,7 +107,6 @@ async function generarFactura() {
     doc.text("Medio de Pago recibido: TRANSFERENCIA A CTA 10071/08 Nº BNA", 40, 260);
     doc.text("Concepto ", 40, 280);
 
-    // Encabezado de la tabla de servicios
     doc.setFontSize(10);
     doc.setFont("Helvetica", "bold");
     doc.text("Código", 50, 330);
@@ -121,7 +114,6 @@ async function generarFactura() {
     doc.text("Precio Unit.", 550, 330, { align: "right" });
     doc.line(30, 335, 580, 335);
 
-    // Datos del servicio
     const yOffset = 350;
     doc.setFont("Helvetica", "normal");
     doc.text("1", 60, yOffset);
@@ -129,7 +121,6 @@ async function generarFactura() {
     doc.text(productoDividido, 160, yOffset);
     doc.text(parseFloat(totalAmount).toFixed(2), 550, yOffset, { align: "right" });
 
-    // Total
     doc.setFontSize(12);
     doc.setFont("Helvetica", "bold");
     doc.text("Importe Total: $" + totalAmount, 400, 727);
@@ -171,6 +162,7 @@ function abrirModalPrecio(filaId) {
 function guardarPrecio() {
     const precio = parseFloat(document.getElementById('precio').value);
     if (precio > 0) {
+        console.log(`Guardando precio: ${precio} para la sesión ID: ${filaIdGlobal}`);
         actualizarCostoSesion(filaIdGlobal, precio);
         cerrarModal('modalPrecio');
         alert("Costo definido correctamente. Ahora puedes aceptar el turno.");
@@ -183,26 +175,38 @@ function guardarPrecio() {
 function habilitarAceptar() {
     const botonAceptar = document.getElementById('botonAceptar');
     if (!botonAceptar) {
+        console.warn("Botón Aceptar no encontrado");
         return;
     }
     const precio = parseFloat(document.getElementById('precio').value);
     botonAceptar.disabled = !(precio > 0);
+    console.log("Botón Aceptar habilitado:", !botonAceptar.disabled);
 }
 
 function aceptarSolicitud(id_sesion) {
+    console.log(`Intentando aceptar solicitud para ID de sesión: ${id_sesion}`);
     const sesion = sesionesGlobal.find(s => s.id === id_sesion);
-    if (!sesion || isNaN(sesion.costo) || sesion.costo <= 0) {
+    if (!sesion) {
+        console.error(`No se encontró sesión con ID: ${id_sesion}`);
+        return;
+    }
+
+    if (isNaN(sesion.costo) || sesion.costo <= 0) {
         alert("Por favor, define primero el costo antes de aceptar el turno.");
         return;
     }
+
+    console.log(`Aceptando sesión: ${JSON.stringify(sesion)}`);
     
-    // Asegurarse de que se actualiza el estado de la sesión antes de llamar a obtenerTurnos
     actualizarEstadoSesion(id_sesion, "CONFIRMADO").then(() => {
         obtenerTurnos(); // Llama a obtenerTurnos después de que se confirme el estado
+    }).catch(error => {
+        console.error("Error al aceptar la solicitud:", error);
     });
 }
 
 async function actualizarCostoSesion(idSesion, nuevoCosto) {
+    console.log(`Actualizando costo de la sesión ID: ${idSesion} a ${nuevoCosto}`);
     try {
         const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/editarCosto/${idSesion}?nuevoCosto=${nuevoCosto}`, {
             method: 'PUT',
@@ -213,15 +217,19 @@ async function actualizarCostoSesion(idSesion, nuevoCosto) {
 
         if (response.ok) {
             console.log('Costo actualizado correctamente');
+            return true;
         } else {
             console.error('Error al actualizar el costo:', response.statusText);
+            return false;
         }
     } catch (error) {
         console.error('Error al conectarse a la API:', error);
+        return false;
     }
 }
 
 async function actualizarEstadoSesion(idSesion, estado) {
+    console.log(`Actualizando estado de la sesión ID: ${idSesion} a ${estado}`);
     try {
         const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/editarEstado/${idSesion}?estado=${estado}`, {
             method: 'PUT',
@@ -232,23 +240,32 @@ async function actualizarEstadoSesion(idSesion, estado) {
 
         if (response.ok) {
             console.log('Estado actualizado correctamente');
+            return true;
         } else {
             console.error('Error al actualizar el estado:', response.statusText);
+            return false;
         }
     } catch (error) {
         console.error('Error al conectarse a la API:', error);
+        return false;
     }
 }
 
 function rechazarSolicitud(id_sesion, boton) {
     const sesion = sesionesGlobal.find(s => s.id === id_sesion);
-    if (!sesion) return;
+    if (!sesion) {
+        console.error(`No se encontró sesión con ID: ${id_sesion}`);
+        return;
+    }
 
     const confirmacion = confirm(`¿Estás seguro de que deseas rechazar la solicitud de ${sesion.nombre_completo}?`);
     if (confirmacion) {
+        console.log(`Rechazando sesión: ${JSON.stringify(sesion)}`);
         actualizarEstadoSesion(id_sesion, "RECHAZADO").then(() => {
             boton.closest('tr').remove(); // Eliminar la fila de la tabla
             alert("Solicitud rechazada correctamente.");
+        }).catch(error => {
+            console.error("Error al rechazar la solicitud:", error);
         });
     }
 }
