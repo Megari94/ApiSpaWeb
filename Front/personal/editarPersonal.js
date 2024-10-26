@@ -71,9 +71,9 @@ function manejarEdicionPersonal(idPersonal, token) {
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // Crear un objeto para enviar (sin listas vacías)
+        // Crear un objeto de datos con los valores del formulario
         const data = {
-            id: idCliente, // Incluir el ID del cliente
+            id: idPersonal, // Usar el ID del personal
             nombre: document.getElementById('firstName').value.trim(),
             apellido: document.getElementById('lastName').value.trim(),
             correo: document.getElementById('email').value.trim(),
@@ -83,7 +83,7 @@ function manejarEdicionPersonal(idPersonal, token) {
 
         console.log('Datos a enviar:', JSON.stringify(data)); // Para verificar los datos
 
-        fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/editarConDTO`, {
+        fetch(`https://spaadministrativo-production-4488.up.railway.app/Personal/editar/${idPersonal}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -94,16 +94,16 @@ function manejarEdicionPersonal(idPersonal, token) {
         .then(response => {
             if (!response.ok) {
                 return response.json().then(err => {
-                    console.error('Error al actualizar la información del cliente:', err);
-                    throw new Error('Error al actualizar la información del cliente: ' + (err.message || 'Error desconocido'));
+                    console.error('Error al actualizar la información del personal:', err);
+                    throw new Error('Error al actualizar la información del personal: ' + (err.message || 'Error desconocido'));
                 });
             }
-            alert('Información actualizada correctamente');
-            // Opcionalmente, puedes redirigir al usuario o cargar nuevamente la información
+            alert('Información del personal actualizada correctamente');
         })
         .catch(error => {
-            console.error('Error al actualizar la información del cliente:', error);
-            alert('No se pudo actualizar la información del cliente. Inténtelo de nuevo más tarde.');
+            console.error('Error al actualizar la información del personal:', error);
+            alert('No se pudo actualizar la información del personal. Inténtelo de nuevo más tarde.');
         });
     });
 }
+
