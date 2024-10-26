@@ -225,8 +225,8 @@ public ResponseEntity<List<ClienteAdminDTO>> getClientesH(){
        return Clientedto;
     }
 
-    @PutMapping("/clientes/editarConDTO")
-public Cliente editClienteConDTO(@RequestBody ClienteAdminDTO clienteAdminDTO) {
+@PutMapping("/clientes/editarConDTO")
+public ResponseEntity<Void> editClienteConDTO(@RequestBody ClienteAdminDTO clienteAdminDTO) {
     Long id = clienteAdminDTO.getId();
     String nombre = clienteAdminDTO.getNombre();
     String apellido = clienteAdminDTO.getApellido();
@@ -236,9 +236,10 @@ public Cliente editClienteConDTO(@RequestBody ClienteAdminDTO clienteAdminDTO) {
 
     // Llama al método editCliente con los datos del DTO y null para las listas
     servis.editCliente(id, nombre, apellido, correo, contrasenia, nombre_usuario, null, null, null);
-    
-    // Retorna el cliente actualizado
-    return this.findCliente(id);
+
+    // Retorna solo el estado HTTP 200 OK
+    return ResponseEntity.ok().build();
 }
+
 
 }
