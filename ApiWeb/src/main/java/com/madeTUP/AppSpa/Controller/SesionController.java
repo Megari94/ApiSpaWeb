@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -182,6 +183,7 @@ public ResponseEntity<String> aceptarSesion(@PathVariable Long id_sesion) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sesión no encontrada");
     }
 }
+
 @PutMapping("/Sesion/rechazar/{id_sesion}")
 public ResponseEntity<Map<String, String>> rechazarSesion(@PathVariable Long id_sesion) {
     Map<String, String> response = new HashMap<>();
@@ -200,6 +202,7 @@ public ResponseEntity<Map<String, String>> rechazarSesion(@PathVariable Long id_
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }
+
 
 @PutMapping("/Sesion/cancelar/{id_sesion}")
 public ResponseEntity<String> cancelarSesion(@PathVariable Long id_sesion) {
@@ -251,7 +254,7 @@ public ResponseEntity<String> agregarSesionAdmin(@RequestBody NewSesionDTO nueva
 public ResponseEntity<String> editarCostoSesion(@PathVariable Long id_sesion, @RequestParam(required = false) Double nuevoCosto) {
     try {
         // Llama al método editSesion para actualizar el estado de asistencia a "CANCELADO"
-        servis.editSesion(id_sesion, null, null, null, nuevoCosto, null,null);
+        servis.editSesion(id_sesion, null, null, null, nuevoCosto, "CONFIRMADO",null);
         return ResponseEntity.ok("Precio Agregado");
     } catch (EntityNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sesión no encontrada");
