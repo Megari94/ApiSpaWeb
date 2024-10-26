@@ -172,8 +172,8 @@ public ResponseEntity<String> agregarSesion(@RequestBody NewSesionDTO nuevaSesio
     // Método para aceptar la sesión
     
 @PutMapping("/Sesion/aceptar/{id_sesion}")
-public ResponseEntity<String> aceptarSesion(@PathVariable Long id) {
-    Sesion sesion = servis.findSesion(id);
+public ResponseEntity<String> aceptarSesion(@PathVariable Long id_sesion) {
+    Sesion sesion = servis.findSesion(id_sesion);
     if (sesion != null) {
         sesion.setAsistencia("CONFIRMADO"); // Actualiza la asistencia a "confirmado"
         servis.saveSesion(sesion); // Guarda los cambios
@@ -182,7 +182,6 @@ public ResponseEntity<String> aceptarSesion(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sesión no encontrada");
     }
 }
-
 @PutMapping("/Sesion/rechazar/{id_sesion}")
 public ResponseEntity<String> rechazarSesion(@PathVariable Long id_sesion) {
     try {
