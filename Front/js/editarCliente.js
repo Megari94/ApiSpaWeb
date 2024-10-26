@@ -72,16 +72,22 @@ function manejarEdicionCliente(idCliente, token) {
         const params = new URLSearchParams();
         
         // Agregar los datos al objeto URLSearchParams
-        params.append('nombre', document.getElementById('firstName').value); // Cambiar 'firstName' a 'nombre'
-        params.append('apellido', document.getElementById('lastName').value); // Cambiar 'lastName' a 'apellido'
-        params.append('correo', document.getElementById('email').value); // Cambiar 'email' a 'correo'
-        params.append('contrasenia', document.getElementById('password').value); // Cambiar 'password' a 'contrasenia'
-        params.append('nombre_usuario', document.getElementById('username').value); // Cambiar 'username' a 'nombre_usuario'
+        params.append('nombre', document.getElementById('firstName').value);
+        params.append('apellido', document.getElementById('lastName').value);
+        params.append('correo', document.getElementById('email').value);
+        params.append('contrasenia', document.getElementById('password').value);
+        params.append('nombre_usuario', document.getElementById('username').value);
         
-        // Enviar listas como null
-        params.append('listaSesiones', null); // Lista como null
-        params.append('listaConsultas', null); // Lista como null
-        params.append('listaServicio', null); // Lista como null
+        // Solo agregar listas si se necesitan
+        if (document.getElementById('listaSesiones') && document.getElementById('listaSesiones').value) {
+            params.append('listaSesiones', document.getElementById('listaSesiones').value);
+        }
+        if (document.getElementById('listaConsultas') && document.getElementById('listaConsultas').value) {
+            params.append('listaConsultas', document.getElementById('listaConsultas').value);
+        }
+        if (document.getElementById('listaServicio') && document.getElementById('listaServicio').value) {
+            params.append('listaServicio', document.getElementById('listaServicio').value);
+        }
 
         console.log('Datos a enviar:', params.toString()); // Para verificar los datos
 
@@ -89,7 +95,7 @@ function manejarEdicionCliente(idCliente, token) {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/x-www-form-urlencoded', // Cambiar el tipo de contenido
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
         })
         .then(response => {
