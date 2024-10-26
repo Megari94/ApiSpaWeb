@@ -1,4 +1,4 @@
-let sesionesGlobal = []; 
+sesionesGlobal = []; 
 
 async function loadSessionsAdmin() {
     try {
@@ -33,8 +33,8 @@ function displaySessions(sesiones) {
         const row = document.createElement('tr');
         const fechaFormateada = formatearFecha(sesion.fecha);
 
-        row.innerHTML = `
-            <td>${sesion.id}</td>
+        row.innerHTML = 
+            `<td>${sesion.id}</td>
             <td>${sesion.asistencia}</td>
             <td>${sesion.costo > 0 ? sesion.costo : 'No definido'}</td>
             <td>${fechaFormateada}</td>
@@ -46,9 +46,8 @@ function displaySessions(sesiones) {
                     <button class="btn-aceptar" onclick="aceptarSolicitud('${sesion.id}')">Aceptar</button>
                     <button class="btn-rechazar" onclick="rechazarSolicitud('${sesion.id}', this)">Denegar</button>
                 </div>
-            </td>
-        `;
-
+            </td>`;
+        
         tableBody.appendChild(row);
     });
 }
@@ -172,27 +171,13 @@ function abrirModalPrecio(filaId) {
 function guardarPrecio() {
     const precio = parseFloat(document.getElementById('precio').value);
     if (precio > 0) {
-        // Actualiza el costo en la sesión global
-        const sesion = sesionesGlobal.find(s => s.id === filaIdGlobal);
-        if (sesion) {
-            sesion.costo = precio; // Actualiza el precio en la lista global
-            actualizarCostoSesion(filaIdGlobal, precio); // Actualiza el costo en el servidor
-        }
-
-        // Actualiza la columna de costo en la tabla sin recargar la página
-        const fila = document.querySelector(`tr td:first-child:contains('${filaIdGlobal}')`).parentElement;
-        if (fila) {
-            const costoCell = fila.querySelector('td:nth-child(3)');
-            costoCell.textContent = precio;
-        }
-
+        actualizarCostoSesion(filaIdGlobal, precio);
         cerrarModal('modalPrecio');
         alert("Costo definido correctamente. Ahora puedes aceptar el turno.");
     } else {
         alert("Por favor, ingrese un precio válido (mayor a cero).");
     }
 }
-
 
 function habilitarAceptar() {
     const botonAceptar = document.getElementById('botonAceptar');
@@ -209,11 +194,9 @@ function aceptarSolicitud(id_sesion) {
         alert("Por favor, define primero el costo antes de aceptar el turno.");
         return;
     }
-
     actualizarEstadoSesion(id_sesion, "CONFIRMADO");
-    obtenerTurnos(); // Actualiza la lista de turnos después de aceptar
+    obtenerTurnos();
 }
-
 
 async function actualizarCostoSesion(idSesion, nuevoCosto) {
     try {
@@ -243,19 +226,16 @@ function actualizarEstadoSesion(idSesion, estado) {
     })
     .then(response => {
         if (response.ok) {
-            console.log(`Turno ${estado} correctamente`);
+            console.log(`Turno ${estado} exitosamente`);
         } else {
-            console.error(`Error al cambiar el estado del turno a ${estado}:`, response.statusText);
+            console.error('Error al actualizar el estado:', response.statusText);
         }
     })
     .catch(error => {
-        console.error(`Error al conectarse a la API para cambiar el estado a ${estado}:`, error);
+        console.error('Error al conectarse a la API:', error);
     });
 }
 
 function cerrarModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = 'none';
-    }
+    document.getElementById(modalId).style.display = 'none';
 }
