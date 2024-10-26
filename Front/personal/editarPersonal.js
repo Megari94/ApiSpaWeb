@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log("Página cargada con data-page:", document.body.dataset.page);
     const token = localStorage.getItem('token');
-    const idCliente = localStorage.getItem('idPersonal');
+    const idPersonal = localStorage.getItem('idPersonal');
 
     // Verifica si el usuario está autenticado
     if (!token) {
