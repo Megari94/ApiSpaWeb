@@ -71,25 +71,23 @@ function manejarEdicionCliente(idCliente, token) {
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // Crear un objeto para enviar
+        // Crear un objeto para enviar (sin listas vacías)
         const data = {
+            id: idCliente, // Incluir el ID del cliente
             nombre: document.getElementById('firstName').value.trim(),
             apellido: document.getElementById('lastName').value.trim(),
             correo: document.getElementById('email').value.trim(),
             contrasenia: document.getElementById('password').value.trim(),
-            nombre_usuario: document.getElementById('username').value.trim(),
-            listaSesiones: [], // Enviar como lista vacía
-            listaConsultas: [], // Enviar como lista vacía
-            listaServicio: [] // Enviar como lista vacía
+            nombre_usuario: document.getElementById('username').value.trim()
         };
 
         console.log('Datos a enviar:', JSON.stringify(data)); // Para verificar los datos
 
-        fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/editar/${idCliente}`, {
+        fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/editarConDTO`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json', // Asegúrate de que esto es correcto
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(data) // Enviar el objeto como JSON
         })
