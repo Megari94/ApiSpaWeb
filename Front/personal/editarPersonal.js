@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log("Página cargada con data-page:", document.body.dataset.page);
     const token = localStorage.getItem('token');
-    const idCliente = localStorage.getItem('idCliente');
+    const idCliente = localStorage.getItem('idPersonal');
 
     // Verifica si el usuario está autenticado
     if (!token) {
@@ -10,15 +10,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Verifica si la página actual es EditarInfoCliente.html
-    if (document.body.dataset.page === 'EditarInfoCliente') {
-        cargarInformacionCliente(idCliente, token);
-        manejarEdicionCliente(idCliente, token);
+    if (document.body.dataset.page === 'EditarInfoPersonal') {
+        cargarInformacionPersonal(idPersonal, token);
+        manejarEdicionPersonal(idPersonal, token);
     }
 });
 
 // Función para cargar la información del cliente
-function cargarInformacionCliente(idCliente, token) {
-    fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/encontrarClienteDTO/${idCliente}`, {
+function cargarInformacionPersonal(idPersonal, token) {
+    fetch(`https://spaadministrativo-production-4488.up.railway.app/Personal/personalInfo/${idPersonal}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -28,8 +28,8 @@ function cargarInformacionCliente(idCliente, token) {
     .then(response => {
         if (!response.ok) {
             return response.json().then(err => {
-                console.error('Error al cargar la información del cliente:', err);
-                throw new Error('Error al cargar la información del cliente: ' + (err.message || 'Error desconocido'));
+                console.error('Error al cargar la información del Usuario:', err);
+                throw new Error('Error al cargar la información del usuario: ' + (err.message || 'Error desconocido'));
             });
         }
         return response.json();
@@ -60,7 +60,7 @@ function cargarInformacionCliente(idCliente, token) {
 }
 
 // Función para manejar la edición de la información del cliente
-function manejarEdicionCliente(idCliente, token) {
+function manejarEdicionPersonal(idPersonal, token) {
     const form = document.getElementById('personalInfoForm');
     
     if (!form) {
