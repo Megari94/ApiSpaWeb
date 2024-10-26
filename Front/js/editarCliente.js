@@ -27,7 +27,11 @@ function cargarInformacionCliente(idCliente, token) {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Error al cargar la información del cliente');
+            // Imprimir detalles de la respuesta si hay un error
+            return response.json().then(err => {
+                console.error('Error al cargar la información del cliente:', err);
+                throw new Error('Error al cargar la información del cliente: ' + (err.message || 'Error desconocido'));
+            });
         }
         return response.json();
     })
@@ -92,8 +96,10 @@ function manejarEdicionCliente(idCliente, token) {
         })
         .then(response => {
             if (!response.ok) {
+                // Imprimir detalles de la respuesta si hay un error
                 return response.json().then(err => {
-                    throw new Error(err.message || 'Error al actualizar la información del cliente');
+                    console.error('Error al actualizar la información del cliente:', err);
+                    throw new Error('Error al actualizar la información del cliente: ' + (err.message || 'Error desconocido'));
                 });
             }
             alert('Información actualizada correctamente');
