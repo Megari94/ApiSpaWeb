@@ -68,35 +68,27 @@ function manejarEdicionCliente(idCliente, token) {
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // Crear un objeto URLSearchParams para los parámetros de consulta
-        const params = new URLSearchParams();
-        
-        // Agregar los datos al objeto URLSearchParams
-        params.append('nombre', document.getElementById('firstName').value);
-        params.append('apellido', document.getElementById('lastName').value);
-        params.append('correo', document.getElementById('email').value);
-        params.append('contrasenia', document.getElementById('password').value);
-        params.append('nombre_usuario', document.getElementById('username').value);
-        
-        // Solo agregar listas si se necesitan
-        if (document.getElementById('listaSesiones') && document.getElementById('listaSesiones').value) {
-            params.append('listaSesiones', document.getElementById('listaSesiones').value);
-        }
-        if (document.getElementById('listaConsultas') && document.getElementById('listaConsultas').value) {
-            params.append('listaConsultas', document.getElementById('listaConsultas').value);
-        }
-        if (document.getElementById('listaServicio') && document.getElementById('listaServicio').value) {
-            params.append('listaServicio', document.getElementById('listaServicio').value);
-        }
+        // Crear un objeto para enviar
+        const data = {
+            nombre: document.getElementById('firstName').value,
+            apellido: document.getElementById('lastName').value,
+            correo: document.getElementById('email').value,
+            contrasenia: document.getElementById('password').value,
+            nombre_usuario: document.getElementById('username').value,
+            listaSesiones: [], // Enviar como lista vacía
+            listaConsultas: [], // Enviar como lista vacía
+            listaServicio: [] // Enviar como lista vacía
+        };
 
-        console.log('Datos a enviar:', params.toString()); // Para verificar los datos
+        console.log('Datos a enviar:', JSON.stringify(data)); // Para verificar los datos
 
-        fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/editar/${idCliente}?${params.toString()}`, {
+        fetch(`https://spaadministrativo-production-4488.up.railway.app/clientes/editar/${idCliente}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json', // Cambiar a application/json
             },
+            body: JSON.stringify(data) // Enviar el objeto como JSON
         })
         .then(response => {
             if (!response.ok) {
