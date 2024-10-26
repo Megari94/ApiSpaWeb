@@ -1,4 +1,4 @@
-sesionesGlobal = []; 
+let sesionesGlobal = [];
 
 async function loadSessionsAdmin() {
     try {
@@ -227,9 +227,9 @@ function actualizarEstadoSesion(idSesion, estado) {
     })
     .then(response => {
         if (response.ok) {
-            console.log(`Turno ${estado} exitosamente`);
+            console.log(`Turno con id ${idSesion} actualizado a CONFIRMADO`);
         } else {
-            console.error('Error al actualizar el estado:', response.statusText);
+            console.error('Error al actualizar el estado del turno:', response.statusText);
         }
     })
     .catch(error => {
