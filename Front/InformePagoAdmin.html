@@ -125,22 +125,51 @@
 
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'pt', 'a4');
-            doc.setFontSize(14);
+
+  doc.setFontSize(14);
             doc.setFont("Helvetica", "bold");
-            doc.text("Informe de Pagos", 70, 75);
+            doc.text("INFORME DE INGRESO", 70, 75);
             doc.setFontSize(12);
             doc.setFont("Helvetica", "normal");
-            doc.text(`Desde: ${fechaInicio}   Hasta: ${fechaFin}   Tipo de Pago: ${tipoPago}`, 70, 100);
 
+            // Bordes para la estructura del informe
+            doc.rect(30, 30, 550, 750); // Borde general
+            doc.rect(30, 30, 550, 120); // Borde encabezado
+            doc.rect(30, 660, 550, 50); // Borde subtotal y total
+            doc.rect(30, 150, 550, 30); // Borde encabezado
+           
+
+            // Detalles del informe
+            doc.setFontSize(16);
+            doc.setFont("Helvetica", "bold");
+            doc.text("Detalle del Informe", 380, 65);
+
+            // Fecha actual
+            const fechaActual = new Date();
+            const dia = fechaActual.getDate().toString().padStart(2, '0');
+            const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
+            const anio = fechaActual.getFullYear();
+            const fechaFormateada = dia + '/' + mes + '/' + anio;
+            doc.setFontSize(12);
+            doc.setFont("Helvetica", "normal");
+            doc.text("Fecha de Emisión: " + fechaFormateada, 380, 80);
+
+            doc.text('Fecha de Inicio: ${fechaInicio}' , 380, 100);
+            doc.text('Fecha de Fin:${fechaFin}', 380, 115);
+            
+
+            
+            doc.text( 'Tipo de Pago: ${tipoPago}`, 40, 170);
+          
             doc.setFontSize(10);
             doc.setFont("Helvetica", "bold");
-            doc.text("ID", 40, 130);
-            doc.text("Nombre Completo", 90, 130);
-            doc.text("Asistencia", 184, 130);
-            doc.text("Fecha", 300, 130);
-            doc.text("Servicio", 450, 130);
-            doc.text("Costo", 560, 130, { align: "right" });
-            doc.line(30, 135, 580, 135);
+            doc.text("ID", 40, 200);
+            doc.text("Nombre Completo", 90,  200);
+            doc.text("Asistencia", 184,  200);
+            doc.text("Fecha", 300,  200);
+            doc.text("Servicio", 450,  200);
+            doc.text("Costo", 560,  200, { align: "right" });
+            doc.line(30, 135, 580,  200);
 
             let yOffset = 150;
             let totalCosto = 0;
