@@ -228,6 +228,7 @@ async function actualizarCostoSesion(idSesion, nuevoCosto) {
 
         if (response.ok) {
             console.log('Costo actualizado correctamente para la sesión', idSesion);
+            window.location.reload();
         } else {
             console.error('Error al actualizar el costo:', response.statusText);
         }
@@ -247,6 +248,7 @@ function actualizarEstadoSesion(idSesion, estado) {
     .then(response => {
         if (response.ok) {
             console.log(`Turno con id ${idSesion} actualizado a CONFIRMADO`);
+            window.location.reload();
         } else {
             console.error('Error al actualizar el estado del turno:', response.statusText);
         }
