@@ -1,4 +1,4 @@
-sesionesGlobal = []; 
+let sesionesGlobal = []; 
 
 async function loadSessionsAdmin() {
     try {
@@ -195,8 +195,11 @@ function aceptarSolicitud(id_sesion) {
         alert("Por favor, define primero el costo antes de aceptar el turno.");
         return;
     }
-    actualizarEstadoSesion(id_sesion, "CONFIRMADO");
-    obtenerTurnos();
+    
+    // Asegurarse de que se actualiza el estado de la sesión antes de llamar a obtenerTurnos
+    actualizarEstadoSesion(id_sesion, "CONFIRMADO").then(() => {
+        obtenerTurnos(); // Llama a obtenerTurnos después de que se confirme el estado
+    });
 }
 
 async function actualizarCostoSesion(idSesion, nuevoCosto) {
@@ -218,23 +221,36 @@ async function actualizarCostoSesion(idSesion, nuevoCosto) {
     }
 }
 
-function actualizarEstadoSesion(idSesion, estado) {
-    fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/aceptar/${idSesion}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
+async function actualizarEstadoSesion(idSesion, estado) {
+    try {
+        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/editarEstado/${idSesion}?estado=${estado}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
         if (response.ok) {
-            console.log(`Turno ${estado} exitosamente`);
+            console.log('Estado actualizado correctamente');
         } else {
             console.error('Error al actualizar el estado:', response.statusText);
         }
-    })
-    .catch(error => {
+    } catch (error) {
         console.error('Error al conectarse a la API:', error);
-    });
+    }
+}
+
+function rechazarSolicitud(id_sesion, boton) {
+    const sesion = sesionesGlobal.find(s => s.id === id_sesion);
+    if (!sesion) return;
+
+    const confirmacion = confirm(`¿Estás seguro de que deseas rechazar la solicitud de ${sesion.nombre_completo}?`);
+    if (confirmacion) {
+        actualizarEstadoSesion(id_sesion, "RECHAZADO").then(() => {
+            boton.closest('tr').remove(); // Eliminar la fila de la tabla
+            alert("Solicitud rechazada correctamente.");
+        });
+    }
 }
 
 function cerrarModal(modalId) {
