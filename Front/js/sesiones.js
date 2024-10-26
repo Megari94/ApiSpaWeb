@@ -264,7 +264,7 @@ async function rechazarSolicitud(idSesion, button) {
         console.log("Rechazando solicitud con ID:", idSesion);
         try {
             const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/rechazar/${idSesion}`, {
-                method: 'PATCH'
+                method: 'PUT'
             });
 
             if (!response.ok) {
