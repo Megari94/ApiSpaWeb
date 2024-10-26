@@ -217,43 +217,45 @@ function aceptarSolicitud(id_sesion) {
 }
 
 async function actualizarCostoSesion(idSesion, nuevoCosto) {
-    console.log("Actualizando costo de sesión con ID:", idSesion, "Nuevo costo:", nuevoCosto);
+    console.log(`Intentando actualizar el costo para la sesión ${idSesion} con el nuevo costo: ${nuevoCosto}`);
     try {
-        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/actualizarCosto/${idSesion}/${nuevoCosto}`, {
-            method: 'PATCH'
+        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/editarCosto/${idSesion}?nuevoCosto=${nuevoCosto}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
 
-        if (!response.ok) {
+        if (response.ok) {
+            console.log('Costo actualizado correctamente para la sesión', idSesion);
+            window.location.reload();
+        } else {
             console.error('Error al actualizar el costo:', response.statusText);
-            return;
         }
-
-        const result = await response.json();
-        console.log('Costo actualizado:', result);
-        alert("Costo actualizado correctamente.");
     } catch (error) {
-        console.error('Error de conexión:', error);
+        console.error('Error al conectarse a la API:', error);
     }
 }
 
-async function actualizarEstadoSesion(idSesion, nuevoEstado) {
-    console.log("Actualizando estado de sesión con ID:", idSesion, "Nuevo estado:", nuevoEstado);
-    try {
-        const response = await fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/actualizarEstado/${idSesion}/${nuevoEstado}`, {
-            method: 'PATCH'
-        });
-
-        if (!response.ok) {
-            console.error('Error al actualizar el estado:', response.statusText);
-            return;
+function actualizarEstadoSesion(idSesion, estado) {
+    console.log(`Actualizando el estado de la sesión ${idSesion} a ${estado}`);
+    fetch(`https://spaadministrativo-production-4488.up.railway.app/Sesion/aceptar/${idSesion}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
         }
-
-        const result = await response.json();
-        console.log('Estado actualizado:', result);
-        alert("Estado actualizado correctamente.");
-    } catch (error) {
-        console.error('Error de conexión:', error);
-    }
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log(`Turno con id ${idSesion} actualizado a CONFIRMADO`);
+            window.location.reload();
+        } else {
+            console.error('Error al actualizar el estado del turno:', response.statusText);
+        }
+    })
+    .catch(error => {
+        console.error('Error al conectarse a la API:', error);
+    });
 }
 
 async function rechazarSolicitud(idSesion, button) {
@@ -281,14 +283,7 @@ async function rechazarSolicitud(idSesion, button) {
     }
 }
 
+
 function cerrarModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
 }
-
-window.onclick = function(event) {
-    if (event.target.matches('.modal')) {
-        event.target.style.display = 'none';
-    }
-}
-
-document.getElementById('precio').addEventListener('input', habilitarAceptar);
