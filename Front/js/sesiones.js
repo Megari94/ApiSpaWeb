@@ -35,14 +35,15 @@ function displaySessions(sesiones) {
         row.innerHTML = `
             <td>${sesion.id}</td>
             <td>${sesion.asistencia}</td>
-            <td>${sesion.costo}</td>
+            <td>${sesion.costo > 0 ? sesion.costo : 'No definido'}</td>
             <td>${fechaFormateada}</td>
             <td>${sesion.nombre_completo}</td>
             <td>${sesion.nombre_servicio}</td>
             <td>
                 <div class="button-group">
-                    <button class="btn-aceptar" onclick="aceptarSolicitud('${sesion.id}', '${sesion.nombre_completo}', '${sesion.nombre_servicio}', ${sesion.costo})">Aceptar</button>
-                    <button class="btn-rechazar" onclick="rechazarSolicitud('${sesion.id}',this)">Denegar</button>
+                    <button class="btn-definir-precio" onclick="abrirModalPrecio('${sesion.id}')">Definir Precio</button>
+                    <button class="btn-aceptar" onclick="aceptarSolicitud('${sesion.id}')">Aceptar</button>
+                    <button class="btn-rechazar" onclick="rechazarSolicitud('${sesion.id}', this)">Denegar</button>
                 </div>
             </td>
         `;
