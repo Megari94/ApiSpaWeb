@@ -246,7 +246,7 @@ public ResponseEntity<String> agregarSesionAdmin(@RequestBody NewSesionDTO nueva
 public ResponseEntity<String> editarCostoSesion(@PathVariable Long id_sesion, @RequestParam(required = false) Double nuevoCosto) {
     try {
         // Llama al método editSesion para actualizar el estado de asistencia a "CANCELADO"
-        servis.editSesion(id_sesion, null, null, null, nuevoCosto, "CONFIRMADO",null);
+        servis.editSesion(id_sesion, null, null, null, nuevoCosto, null,null);
         return ResponseEntity.ok("Precio Agregado");
     } catch (EntityNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sesión no encontrada");
