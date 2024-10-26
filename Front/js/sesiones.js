@@ -191,9 +191,14 @@ function habilitarAceptar() {
 
 function aceptarSolicitud(id_sesion) {
     console.log("Función aceptarSolicitud llamada con id_sesion:", id_sesion); // Verificar el id que se está pasando
-
     console.log("Contenido de sesionesGlobal:", sesionesGlobal); // Mostrar el contenido de sesionesGlobal
-    const sesion = sesionesGlobal.find(s => s.id === id_sesion);
+    
+    // Convertir id_sesion a número por si es string
+    const idSesionNumerico = Number(id_sesion);
+    console.log("ID de sesión después de conversión a número:", idSesionNumerico);
+    
+    // Buscar sesión usando comparación numérica
+    const sesion = sesionesGlobal.find(s => Number(s.id) === idSesionNumerico);
 
     if (!sesion) {
         console.log("Sesión no encontrada."); // Mostrar si la sesión no fue encontrada
@@ -210,7 +215,6 @@ function aceptarSolicitud(id_sesion) {
     actualizarEstadoSesion(id_sesion, "CONFIRMADO");
     obtenerTurnos();
 }
-
 
 async function actualizarCostoSesion(idSesion, nuevoCosto) {
     console.log(`Intentando actualizar el costo para la sesión ${idSesion} con el nuevo costo: ${nuevoCosto}`);
