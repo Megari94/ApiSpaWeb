@@ -349,8 +349,8 @@ async function generarFactura(turnoId) {
         // Definición de la imagen
         const imageWidth = 100; // Ancho de la imagen
         const imageHeight = 50; // Alto de la imagen
-        const logoX = 30; // Posición X de la imagen (izquierda)
-        const logoY = 30; // Posición Y de la imagen
+        const logoX = 50; // Posición X de la imagen (izquierda)
+        const logoY = 50; // Posición Y de la imagen
 
         // Agregar imagen en la parte superior izquierda
         doc.addImage(imageData, 'JPEG', logoX, logoY, imageWidth, imageHeight);
