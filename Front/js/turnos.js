@@ -49,7 +49,6 @@ function mostrarTurnos(turnosAmostrar) {
     tableBody.innerHTML = ''; // Limpiar la tabla antes de insertar los datos
 
     turnosAmostrar.forEach(turno => {
-        // Mostrar solo turnos que estén en estado 'confirmado' o 'cancelado'
         if (turno.asistencia === 'CONFIRMADO' || turno.asistencia === 'CANCELADO') {
             const claseAsistencia = turno.asistencia === 'CANCELADO' ? 'asistencia-cancelado' : 'asistencia-confirmado';
             const fila = document.createElement('tr');
@@ -66,11 +65,17 @@ function mostrarTurnos(turnosAmostrar) {
                 fila.innerHTML += `
                     <td>
                         <button onclick="cancelarTurno(${turno.id}, this)" class="cancelar-btn">Cancelar</button>
-                        <button onclick="generarFactura(${turno.id}, this)" class="factura-btn">Factura</button>
+                        <button onclick="generarFactura(${turno.id})" 
+                                class="factura-btn" 
+                                data-nombre="${turno.nombre_completo}"
+                                data-fecha="${turno.fecha}"
+                                data-costo="${turno.costo}"
+                                data-servicio="${turno.nombre_servicio}">
+                            Factura
+                        </button>
                     </td>
                 `;
             } else {
-                // Si está cancelado, dejar la columna vacía o con un texto de "Cancelado"
                 fila.innerHTML += `<td></td>`;
             }
 
@@ -78,6 +83,7 @@ function mostrarTurnos(turnosAmostrar) {
         }
     });
 }
+
 
 // Función para filtrar turnos por nombre del cliente
 function filtrarTurnos() {
