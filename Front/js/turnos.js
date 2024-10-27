@@ -382,15 +382,14 @@ async function generarFactura(turnoId) {
         const fechaFormateada = `${dia}/${mes}/${anio}`;
         doc.text("Fecha de Emisión: " + fechaFormateada, 380, 95);
 
-        doc.text("CUIT: 27316471566", 380, 110);
+        doc.text("SERVICIO REALIZADO/FINALIZADO", 380, 110);
         doc.text("Ingresos Brutos: EXENTO", 380, 125);
-        doc.text("Fecha de Inicio de Actividades: ", 380, 140);
+        doc.text("Fecha de Inicio de Actividades: " + fechaFormateada, 380, 140);
 
         doc.text("Recibí de: " + clientName, 40, 170);
-        doc.text("DNI: S/D ACTUALES", 350, 170);
         doc.text("Domicilio: S/D ACTUALES", 40, 190);
-        doc.text("Localidad: S/D ACTUALES", 40, 210);
-        doc.text("Provincia: S/D ACTUALES", 350, 210);
+        doc.text("Localidad: RESISTENCIA", 40, 210);
+        doc.text("Provincia: CHACO", 350, 210);
         doc.text("Tipo de Ingreso: PRODUCIDOS PROPIOS", 40, 240);
         doc.text("Tipo de Cliente: CONSUMIDOR FINAL", 40, 260);
         doc.text("Concepto", 40, 280);
