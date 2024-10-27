@@ -76,6 +76,8 @@ function login(username, password) {
 }
 
 // Función para cargar los turnos del personal
+let todasLasSesiones = []; // Variable global para almacenar todas las sesiones
+
 function cargarTurnos(idPersonal) {
     fetch(`https://spaadministrativo-production-4488.up.railway.app/personal/turnos/${idPersonal}`, {
         method: 'GET',
@@ -87,30 +89,51 @@ function cargarTurnos(idPersonal) {
         return response.json();
     })
     .then(data => {
-        const tableBody = document.getElementById('TableBody');
-        tableBody.innerHTML = '';  // Limpiar la tabla antes de llenarla
-
-        // Filtrar las sesiones para mostrar solo los confirmados
-        const sesionesConfirmadas = data.filter(sesion => sesion.asistencia === 'CONFIRMADO');
-
-        // Iterar sobre las sesiones confirmadas y agregarlas a la tabla
-        sesionesConfirmadas.forEach(sesion => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${sesion.idA}</td>
-                <td>${sesion.asistencia}</td>
-                <td>${sesion.costo}</td>
-                <td>${formatearFecha(sesion.fecha)}</td>  <!-- Aquí aplicamos el formato de fecha -->
-                <td>${sesion.nombreCliente}</td>
-                <td>${sesion.servicio}</td>          
-            `;
-            tableBody.appendChild(row);
-        });
+        todasLasSesiones = data; // Almacenar todas las sesiones
+        mostrarSesiones(data); // Mostrar las sesiones inicialmente
     })
     .catch(error => {
         console.error('Error al cargar los turnos:', error);
         alert('Hubo un error al cargar los turnos.');
     });
+}
+
+function mostrarSesiones(sesiones) {
+    const tableBody = document.getElementById('TableBody');
+    tableBody.innerHTML = '';  // Limpiar la tabla antes de llenarla
+
+    // Filtrar las sesiones para mostrar solo los confirmados
+    const sesionesConfirmadas = sesiones.filter(sesion => sesion.asistencia === 'CONFIRMADO');
+
+    // Iterar sobre las sesiones confirmadas y agregarlas a la tabla
+    sesionesConfirmadas.forEach(sesion => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${sesion.idA}</td>
+            <td>${sesion.asistencia}</td>
+            <td>${sesion.costo}</td>
+            <td>${formatearFecha(sesion.fecha)}</td>  <!-- Aplicar el formato de fecha -->
+            <td>${sesion.nombreCliente}</td>
+            <td>${sesion.servicio}</td>          
+        `;
+        tableBody.appendChild(row);
+    });
+}
+function buscarPorDia() {
+    const fecha = document.getElementById('fecha').value;
+    if (fecha) {
+        const fechaSeleccionada = new Date(fecha).toISOString().split('T')[0]; // Convertir a formato ISO
+
+        // Filtrar las sesiones según la fecha seleccionada
+        const sesionesFiltradas = todasLasSesiones.filter(sesion => {
+            const fechaSesion = new Date(sesion.fecha).toISOString().split('T')[0]; // Formato ISO de la fecha de la sesión
+            return fechaSesion === fechaSeleccionada && sesion.asistencia === 'CONFIRMADO'; // Filtrar confirmadas
+        });
+
+        mostrarSesiones(sesionesFiltradas); // Mostrar solo las sesiones filtradas
+    } else {
+        alert('Por favor, ingresa una fecha válida.');
+    }
 }
 
 // Función para formatear la fecha en el formato deseado
