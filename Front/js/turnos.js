@@ -316,18 +316,20 @@ async function generarFactura(turnoId) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('p', 'pt', 'a4');
 
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('invoiceDate').value = today;
+    // Obtener los datos del botón que se hizo clic
+    const button = document.querySelector(`button.factura-btn[onclick*="${turnoId}"]`);
+    const clientName = button.getAttribute('data-nombre');
+    const invoiceDate = button.getAttribute('data-fecha');
+    const totalAmount = parseFloat(button.getAttribute('data-costo')) || 0;
+    const serviceName = button.getAttribute('data-servicio');
 
-    const invoiceDate = document.getElementById('invoiceDate').value;
-    const clientName = document.getElementById('clientName').value;
-    const totalAmount = parseFloat(document.getElementById('totalAmount').value) || 0;
-
+    // Validar campos obligatorios
     if (!invoiceDate || !clientName || totalAmount === 0) {
         alert("Por favor complete todos los campos obligatorios.");
         return;
     }
 
+    // Encabezado del documento PDF
     const encabezado = () => {
         doc.setFontSize(14);
         doc.setFont("Helvetica", "bold");
@@ -367,6 +369,7 @@ async function generarFactura(turnoId) {
         doc.text("Concepto ", 40, 280);
     };
 
+    // Agregar detalles del servicio
     const agregarServicios = () => {
         doc.setFontSize(10);
         doc.setFont("Helvetica", "bold");
@@ -376,27 +379,20 @@ async function generarFactura(turnoId) {
         doc.line(30, 335, 580, 335);
 
         let yOffset = 350;
-        let totalServicios = 0;
-        document.querySelectorAll('.service-row').forEach((row) => {
-            const serviceId = row.querySelector('.service-id').value;
-            const serviceName = row.querySelector('.service-name').value;
-            const serviceCost = parseFloat(row.querySelector('.service-cost').value) || 0;
+        doc.setFont("Helvetica", "normal");
+        doc.text(turnoId.toString(), 60, yOffset);
+        const productoDividido = doc.splitTextToSize(serviceName, 180);
+        doc.text(productoDividido, 160, yOffset);
+        doc.text(totalAmount.toFixed(2), 550, yOffset, { align: "right" });
 
-            doc.setFont("Helvetica", "normal");
-            doc.text(serviceId, 60, yOffset);
-            const productoDividido = doc.splitTextToSize(serviceName, 180);
-            doc.text(productoDividido, 160, yOffset);
-            doc.text(serviceCost.toFixed(2), 550, yOffset, { align: "right" });
+        yOffset += 20;
+        doc.line(30, yOffset, 580, yOffset);
+        yOffset += 20;
 
-            yOffset += 20;
-            doc.line(30, yOffset, 580, yOffset);
-            yOffset += 20;
-
-            totalServicios += serviceCost;
-        });
-        return totalServicios;
+        return totalAmount;
     };
 
+    // Calcular subtotal y total
     const subtotalYTotal = (totalServicios) => {
         doc.setFontSize(12);
         doc.setFont("Helvetica", "bold");
@@ -405,22 +401,17 @@ async function generarFactura(turnoId) {
         doc.text("Total de servicios: $" + totalServicios.toFixed(2), 40, 750);
     };
 
+    // Generar la factura PDF
     encabezado();
     const totalServicios = agregarServicios();
     subtotalYTotal(totalServicios);
 
+    // Descargar el archivo PDF
     const pdfBlob = doc.output('blob');
     const link = document.createElement('a');
     link.href = URL.createObjectURL(pdfBlob);
     link.download = "factura.pdf";
     link.click();
-
-    setTimeout(() => {
-        document.getElementById('invoiceDate').value = today;
-        document.getElementById('clientName').value = '';
-        document.getElementById('totalAmount').value = '0.00';
-        document.getElementById('servicesContainer').innerHTML = '';
-    }, 1000);
 }
 
 
