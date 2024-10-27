@@ -1,3 +1,10 @@
+ function abrirModal() {
+            document.getElementById('modalPreview').style.display = 'block';
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalPreview').style.display = 'none';
+        }
 async function generarInforme() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('p', 'pt', 'a4');
