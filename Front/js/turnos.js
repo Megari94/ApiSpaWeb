@@ -316,8 +316,6 @@ async function guardarPersonal() {
     }
 }
 
-// FACTURA
-
 async function generarFactura(turnoId) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('p', 'pt', 'a4');
@@ -348,17 +346,20 @@ async function generarFactura(turnoId) {
 
     // Encabezado del documento PDF
     const encabezado = () => {
-        // Agregar imagen centrada en el encabezado
+        // Definición de la imagen
         const imageWidth = 100; // Ancho de la imagen
         const imageHeight = 50; // Alto de la imagen
-        const centerX = (doc.internal.pageSize.getWidth() - imageWidth) / 2; // Calcular el centrado horizontal
-        doc.addImage(imageData, 'JPEG', centerX, 30, imageWidth, imageHeight);
+        const logoX = 30; // Posición X de la imagen (izquierda)
+        const logoY = 40; // Posición Y de la imagen
 
-        // Agregar el texto "SENTIRSE BIEN" centrado debajo de la imagen
+        // Agregar imagen a la izquierda
+        doc.addImage(imageData, 'JPEG', logoX, logoY, imageWidth, imageHeight);
+
+        // Agregar el texto "SENTIRSE BIEN" centrado verticalmente respecto a la imagen
+        const textY = logoY + (imageHeight / 2) + 5; // 5 unidades debajo de la mitad de la imagen
         doc.setFontSize(14);
         doc.setFont("Helvetica", "bold");
-        const textWidth = doc.getTextWidth("SENTIRSE BIEN");
-        doc.text("SENTIRSE BIEN", (doc.internal.pageSize.getWidth() - textWidth) / 2, 100);
+        doc.text("SENTIRSE BIEN", logoX + imageWidth + 10, textY); // 10 unidades a la derecha de la imagen
         doc.setFontSize(12);
         doc.setFont("Helvetica", "normal");
 
@@ -387,9 +388,9 @@ async function generarFactura(turnoId) {
 
         doc.text("Recibí de: " + clientName, 40, 170);
         doc.text("DNI: S/N ACTUALES", 350, 170);
-        doc.text("Domicilio: S/N ACTUALES", 40, 190);
-        doc.text("Localidad: S/N ACTUALES", 40, 210);
-        doc.text("Provincia: S/N ACTUALES", 350, 210);
+        doc.text("Domicilio: S/D ACTUALES", 40, 190);
+        doc.text("Localidad: S/D ACTUALES", 40, 210);
+        doc.text("Provincia: S/D ACTUALES", 350, 210);
         doc.text("Tipo de Ingreso: PRODUCIDOS PROPIOS", 40, 240);
         doc.text("Tipo de Cliente: CONSUMIDOR FINAL", 40, 260);
         doc.text("Concepto", 40, 280);
@@ -439,3 +440,4 @@ async function generarFactura(turnoId) {
     link.download = "factura.pdf";
     link.click();
 }
+
