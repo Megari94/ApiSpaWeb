@@ -62,8 +62,8 @@ async function generarInforme() {
         doc.setFontSize(12);
         doc.setFont("Helvetica", "normal");
         doc.text(`Fecha de Emisión: ${fechaFormateada}`, 380, 80);
-       doc.text(`Fecha de Inicio: ${fechaInicio}` , 380, 110);
-       doc.text(`Fecha de Fin:${fechaFin}`, 380, 125);
+       doc.text(`Fecha de Inicio: ${startDateInput}` , 380, 110);
+       doc.text(`Fecha de Fin:${endDateInput}`, 380, 125);
             
 
         // Información general del servicio (datos del personal)
