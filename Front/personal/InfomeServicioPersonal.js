@@ -128,3 +128,15 @@ async function generarInforme() {
     }
     abrirModal();
 }
+function descargarInforme() {
+    if (pdfBlob) {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(pdfBlob);
+        link.download = 'Informe_Servicios.pdf'; // Nombre del archivo que se descargará
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        alert('Por favor, genera el informe antes de intentar descargarlo.');
+    }
+}
