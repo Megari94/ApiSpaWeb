@@ -39,7 +39,7 @@ async function generarInforme() {
         // Título y encabezado del informe
         doc.setFontSize(14);
         doc.setFont("Helvetica", "bold");
-        doc.text("SERVICIOS PRESTADOS", 70, 75);
+        doc.text("SERVICIOS PRESTADOS", 70, 125);
         doc.setFontSize(12);
         doc.setFont("Helvetica", "normal");
 
@@ -62,6 +62,9 @@ async function generarInforme() {
         doc.setFontSize(12);
         doc.setFont("Helvetica", "normal");
         doc.text(`Fecha de Emisión: ${fechaFormateada}`, 380, 80);
+       doc.text(`Fecha de Inicio: ${fechaInicio}` , 380, 110);
+       doc.text(`Fecha de Fin:${fechaFin}`, 380, 125);
+            
 
         // Información general del servicio (datos del personal)
         doc.text(`Nombre del Personal: ${personalSeleccionado.nombre} ${personalSeleccionado.apellido}`, 40, 170);
