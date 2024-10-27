@@ -195,8 +195,8 @@
             });
 
             doc.setFont("Helvetica", "bold");
-            doc.text("Total:", 420, 680);
-            doc.text(totalCosto.toFixed(2), 570, 680, { align: "right" });
+            doc.text("Total:", 420, 690);
+            doc.text(totalCosto.toFixed(2), 570, 690, { align: "right" });
 
             pdfBlobInforme = doc.output('blob');
             const pdfUrl = URL.createObjectURL(pdfBlobInforme);
