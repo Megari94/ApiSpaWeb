@@ -316,7 +316,7 @@ async function guardarPersonal() {
     }
 }
 
-//FACTURA
+// FACTURA
 
 async function generarFactura(turnoId) {
     const { jsPDF } = window.jspdf;
@@ -331,7 +331,7 @@ async function generarFactura(turnoId) {
 
     // Validar campos obligatorios
     if (!invoiceDate || !clientName || totalAmount === 0) {
-        alert("Por favor complete todos los campos obligatorios.");
+        alert("Por favor, complete todos los campos obligatorios.");
         return;
     }
 
@@ -390,9 +390,9 @@ async function generarFactura(turnoId) {
         doc.text("Domicilio: S/N ACTUALES", 40, 190);
         doc.text("Localidad: S/N ACTUALES", 40, 210);
         doc.text("Provincia: S/N ACTUALES", 350, 210);
-        doc.text("Tipo de Ingreso: PRODUCIDOS PROPIOS ", 40, 240);
+        doc.text("Tipo de Ingreso: PRODUCIDOS PROPIOS", 40, 240);
         doc.text("Tipo de Cliente: CONSUMIDOR FINAL", 40, 260);
-        doc.text("Concepto ", 40, 280);
+        doc.text("Concepto", 40, 280);
     };
 
     // Agregar detalles del servicio
@@ -431,8 +431,6 @@ async function generarFactura(turnoId) {
     encabezado();
     const totalServicios = agregarServicios();
     subtotalYTotal(totalServicios);
-}
-
 
     // Descargar el archivo PDF
     const pdfBlob = doc.output('blob');
@@ -441,5 +439,3 @@ async function generarFactura(turnoId) {
     link.download = "factura.pdf";
     link.click();
 }
-
-
