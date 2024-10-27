@@ -350,16 +350,16 @@ async function generarFactura(turnoId) {
         const imageWidth = 100; // Ancho de la imagen
         const imageHeight = 50; // Alto de la imagen
         const logoX = 30; // Posición X de la imagen (izquierda)
-        const logoY = 40; // Posición Y de la imagen
+        const logoY = 30; // Posición Y de la imagen
 
-        // Agregar imagen a la izquierda
+        // Agregar imagen en la parte superior izquierda
         doc.addImage(imageData, 'JPEG', logoX, logoY, imageWidth, imageHeight);
 
-        // Agregar el texto "SENTIRSE BIEN" centrado verticalmente respecto a la imagen
-        const textY = logoY + (imageHeight / 2) + 5; // 5 unidades debajo de la mitad de la imagen
+        // Agregar el texto "SENTIRSE BIEN" centrado debajo del logo
+        const textY = logoY + imageHeight + 5; // 5 unidades debajo del logo
         doc.setFontSize(14);
         doc.setFont("Helvetica", "bold");
-        doc.text("SENTIRSE BIEN", logoX + imageWidth + 10, textY); // 10 unidades a la derecha de la imagen
+        doc.text("SENTIRSE BIEN", logoX, textY); // Alineado a la izquierda
         doc.setFontSize(12);
         doc.setFont("Helvetica", "normal");
 
@@ -387,7 +387,7 @@ async function generarFactura(turnoId) {
         doc.text("Fecha de Inicio de Actividades: ", 380, 140);
 
         doc.text("Recibí de: " + clientName, 40, 170);
-        doc.text("DNI: S/N ACTUALES", 350, 170);
+        doc.text("DNI: S/D ACTUALES", 350, 170);
         doc.text("Domicilio: S/D ACTUALES", 40, 190);
         doc.text("Localidad: S/D ACTUALES", 40, 210);
         doc.text("Provincia: S/D ACTUALES", 350, 210);
@@ -440,4 +440,3 @@ async function generarFactura(turnoId) {
     link.download = "factura.pdf";
     link.click();
 }
-
