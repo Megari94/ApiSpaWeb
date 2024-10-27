@@ -76,7 +76,9 @@ function login(username, password) {
 }
 
 // Función para cargar los turnos del personal
+// Función para cargar los turnos del personal
 let todasLasSesiones = []; // Variable global para almacenar todas las sesiones
+let modalAbierto = false; // Variable para controlar si el modal está abierto
 
 function cargarTurnos(idPersonal) {
     fetch(`https://spaadministrativo-production-4488.up.railway.app/personal/turnos/${idPersonal}`, {
@@ -119,8 +121,17 @@ function mostrarSesiones(sesiones) {
         tableBody.appendChild(row);
     });
 }
+
 function buscarPorDia() {
     const fecha = document.getElementById('fecha').value;
+    
+    if (modalAbierto) {
+        // Si el modal ya está abierto, cerrarlo y mostrar todos los turnos
+        modalAbierto = false; // Cambia el estado a cerrado
+        mostrarSesiones(todasLasSesiones); // Muestra todas las sesiones
+        return; // Salir de la función
+    }
+
     if (fecha) {
         const fechaSeleccionada = new Date(fecha).toISOString().split('T')[0]; // Convertir a formato ISO
 
@@ -131,6 +142,7 @@ function buscarPorDia() {
         });
 
         mostrarSesiones(sesionesFiltradas); // Mostrar solo las sesiones filtradas
+        modalAbierto = true; // Cambia el estado a abierto
     } else {
         alert('Por favor, ingresa una fecha válida.');
     }
