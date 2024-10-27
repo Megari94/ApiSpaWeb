@@ -8,6 +8,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="..\css\estilo.css">
     <script src="Personal.js" defer></script>
+    <style>
+        /* Estilos para el formulario de filtro */
+        .form-container {
+            display: none; /* Ocultar el formulario por defecto */
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body data-page="TurnosPersonal">
     <div class="container">
@@ -15,7 +26,7 @@
         <div id="sidebar" class="sidebar">
             <div class="link-container">
                 <a href="EditarInfoPersonal.html"><i class="fas fa-user-cog"></i>Cuenta del Personal</a>
-               <a href="Turno.html" id="TurnoLink"><i class="fas fa-calendar-alt"></i>Turno</a>
+                <a href="Turno.html" id="TurnoLink"><i class="fas fa-calendar-alt"></i>Turno</a>
             </div>
             <button class="logout-btn" id="logoutBtn" onclick="redirectToLogin()">Salir</button>
         </div>
@@ -28,6 +39,14 @@
             <!---- Contenedor para el botón de agregar y el buscador ---->
             <div class="search-container">
                 <input type="text" id="searchInput" class="search-input" placeholder="Buscar por cliente, servicio o fecha..." oninput="filtrarTurnos()">
+                <button id="filterButton" onclick="toggleFiltro()">Filtrar por Fecha</button>
+            </div>
+
+            <!-- Formulario emergente para listado por día -->
+            <div id="formularioDia" class="form-container">
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" name="fecha">
+                <button type="button" onclick="buscarPorDia()">Buscar</button>
             </div>
 
             <!-- Tabla para mostrar los turnos -->
@@ -48,5 +67,17 @@
             </table>
         </div>
     </div>
+
+    <script>
+        // Función para alternar la visibilidad del formulario de filtro
+        function toggleFiltro() {
+            const formularioDia = document.getElementById('formularioDia');
+            if (formularioDia.style.display === 'none' || formularioDia.style.display === '') {
+                formularioDia.style.display = 'block'; // Mostrar el formulario
+            } else {
+                formularioDia.style.display = 'none'; // Ocultar el formulario
+            }
+        }
+    </script>
 </body>
 </html>
