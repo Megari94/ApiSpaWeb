@@ -90,7 +90,7 @@ async function generarInforme() {
         const serviciosPrestados = await sesionesResponse.json();
 
         // Listar los servicios en el PDF
-        let yPosition = 300; // Posición vertical inicial
+        let yPosition = 260; // Posición vertical inicial
         let totalCosto = 0; // Variable para calcular el total de costos
         for (const servicio of serviciosPrestados) {
             doc.setFontSize(10);
