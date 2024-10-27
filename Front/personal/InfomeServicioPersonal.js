@@ -1,18 +1,11 @@
-       function abrirModal() {
-            document.getElementById('modalPreview').style.display = 'block';
-        }
-
-        function cerrarModal() {
-            document.getElementById('modalPreview').style.display = 'none';
-        }
 async function generarInforme() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('p', 'pt', 'a4');
 
-    // Verificar si se ha seleccionado un personal
-    const personalId = document.getElementById("apellidoPersonal").value;
+    // Obtener el ID del personal del localStorage
+    const personalId = localStorage.getItem('idPersonal');
     if (!personalId) {
-        alert("Por favor, seleccione un personal.");
+        alert("No se ha encontrado el ID del personal.");
         return;
     }
 
@@ -62,9 +55,8 @@ async function generarInforme() {
         doc.setFontSize(12);
         doc.setFont("Helvetica", "normal");
         doc.text(`Fecha de Emisión: ${fechaFormateada}`, 380, 80);
-       doc.text(`Fecha de Inicio: ${startDateInput}` , 380, 110);
-       doc.text(`Fecha de Fin:${endDateInput}`, 380, 125);
-            
+        doc.text(`Fecha de Inicio: ${startDateInput}`, 380, 110);
+        doc.text(`Fecha de Fin: ${endDateInput}`, 380, 125);
 
         // Información general del servicio (datos del personal)
         doc.text(`Nombre del Personal: ${personalSeleccionado.nombre} ${personalSeleccionado.apellido}`, 40, 170);
@@ -128,19 +120,4 @@ async function generarInforme() {
         alert("Error al generar el informe: " + error.message);
     }
     abrirModal();
-}
-
-let pdfBlob; // Variable para almacenar el blob del PDF generado
-
-function descargarInforme() {
-    if (pdfBlob) {
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(pdfBlob);
-        link.download = 'Informe_Servicios.pdf'; // Nombre del archivo que se descargará
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    } else {
-        alert('Por favor, genera el informe antes de intentar descargarlo.');
-    }
 }
