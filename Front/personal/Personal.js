@@ -100,7 +100,7 @@ function cargarTurnos(idPersonal) {
                 <td>${sesion.idA}</td>
                 <td>${sesion.asistencia}</td>
                 <td>${sesion.costo}</td>
-                <td>${sesion.fecha}</td>
+                <td>${formatearFecha(sesion.fecha)}</td>  <!-- Aquí aplicamos el formato de fecha -->
                 <td>${sesion.nombreCliente}</td>
                 <td>${sesion.servicio}</td>          
             `;
@@ -111,6 +111,20 @@ function cargarTurnos(idPersonal) {
         console.error('Error al cargar los turnos:', error);
         alert('Hubo un error al cargar los turnos.');
     });
+}
+
+// Función para formatear la fecha en el formato deseado
+function formatearFecha(fechaISO) {
+    const options = { 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        hour12: false 
+    };
+    const fecha = new Date(fechaISO);
+    return new Intl.DateTimeFormat('es-ES', options).format(fecha);
 }
 
 // Función para alternar el menú lateral
