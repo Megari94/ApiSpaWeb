@@ -382,9 +382,9 @@ async function generarFactura(turnoId) {
         const fechaFormateada = `${dia}/${mes}/${anio}`;
         doc.text("Fecha de Emisión: " + fechaFormateada, 380, 95);
 
-        doc.text("SERVICIO REALIZADO/FINALIZADO", 380, 110);
+        doc.text("SERVICIO FINALIZADO", 380, 110);
         doc.text("Ingresos Brutos: EXENTO", 380, 125);
-        doc.text("Fecha de Inicio de Actividades: " + fechaFormateada, 380, 140);
+        doc.text("Inicio de Actividades: " + fechaFormateada, 380, 140);
 
         doc.text("Recibí de: " + clientName, 40, 170);
         doc.text("Domicilio: S/D ACTUALES", 40, 190);
