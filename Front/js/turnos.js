@@ -335,14 +335,34 @@ async function generarFactura(turnoId) {
         return;
     }
 
+    // Cargar la imagen en formato base64
+    const imageUrl = 'img/logo2.jpeg'; // Ruta de la imagen
+    const imageData = await fetch(imageUrl).then(res => res.blob()).then(blob => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    });
+
     // Encabezado del documento PDF
     const encabezado = () => {
+        // Agregar imagen centrada en el encabezado
+        const imageWidth = 100; // Ancho de la imagen
+        const imageHeight = 50; // Alto de la imagen
+        const centerX = (doc.internal.pageSize.getWidth() - imageWidth) / 2; // Calcular el centrado horizontal
+        doc.addImage(imageData, 'JPEG', centerX, 30, imageWidth, imageHeight);
+
+        // Agregar el texto "SENTIRSE BIEN" centrado debajo de la imagen
         doc.setFontSize(14);
         doc.setFont("Helvetica", "bold");
-        doc.text("SENTIRSE BIEN", 70, 75);
+        const textWidth = doc.getTextWidth("SENTIRSE BIEN");
+        doc.text("SENTIRSE BIEN", (doc.internal.pageSize.getWidth() - textWidth) / 2, 100);
         doc.setFontSize(12);
         doc.setFont("Helvetica", "normal");
 
+        // Dibujar los rectángulos del encabezado
         doc.rect(30, 30, 550, 750);
         doc.rect(30, 30, 550, 120);
         doc.rect(30, 700, 550, 50);
@@ -366,12 +386,12 @@ async function generarFactura(turnoId) {
         doc.text("Fecha de Inicio de Actividades: ", 380, 140);
 
         doc.text("Recibí de: " + clientName, 40, 170);
-        doc.text("DNI: ", 350, 170);
-        doc.text("Domicilio: ", 40, 190);
-        doc.text("Localidad:", 40, 210);
-        doc.text("Provincia: ", 350, 210);
+        doc.text("DNI: S/N ACTUALES", 350, 170);
+        doc.text("Domicilio: S/N ACTUALES", 40, 190);
+        doc.text("Localidad: S/N ACTUALES", 40, 210);
+        doc.text("Provincia: S/N ACTUALES", 350, 210);
         doc.text("Tipo de Ingreso: PRODUCIDOS PROPIOS ", 40, 240);
-        doc.text("Medio de Pago recibido: TRANSFERENCIA A CTA 10071/08 Nº BNA", 40, 260);
+        doc.text("Tipo de Cliente: CONSUMIDOR FINAL", 40, 260);
         doc.text("Concepto ", 40, 280);
     };
 
@@ -411,6 +431,8 @@ async function generarFactura(turnoId) {
     encabezado();
     const totalServicios = agregarServicios();
     subtotalYTotal(totalServicios);
+}
+
 
     // Descargar el archivo PDF
     const pdfBlob = doc.output('blob');
