@@ -165,8 +165,8 @@
             doc.setFont("Helvetica", "bold");
             doc.text("ID", 40, 220);
             doc.text("Nombre Completo", 80,  220);
-            doc.text("Asistencia", 205,  220);
-            doc.text("Fecha", 320,  220);
+            doc.text("Asistencia", 210,  220);
+            doc.text("Fecha", 335,  220);
             doc.text("Servicio", 430,  220);
             doc.text("Costo", 570,  220, { align: "right" });
             doc.line(30, 225, 580,  225);
@@ -186,7 +186,7 @@
                 doc.setFont("Helvetica", "normal");
                 doc.text(servicio.id.toString(), 40, yOffset);
                 doc.text(servicio.nombre_completo, 90, yOffset);
-                doc.text(servicio.asistencia, 230, yOffset);
+                doc.text(servicio.asistencia, 220, yOffset);
                 doc.text(fechaFormateada, 330, yOffset);
                 doc.text(servicio.nombre_servicio, 420, yOffset);
                 doc.text(servicio.costo.toFixed(2), 570, yOffset, { align: "right" });
@@ -195,8 +195,8 @@
             });
 
             doc.setFont("Helvetica", "bold");
-            doc.text("Total:", 420, 700);
-            doc.text(totalCosto.toFixed(2), 570, 700, { align: "right" });
+            doc.text("Total:", 420, 650);
+            doc.text(totalCosto.toFixed(2), 570, 650, { align: "right" });
 
             pdfBlobInforme = doc.output('blob');
             const pdfUrl = URL.createObjectURL(pdfBlobInforme);
