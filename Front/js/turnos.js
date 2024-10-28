@@ -59,7 +59,7 @@ function mostrarTurnos(turnosAmostrar) {
                 <td>${turno.id}</td>
                 <td class="${claseAsistencia}">${turno.asistencia}</td>
                 <td>${turno.costo}</td>
-                <td>${turno.fechaFormateada }</td>
+                <td>${fechaFormateada }</td>
                 <td>${turno.nombre_completo}</td>
                 <td>${turno.nombre_servicio}</td>
             `;
@@ -70,7 +70,7 @@ function mostrarTurnos(turnosAmostrar) {
                         <button onclick="generarFactura(${turno.id})" 
                                 class="factura-btn" 
                                 data-nombre="${turno.nombre_completo}"
-                                data-fecha="${turno.fechaFormateada}"
+                                data-fecha="${fechaFormateada}"
                                 data-costo="${turno.costo}"
                                 data-servicio="${turno.nombre_servicio}">
                             Factura
