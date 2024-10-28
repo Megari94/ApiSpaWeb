@@ -54,6 +54,7 @@ function mostrarTurnos(turnosAmostrar) {
             const fila = document.createElement('tr');
             
             const fechaFormateada = formatearFecha(turno.fecha);
+            
             fila.innerHTML = `
                 <td>${turno.id}</td>
                 <td class="${claseAsistencia}">${turno.asistencia}</td>
@@ -69,7 +70,7 @@ function mostrarTurnos(turnosAmostrar) {
                         <button onclick="generarFactura(${turno.id})" 
                                 class="factura-btn" 
                                 data-nombre="${turno.nombre_completo}"
-                                data-fecha="${turno.fecha}"
+                                data-fecha="${turno.fechaFormateada}"
                                 data-costo="${turno.costo}"
                                 data-servicio="${turno.nombre_servicio}">
                             Factura
