@@ -52,12 +52,13 @@ function mostrarTurnos(turnosAmostrar) {
         if (turno.asistencia === 'CONFIRMADO' || turno.asistencia === 'CANCELADO') {
             const claseAsistencia = turno.asistencia === 'CANCELADO' ? 'asistencia-cancelado' : 'asistencia-confirmado';
             const fila = document.createElement('tr');
-
+            
+            const fechaFormateada = formatearFecha(turno.fecha);
             fila.innerHTML = `
                 <td>${turno.id}</td>
                 <td class="${claseAsistencia}">${turno.asistencia}</td>
                 <td>${turno.costo}</td>
-                <td>${turno.fecha}</td>
+                <td>${turno.fechaFormateada }</td>
                 <td>${turno.nombre_completo}</td>
                 <td>${turno.nombre_servicio}</td>
             `;
